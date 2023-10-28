@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/MainListNav"
+        android:enabled="true"
+        android:title=""
+        android:icon="@drawable/home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/MapNav"
+        android:enabled="true"
+        android:title=""
+        android:icon="@drawable/map"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/Upload"
+        android:enabled="true"
+        android:title=""
+        android:icon="@drawable/upload"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/FriendNav"
+        android:enabled="true"
+        android:title=""
+        android:icon="@drawable/friends"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/ProfileNav"
+        android:enabled="true"
+        android:title=""
+        android:icon="@drawable/profile"
+        app:showAsAction="always" />
+</menu>
