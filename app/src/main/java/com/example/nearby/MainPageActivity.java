@@ -3,13 +3,18 @@ package com.example.nearby;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.mainpagefragment.FriendsFragment;
 import com.example.nearby.mainpagefragment.MainListFragment;
 import com.example.nearby.mainpagefragment.MapsFragment;
 import com.example.nearby.mainpagefragment.ProfileFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -18,6 +23,7 @@ public class MainPageActivity extends AppCompatActivity {
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
     ActivityMainPageBinding binding;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,4 +61,6 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
