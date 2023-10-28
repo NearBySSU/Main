@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -35,6 +36,13 @@ public class LogInActivity extends AppCompatActivity {
         loginBtn = binding.logInButton;
         EmailEdit = binding.emailText;
         passwordEdit = binding.passwordText;
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(LogInActivity.this, MainPageActivity.class));
+            finish();
+        }
+        
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +63,8 @@ public class LogInActivity extends AppCompatActivity {
                         });
             }
         });
+
+
 
         binding.signUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
