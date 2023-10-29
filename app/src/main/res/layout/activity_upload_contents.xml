@@ -6,4 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".UploadContentsActivity">
 
+    <EditText
+        android:id="@+id/mainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="무슨일이 있었나요?"
+        android:onClick="pickImageFromGallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/pick_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pickImageFromGallery"
+        android:text="Pick image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pickImageFromGallery"
+        android:text="upload posts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pick_image_button"
+        android:layout_marginTop="20dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

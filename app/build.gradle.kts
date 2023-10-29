@@ -61,6 +61,7 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui:2.7.4")
     implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
     implementation("com.google.firebase:firebase-firestore")
-    implementation ("com.google.android.gms:play-services-location:18.0.0")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
 
 }
