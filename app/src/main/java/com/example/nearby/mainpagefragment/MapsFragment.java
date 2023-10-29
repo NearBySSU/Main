@@ -15,12 +15,9 @@ import android.widget.Toast;
 import com.example.nearby.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -31,7 +28,12 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
-            getDeviceLocation();
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestLocationPermission();
+            } else {
+                mMap.setMyLocationEnabled(true);
+            }
         }
     };
 
@@ -54,14 +56,6 @@ public class MapsFragment extends Fragment {
 
         requestLocationPermission();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-        Button btnCurrentLocation = view.findViewById(R.id.btn_current_location);
-        btnCurrentLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDeviceLocation();
-            }
-        });
     }
 
     private void requestLocationPermission() {
@@ -77,24 +71,14 @@ public class MapsFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getDeviceLocation();
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mMap.setMyLocationEnabled(true);
             } else {
                 Toast.makeText(getActivity(), "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void getDeviceLocation() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
-            if (location != null) {
-                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in current location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-            }
-        });
     }
 }
