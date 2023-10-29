@@ -10,14 +10,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 import com.example.nearby.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MapsFragment extends Fragment {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -33,6 +34,7 @@ public class MapsFragment extends Fragment {
                 requestLocationPermission();
             } else {
                 mMap.setMyLocationEnabled(true);
+                moveToLastKnownLocation();
             }
         }
     };
@@ -53,7 +55,6 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
         requestLocationPermission();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
@@ -76,9 +77,23 @@ public class MapsFragment extends Fragment {
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
+                moveToLastKnownLocation();
             } else {
                 Toast.makeText(getActivity(), "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void moveToLastKnownLocation() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
+            if (location != null) {
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+            }
+        });
     }
 }
