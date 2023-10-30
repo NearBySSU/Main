@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nearby</string>
+    <string name="app_name">NearBy</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <!-- Strings used for fragments for navigation -->

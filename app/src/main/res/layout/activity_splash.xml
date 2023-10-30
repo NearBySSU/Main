@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/iv_nearby_splash"
+<TextView
+    android:layout_width="204dp"
+    android:layout_height="84dp"
+    android:text="@string/app_name"
+    android:autoSizeTextType="uniform"
+    android:textStyle="bold"
+    android:textColor="@color/firstColor"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
