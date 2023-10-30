@@ -1,6 +1,4 @@
-package com.example.nearby;
-
-import static androidx.fragment.app.FragmentManager.TAG;
+package com.example.nearby.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.nearby.MainPageActivity;
 import com.example.nearby.databinding.ActivitySignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,9 +33,8 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
         mAuth = FirebaseAuth.getInstance();
-        setContentView(view);
+        setContentView(binding.getRoot());
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
