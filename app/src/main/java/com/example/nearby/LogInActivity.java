@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
-
-
     private Button loginBtn;
     private EditText EmailEdit;
     private EditText passwordEdit;
@@ -63,8 +61,6 @@ public class LogInActivity extends AppCompatActivity {
                         });
             }
         });
-
-
 
         binding.signUpButton.setOnClickListener(new View.OnClickListener(){
             @Override

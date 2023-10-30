@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".LogInActivity">
 
+
+
     <EditText
         android:id="@+id/emailText"
         android:layout_width="0dp"

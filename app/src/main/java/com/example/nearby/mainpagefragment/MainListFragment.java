@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.nearby.R;
-
-
 public class MainListFragment extends Fragment {
 
     @Override
