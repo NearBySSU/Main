@@ -5,30 +5,30 @@
         android:id="@+id/MainListNav"
         android:enabled="true"
         android:title=""
-        android:icon="@drawable/home"
+        android:icon="@drawable/ic_home"
         app:showAsAction="always" />
     <item
         android:id="@+id/MapNav"
         android:enabled="true"
         android:title=""
-        android:icon="@drawable/map"
+        android:icon="@drawable/ic_map"
         app:showAsAction="always" />
     <item
         android:id="@+id/Upload"
         android:enabled="true"
         android:title=""
-        android:icon="@drawable/upload"
+        android:icon="@drawable/ic_upload"
         app:showAsAction="always" />
     <item
         android:id="@+id/FriendNav"
         android:enabled="true"
         android:title=""
-        android:icon="@drawable/friends"
+        android:icon="@drawable/ic_friends"
         app:showAsAction="always" />
     <item
         android:id="@+id/ProfileNav"
         android:enabled="true"
         android:title=""
-        android:icon="@drawable/profile"
+        android:icon="@drawable/ic_profile"
         app:showAsAction="always" />
 </menu>
