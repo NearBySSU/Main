@@ -1,4 +1,4 @@
-package com.example.nearby.mainpagefragment;
+package com.example.nearby.main.fragment;
 
 import android.os.Bundle;
 

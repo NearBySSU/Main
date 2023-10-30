@@ -21,7 +21,7 @@
             android:value="AIzaSyBElV1skkLoxFgCE4F2BwlXMKyywqih_fg"/>
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".auth.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
@@ -33,13 +33,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LogInActivity"
+            android:name=".auth.LogInActivity"
             android:exported="false" />
         <activity
             android:name=".UploadContentsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainPageActivity"
+            android:name=".main.MainPageActivity"
             android:exported="false" />
         <activity
             android:name=".LoadingActivity"
