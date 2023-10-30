@@ -15,6 +15,7 @@ import com.example.nearby.auth.LogInActivity;
 import com.example.nearby.databinding.ActivitySplashBinding;
 
 public class SplashActivity extends AppCompatActivity {
+    //PR이 안 돼요ㅠㅠㅠㅠㅠㅠㅠㅠㅠ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
