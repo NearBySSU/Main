@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.nearby.MainPageActivity;
+import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.databinding.ActivityLogInBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

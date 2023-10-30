@@ -39,7 +39,7 @@
             android:name=".UploadContentsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainPageActivity"
+            android:name=".main.MainPageActivity"
             android:exported="false" />
         <activity
             android:name=".LoadingActivity"

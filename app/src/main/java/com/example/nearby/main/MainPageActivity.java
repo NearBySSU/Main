@@ -1,20 +1,18 @@
-package com.example.nearby;
+package com.example.nearby.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.example.nearby.R;
+import com.example.nearby.UploadContentsActivity;
 import com.example.nearby.databinding.ActivityMainPageBinding;
-import com.example.nearby.mainpagefragment.FriendsFragment;
-import com.example.nearby.mainpagefragment.MainListFragment;
-import com.example.nearby.mainpagefragment.MapsFragment;
-import com.example.nearby.mainpagefragment.ProfileFragment;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.nearby.main.fragment.FriendsFragment;
+import com.example.nearby.main.fragment.MainListFragment;
+import com.example.nearby.main.fragment.MapsFragment;
+import com.example.nearby.main.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainPageActivity extends AppCompatActivity {
