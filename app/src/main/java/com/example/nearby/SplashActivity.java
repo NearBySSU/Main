@@ -21,7 +21,6 @@ public class SplashActivity extends AppCompatActivity {
         ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         String text = "NearBy";
         int purple = ContextCompat.getColor(this, R.color.firstColor);
         int teal = ContextCompat.getColor(this, R.color.lastColor);
