@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.example.nearby.R;
 
-
 public class FriendsFragment extends Fragment {
 
     @Override

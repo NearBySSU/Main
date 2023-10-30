@@ -8,8 +8,6 @@ android {
     namespace = "com.example.nearby"
     compileSdk = 34
 
-
-
     defaultConfig {
         applicationId = "com.example.nearby"
         minSdk = 26
