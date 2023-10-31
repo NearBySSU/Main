@@ -6,40 +6,119 @@
     android:layout_height="match_parent"
     tools:context=".auth.LogInActivity">
 
-    <EditText
-        android:id="@+id/emailText"
-        android:layout_width="0dp"
+    <ImageButton
+        android:id="@+id/btn_cancle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:hint="email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_cancle"
+        android:background="@color/transparent"
+        android:layout_margin="20dp"/>
 
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="password"
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="144dp"
+        android:layout_height="60dp"
+        android:text="가입하기"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancle"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_edit_text"
+        android:layout_width="322.95dp"
+        android:layout_height="57.66dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <EditText
+            android:id="@+id/emailText"
+            android:layout_width="322.95dp"
+            android:layout_height="57.66dp"
+            android:layout_marginHorizontal="40dp"
+            android:hint="E-mail"
+            android:textColorHint="@color/gray"
+            android:background="@drawable/round_btn"
+            android:backgroundTint="#F2F2F2"
+            android:padding="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_password_text"
+        android:layout_width="322.95dp"
+        android:layout_height="57.66dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailText" />
+        app:layout_constraintTop_toBottomOf="@id/layout_edit_text" >
+
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="322.95dp"
+            android:layout_height="57.66dp"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/round_btn"
+            android:backgroundTint="#F2F2F2"
+            android:padding="20dp"
+            android:hint="password"
+            android:textColorHint="@color/gray"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_lock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#00ff0000"
+            android:background="@color/white"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="322.95dp"
+        android:layout_height="57.66dp"
+        android:backgroundTint="@color/firstColor"
+        android:background="@drawable/round_btn"
         android:text="signUp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_password_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
