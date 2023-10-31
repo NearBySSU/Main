@@ -48,6 +48,18 @@ public class SignUpActivity extends AppCompatActivity {
                 final String email = binding.emailText.getText().toString().trim();
                 final String pwd = binding.passwordText.getText().toString().trim();
 
+                // 입력값 검증
+                if(email.isEmpty() || pwd.isEmpty()){
+                    Toast.makeText(SignUpActivity.this, "이메일 또는 비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 이메일 형식 검증
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    Toast.makeText(SignUpActivity.this, "올바른 이메일 형식을 입력해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mAuth.createUserWithEmailAndPassword(email, pwd)
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
