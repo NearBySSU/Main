@@ -2,14 +2,19 @@ package com.example.nearby.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nearby.LinearGradientSpan;
+import com.example.nearby.R;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.databinding.ActivityLogInBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +39,13 @@ public class LogInActivity extends AppCompatActivity {
         loginBtn = binding.logInButton;
         EmailEdit = binding.emailText;
         passwordEdit = binding.passwordText;
+
+        String text = "NearBy";
+        int purple = ContextCompat.getColor(this, R.color.firstColor);
+        int teal = ContextCompat.getColor(this, R.color.lastColor);
+        SpannableStringBuilder spannable = new SpannableStringBuilder(text);
+        spannable.setSpan(new LinearGradientSpan(text, text, purple, teal), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.tvLoginImage.setText(spannable);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
