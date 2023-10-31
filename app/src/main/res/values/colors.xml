@@ -7,4 +7,5 @@
     <color name="thirdColor">#7D9CE9</color>
     <color name="lastColor">#AABCE8</color>
     <color name="gray">#989898</color>
+    <color name="transparent">#00ff0000</color>
 </resources>
