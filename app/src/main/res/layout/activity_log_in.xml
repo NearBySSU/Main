@@ -39,6 +39,7 @@
             android:background="@drawable/round_btn"
             android:backgroundTint="#F2F2F2"
             android:padding="20dp"
+            android:maxLength="25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,6 +75,7 @@
             android:background="@drawable/round_btn"
             android:backgroundTint="#F2F2F2"
             android:padding="20dp"
+            android:maxLength="25"
             android:hint="password"
             android:textColorHint="@color/gray"
             android:layout_marginBottom="15dp"
