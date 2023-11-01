@@ -196,9 +196,8 @@ public class UploadContentsActivity extends AppCompatActivity {
         for (Uri uri : uriList) {
             StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
             tasks.add(imageRef.putFile(uri).continueWithTask(task -> imageRef.getDownloadUrl()));
-            Toast.makeText(UploadContentsActivity.this, "이미지 업로드 중 ...", Toast.LENGTH_SHORT).show();
-
         }
+        Toast.makeText(UploadContentsActivity.this, "이미지 업로드 중 ...", Toast.LENGTH_SHORT).show();
 
         Tasks.whenAllSuccess(tasks).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
             @Override
