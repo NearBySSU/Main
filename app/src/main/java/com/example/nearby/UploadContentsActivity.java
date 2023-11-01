@@ -229,6 +229,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                                         post.put("latitude", latitude);
                                         post.put("longitude", longitude);
 
+
                                         db.collection("posts")
                                                 .add(post)
                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
