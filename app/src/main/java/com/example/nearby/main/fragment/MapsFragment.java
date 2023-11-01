@@ -50,12 +50,12 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        requestLocationPermission();
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-        requestLocationPermission();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 

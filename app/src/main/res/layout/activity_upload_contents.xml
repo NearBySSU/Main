@@ -11,10 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="무슨일이 있었나요?"
-        android:onClick="pickImageFromGallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/pick_image_button"
@@ -28,15 +27,35 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/upload_button"
+        android:id="@+id/pick_date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="pickImageFromGallery"
-        android:text="upload posts"
+        android:onClick="pickDate"
+        android:text="Pick date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pick_image_button"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/show_date_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected date: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pick_date_button"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="uploadPost"
+        android:text="Upload posts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_date_textView"
+        android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
