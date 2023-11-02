@@ -25,7 +25,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Post post = postList.get(position);
-        holder.postId.setText(post.getId());
+        holder.postText.setText(post.getText());
     }
 
     @Override
@@ -34,11 +34,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView postId;
+        public TextView postText; // 게시물 텍스트를 표시하는 TextView
+
 
         public ViewHolder(View view) {
             super(view);
-            postId = view.findViewById(R.id.post_id);
+            postText = view.findViewById(R.id.post_text); // 텍스트 뷰 참조를 가져옴
+
         }
     }
 }
