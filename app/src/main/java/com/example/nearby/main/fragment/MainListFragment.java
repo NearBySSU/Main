@@ -19,12 +19,15 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import android.location.Location;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainListFragment extends Fragment {
 
     private FusedLocationProviderClient fusedLocationClient;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     private FirebaseFirestore db;
     private List<Post> postList;
     private RecyclerView recyclerView;
@@ -44,17 +47,16 @@ public class MainListFragment extends Fragment {
         postAdapter = new PostAdapter(postList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
-
+        requestLocationPermission();
         loadNearbyPosts();
-
         return view;
     }
 
 
     //근처 포스트를 로드하는 함수
-    private void loadNearbyPosts() {
+    public void loadNearbyPosts() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request location permission
+            Toast.makeText(getActivity(),"포스트 로드 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -66,7 +68,7 @@ public class MainListFragment extends Fragment {
     }
 
     //현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
-    private void getPosts(Location currentLocation) {
+    public void getPosts(Location currentLocation) {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -89,5 +91,14 @@ public class MainListFragment extends Fragment {
                 postAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void requestLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
     }
 }
