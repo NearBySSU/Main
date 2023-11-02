@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -94,5 +97,15 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
-
+    // 배경화면 눌렀을 때 키보드 내려가는 기능
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
+    }
 }
