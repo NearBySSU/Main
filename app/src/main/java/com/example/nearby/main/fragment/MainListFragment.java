@@ -70,6 +70,8 @@ public class MainListFragment extends Fragment {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
+
+                    String text = document.getString("text");
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
 
@@ -80,7 +82,7 @@ public class MainListFragment extends Fragment {
                     float distanceInMeters = currentLocation.distanceTo(postLocation);
 
                     if (distanceInMeters < pivot_meter) {
-                        Post post = new Post(document.getId(), latitude, longitude);
+                        Post post = new Post(document.getId(),text, latitude, longitude);
                         postList.add(post);
                     }
                 }
