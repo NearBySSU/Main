@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(binding.getRoot());
 
-        binding.btnCancle.setOnClickListener(new View.OnClickListener() {
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
