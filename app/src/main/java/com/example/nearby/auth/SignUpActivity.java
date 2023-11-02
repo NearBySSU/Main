@@ -3,10 +3,13 @@ package com.example.nearby.auth;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.nearby.main.MainPageActivity;
@@ -103,6 +106,18 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding user profile", e);
                     }
                 });
+    }
+
+    // 배경 터치했을 때 키보드 내려가는 기능
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
     }
 
 }
