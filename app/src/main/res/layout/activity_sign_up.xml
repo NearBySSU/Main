@@ -7,12 +7,12 @@
     tools:context=".auth.LogInActivity">
 
     <ImageButton
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_cancle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_cancel"
+        android:src="@drawable/ic_cancle"
         android:background="@color/transparent"
         android:layout_margin="20dp"/>
 
@@ -28,35 +28,33 @@
         android:layout_marginTop="200dp"
         android:layout_marginStart="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_cancel"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_cancle"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_edit_text"
         android:layout_width="322.95dp"
         android:layout_height="57.66dp"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="#F2F2F2"
-        android:background="@drawable/round_btn"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        app:layout_constraintBottom_toTopOf="@id/layout_password_text">
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <EditText
             android:id="@+id/emailText"
-            android:layout_width="280dp"
-            android:layout_height="100dp"
+            android:layout_width="322.95dp"
+            android:layout_height="57.66dp"
+            android:layout_marginHorizontal="40dp"
             android:hint="E-mail"
-            android:inputType="textEmailAddress"
-            android:background="@null"
-            android:padding="20dp"
-            android:maxLines="1"
+            android:maxLength="25"
             android:textColorHint="@color/gray"
+            android:background="@drawable/round_btn"
+            android:backgroundTint="#F2F2F2"
+            android:maxLines="1"
+            android:padding="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_email"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/img_email"
@@ -77,27 +75,25 @@
         android:layout_width="322.95dp"
         android:layout_height="57.66dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:backgroundTint="#F2F2F2"
-        android:background="@drawable/round_btn"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_edit_text" >
 
         <EditText
             android:id="@+id/passwordText"
-            android:layout_width="280dp"
-            android:layout_height="100dp"
-            android:hint="password"
-            android:inputType="textPassword"
-            android:background="@null"
+            android:layout_width="322.95dp"
+            android:layout_height="57.66dp"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/round_btn"
+            android:backgroundTint="#F2F2F2"
             android:padding="20dp"
-            android:maxLines="1"
+            android:maxLength="25"
+            android:hint="password"
             android:textColorHint="@color/gray"
+            android:layout_marginBottom="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_lock"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/img_lock"
@@ -107,7 +103,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#00ff0000"
+            android:background="@color/white"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
