@@ -71,6 +71,7 @@ public class MapsFragment extends Fragment {
             mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
                 @Override
                 public boolean onClusterItemClick(Post post) {
+                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     postItemAdapter.addItem(new PostItem(post.getTitle()));
                     postItemAdapter.notifyDataSetChanged();
                     return false;
@@ -81,6 +82,7 @@ public class MapsFragment extends Fragment {
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
                 @Override
                 public boolean onClusterClick(Cluster<Post> cluster) {
+                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     for (Post post : cluster.getItems()) {
                         postItemAdapter.addItem(new PostItem(post.getTitle()));
                     }
