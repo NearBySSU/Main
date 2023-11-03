@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nearby.Post;
 import com.example.nearby.PostAdapter;
@@ -35,25 +36,39 @@ public class MainListFragment extends Fragment {
     private PostAdapter postAdapter;
     //기준 거리
     public float pivot_meter = 1000;
+    //스와이프를 위한 객체
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main_list, container, false);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
-        //거리 이내의 포스트들이 담긴 배열
         postList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
         postAdapter = new PostAdapter(postList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                postList.clear();
+                postAdapter.setPostList(postList);
+                loadNearbyPosts();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         //권한 요청
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
         }
+
         //포스트 로드하기
         loadNearbyPosts();
         return view;

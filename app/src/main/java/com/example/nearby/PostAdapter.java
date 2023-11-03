@@ -33,6 +33,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return postList.size();
     }
 
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView postText; // 게시물 텍스트를 표시하는 TextView
 
