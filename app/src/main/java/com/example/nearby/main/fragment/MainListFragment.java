@@ -60,6 +60,7 @@ public class MainListFragment extends Fragment {
     }
 
 
+
     //근처 포스트를 로드하는 함수
     public void loadNearbyPosts() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
