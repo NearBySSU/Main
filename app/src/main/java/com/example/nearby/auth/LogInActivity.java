@@ -43,6 +43,7 @@ public class LogInActivity extends AppCompatActivity {
         EmailEdit = binding.emailText;
         passwordEdit = binding.passwordText;
 
+        //그라데이션을 위한 처리
         String text = "NearBy";
         int purple = ContextCompat.getColor(this, R.color.firstColor);
         int teal = ContextCompat.getColor(this, R.color.lastColor);
@@ -55,7 +56,8 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(new Intent(LogInActivity.this, MainPageActivity.class));
             finish();
         }
-        
+
+        //로그인 버튼
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +76,7 @@ public class LogInActivity extends AppCompatActivity {
                     return;
                 }
 
+                //로그인 하기
                 mAuth.signInWithEmailAndPassword(email, pwd)
                         .addOnCompleteListener(LogInActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -89,6 +92,8 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+
+        //가입하기로 이동
         binding.signUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -97,6 +102,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
+
     // 배경화면 눌렀을 때 키보드 내려가는 기능
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
