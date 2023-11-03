@@ -62,6 +62,7 @@ public class MapsFragment extends Fragment {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
+    //위치 권한 요청
     private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

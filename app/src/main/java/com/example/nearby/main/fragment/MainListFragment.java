@@ -31,7 +31,9 @@ public class MainListFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Post> postList;
     private RecyclerView recyclerView;
+    //포스트를 위한 어댑터
     private PostAdapter postAdapter;
+    //기준 거리
     public float pivot_meter = 1000;
 
     @Override
@@ -42,12 +44,17 @@ public class MainListFragment extends Fragment {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
+        //거리 이내의 포스트들이 담긴 배열
         postList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
         postAdapter = new PostAdapter(postList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
-        requestLocationPermission();
+        //권한 요청
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission();
+        }
+        //포스트 로드하기
         loadNearbyPosts();
         return view;
     }
@@ -81,8 +88,10 @@ public class MainListFragment extends Fragment {
                     postLocation.setLatitude(latitude);
                     postLocation.setLongitude(longitude);
 
+                    //거리 재기
                     float distanceInMeters = currentLocation.distanceTo(postLocation);
 
+                    //거리 비교해서 list에 넣기
                     if (distanceInMeters < pivot_meter) {
                         Post post = new Post(document.getId(),text, latitude, longitude);
                         postList.add(post);
@@ -93,6 +102,7 @@ public class MainListFragment extends Fragment {
         });
     }
 
+    //위치 권한 요청 함수
     private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
