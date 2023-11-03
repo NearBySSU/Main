@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class MapsFragment extends Fragment {
     //기준 거리
     public float pivot_meter = 1000;
     private ClusterManager<Post> mClusterManager;
+
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -159,6 +161,7 @@ public class MapsFragment extends Fragment {
                         Post post = new Post(document.getId(),text, latitude, longitude);
                         postList.add(post);
                         mClusterManager.addItem(post);
+
                     }
                 }
                 postAdapter.notifyDataSetChanged();
