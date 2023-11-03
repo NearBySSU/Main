@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -78,7 +80,7 @@ public class MapsFragment extends Fragment {
                 }
             });
 
-            //클러스터 덩어리를 클릭했을때 이벤트
+            //클러스터 덩어리를 클릭했을 때 이벤트
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
                 @Override
                 public boolean onClusterClick(Cluster<Post> cluster) {
@@ -137,6 +139,10 @@ public class MapsFragment extends Fragment {
 
         recyclerViewBottom.setAdapter(postItemAdapter);
 
+
+        // SnapHelper를 생성하고 recyclerViewBottom에 붙입니다.
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerViewBottom);
 
         loadNearbyPosts();
 
