@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.nearby.Post;
 import com.example.nearby.PostAdapter;
+import com.example.nearby.PostItem;
+import com.example.nearby.PostItemAdapter;
 import com.example.nearby.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 
@@ -41,6 +44,8 @@ public class MapsFragment extends Fragment {
     private GoogleMap mMap;
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewBottom;
+
 
     private List<Post> postList;
     //포스트를 위한 어댑터
@@ -48,6 +53,7 @@ public class MapsFragment extends Fragment {
     //기준 거리
     public float pivot_meter = 1000;
     private ClusterManager<Post> mClusterManager;
+    private PostItemAdapter postItemAdapter;
 
 
 
@@ -61,6 +67,29 @@ public class MapsFragment extends Fragment {
             mMap.setOnCameraIdleListener(mClusterManager);
             mMap.setOnMarkerClickListener(mClusterManager);
 
+            //마커 하나를 클릭했을 때 이벤트
+            mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
+                @Override
+                public boolean onClusterItemClick(Post post) {
+                    postItemAdapter.addItem(new PostItem(post.getTitle()));
+                    postItemAdapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+
+            //클러스터 덩어리를 클릭했을때 이벤트
+            mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
+                @Override
+                public boolean onClusterClick(Cluster<Post> cluster) {
+                    for (Post post : cluster.getItems()) {
+                        postItemAdapter.addItem(new PostItem(post.getTitle()));
+                    }
+                    postItemAdapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+
+
 
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -69,6 +98,9 @@ public class MapsFragment extends Fragment {
                 mMap.setMyLocationEnabled(true);
                 moveToLastKnownLocation();
             }
+
+
+
         }
     };
 
@@ -97,9 +129,18 @@ public class MapsFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerViewBottom = view.findViewById(R.id.bottom_sheet);
         postAdapter = new PostAdapter(postList);
+        postItemAdapter = new PostItemAdapter();
+
+        recyclerViewBottom.setAdapter(postItemAdapter);
+
+
         loadNearbyPosts();
+
     }
+
+
 
     //위치 권한 요청
     private void requestLocationPermission() {

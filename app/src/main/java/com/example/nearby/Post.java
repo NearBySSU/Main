@@ -17,11 +17,11 @@ public class Post implements ClusterItem {
     }
 
     // getters and setters
-    String getId(){
+    public String getId(){
         return id;
     }
 
-    String getText(){
+    public String getText(){
         return text;
     }
 
@@ -33,7 +33,11 @@ public class Post implements ClusterItem {
 
     @Override
     public String getTitle() {
-        return text;
+        if (text.length() > 20) {
+            return text.substring(0, 20);
+        } else {
+            return text;
+        }
     }
 
     @Override
