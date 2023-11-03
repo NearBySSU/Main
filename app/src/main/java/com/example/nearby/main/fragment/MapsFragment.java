@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +46,20 @@ public class MapsFragment extends Fragment {
     private PostAdapter postAdapter;
     //기준 거리
     public float pivot_meter = 1000;
+    private ClusterManager<Post> mClusterManager;
+
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
+            mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
+
+            // 클러스터링을 위한 맵의 클릭 리스너 설정
+            mMap.setOnCameraIdleListener(mClusterManager);
+            mMap.setOnMarkerClickListener(mClusterManager);
+
+
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestLocationPermission();
@@ -144,14 +154,11 @@ public class MapsFragment extends Fragment {
                     //거리 재기
                     float distanceInMeters = currentLocation.distanceTo(postLocation);
 
-                    //거리 비교해서 list에 넣기
+                    // 마커 대신 Post 객체를 클러스터에 추가
                     if (distanceInMeters < pivot_meter) {
                         Post post = new Post(document.getId(),text, latitude, longitude);
                         postList.add(post);
-
-                        // 게시물의 위치에 마커 추가
-                        LatLng postLatLng = new LatLng(latitude, longitude);
-                        mMap.addMarker(new MarkerOptions().position(postLatLng).title(text));
+                        mClusterManager.addItem(post);
                     }
                 }
                 postAdapter.notifyDataSetChanged();
