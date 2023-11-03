@@ -1,6 +1,9 @@
 package com.example.nearby;
 
-public class Post {
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
+public class Post implements ClusterItem {
     String id;
     String text;
     double latitude;
@@ -20,6 +23,22 @@ public class Post {
 
     String getText(){
         return text;
+    }
+
+    //cluster methods
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(latitude, longitude);
+    }
+
+    @Override
+    public String getTitle() {
+        return text;
+    }
+
+    @Override
+    public String getSnippet() {
+        return null;
     }
 }
 
