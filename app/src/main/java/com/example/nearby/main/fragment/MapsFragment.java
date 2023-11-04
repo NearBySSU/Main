@@ -88,8 +88,10 @@ public class MapsFragment extends Fragment {
                 @Override
                 public boolean onClusterItemClick(Post post) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
-                    postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), post.getuserId()));
-                    postItemAdapter.notifyDataSetChanged();
+                    getProfilePicUrl(post.getuserId(), profilePicUrl -> {
+                        postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+                        postItemAdapter.notifyDataSetChanged();
+                    });
                     return false;
                 }
             });
@@ -101,12 +103,16 @@ public class MapsFragment extends Fragment {
                 public boolean onClusterClick(Cluster<Post> cluster) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     for (Post post : cluster.getItems()) {
-                        postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), post.getuserId()));
+                        getProfilePicUrl(post.getuserId(), profilePicUrl -> {
+                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+
+                        });
                     }
                     postItemAdapter.notifyDataSetChanged();
                     return false;
                 }
             });
+
 
 
             // 지도의 비 마커 영역을 클릭했을 때 이벤트
@@ -209,7 +215,7 @@ public class MapsFragment extends Fragment {
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
                     String date = document.getString("date");
-                    String uid = document.getString("uid"); // 'uid'를 사용하도록 수정했습니다.
+                    String uid = document.getString("uid"); //
 
                     getProfilePicUrl(uid, profilePicUrl -> {
                         Location postLocation = new Location("");
@@ -232,6 +238,7 @@ public class MapsFragment extends Fragment {
     }
 
 
+    //user id로 부터 프로필 사진 얻기
     @SuppressLint("RestrictedApi")
     private void getProfilePicUrl(String userId, final OnProfilePicUrlReceivedListener listener) {
         db.collection("users").document(userId).get().addOnCompleteListener(task -> {
