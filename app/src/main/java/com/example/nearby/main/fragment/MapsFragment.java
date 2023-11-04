@@ -1,5 +1,7 @@
 package com.example.nearby.main.fragment;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -9,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.android.clustering.Cluster;
@@ -65,6 +70,15 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
 
+            //위치권한 확인
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestLocationPermission();
+            } else {
+                mMap.setMyLocationEnabled(true);
+                moveToLastKnownLocation();
+            }
+
             // 클러스터링을 위한 맵의 클릭 리스너 설정
             mMap.setOnCameraIdleListener(mClusterManager);
             mMap.setOnMarkerClickListener(mClusterManager);
@@ -74,7 +88,7 @@ public class MapsFragment extends Fragment {
                 @Override
                 public boolean onClusterItemClick(Post post) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
-                    postItemAdapter.addItem(new PostItem(post.getTitle()));
+                    postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), post.getuserId()));
                     postItemAdapter.notifyDataSetChanged();
                     return false;
                 }
@@ -86,7 +100,7 @@ public class MapsFragment extends Fragment {
                 public boolean onClusterClick(Cluster<Post> cluster) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     for (Post post : cluster.getItems()) {
-                        postItemAdapter.addItem(new PostItem(post.getTitle()));
+                        postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), post.getuserId()));
                     }
                     postItemAdapter.notifyDataSetChanged();
                     return false;
@@ -94,17 +108,14 @@ public class MapsFragment extends Fragment {
             });
 
 
-
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestLocationPermission();
-            } else {
-                mMap.setMyLocationEnabled(true);
-                moveToLastKnownLocation();
-            }
-
-
-
+            // 지도의 비 마커 영역을 클릭했을 때 이벤트
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
+                    postItemAdapter.notifyDataSetChanged();
+                }
+            });
         }
     };
 
@@ -119,9 +130,9 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestLocationPermission();
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(),"현위치 가져오기 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
+            requestLocationPermission();
         }
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
@@ -150,7 +161,7 @@ public class MapsFragment extends Fragment {
 
 
 
-    //위치 권한 요청
+    //위치권한 요청 함수
     private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -188,33 +199,57 @@ public class MapsFragment extends Fragment {
         });
     }
 
-    //현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
+    // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
     public void getPosts(Location currentLocation) {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-
                     String text = document.getString("text");
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
+                    String date = document.getString("date");
+                    String uid = document.getString("uid"); // 'uid'를 사용하도록 수정했습니다.
 
-                    Location postLocation = new Location("");
-                    postLocation.setLatitude(latitude);
-                    postLocation.setLongitude(longitude);
+                    getProfilePicUrl(uid, profilePicUrl -> {
+                        Location postLocation = new Location("");
+                        postLocation.setLatitude(latitude);
+                        postLocation.setLongitude(longitude);
 
-                    //거리 재기
-                    float distanceInMeters = currentLocation.distanceTo(postLocation);
+                        float distanceInMeters = currentLocation.distanceTo(postLocation);
 
-                    // 마커 대신 Post 객체를 클러스터에 추가
-                    if (distanceInMeters < pivot_meter) {
-                        Post post = new Post(document.getId(),text, latitude, longitude);
-                        postList.add(post);
-                        mClusterManager.addItem(post);
-
-                    }
+                        if (distanceInMeters < pivot_meter) {
+                            Post post = new Post(document.getId(), text, latitude, longitude, date, uid);
+                            postList.add(post);
+                            mClusterManager.addItem(post);
+                            postItemAdapter.addItem(new PostItem(post.getTitle(), date, profilePicUrl));
+                        }
+                        postAdapter.notifyDataSetChanged();
+                    });
                 }
-                postAdapter.notifyDataSetChanged();
             }
         });
     }
+
+
+    @SuppressLint("RestrictedApi")
+    private void getProfilePicUrl(String userId, final OnProfilePicUrlReceivedListener listener) {
+        db.collection("users").document(userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    String profilePicUrl = document.getString("profilePicUrl");
+                    listener.onProfilePicUrlReceived(profilePicUrl);
+                } else {
+                    Log.d(TAG, "No such document");
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
+        });
+    }
+
+    interface OnProfilePicUrlReceivedListener {
+        void onProfilePicUrlReceived(String profilePicUrl);
+    }
+
 }

@@ -45,8 +45,6 @@ public class MainListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main_list, container, false);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
@@ -99,6 +97,8 @@ public class MainListFragment extends Fragment {
                     String text = document.getString("text");
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
+                    String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
+                    String profilePicUrl = document.getString("profilePicUrl"); // 추가: 프로필 사진 URL 데이터를 읽어옵니다.
 
                     Location postLocation = new Location("");
                     postLocation.setLatitude(latitude);
@@ -109,7 +109,7 @@ public class MainListFragment extends Fragment {
 
                     //거리 비교해서 list에 넣기
                     if (distanceInMeters < pivot_meter) {
-                        Post post = new Post(document.getId(),text, latitude, longitude);
+                        Post post = new Post(document.getId(), text, latitude, longitude, date, profilePicUrl);
                         postList.add(post);
                     }
                 }
