@@ -94,7 +94,8 @@ public class MapsFragment extends Fragment {
                 }
             });
 
-            //클러스터 덩어리를 클릭했을 때 이벤트
+
+            //클러스터 덩어리를 클릭했을때 이벤트
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
                 @Override
                 public boolean onClusterClick(Cluster<Post> cluster) {
