@@ -33,6 +33,8 @@
     import com.google.android.gms.tasks.OnSuccessListener;
     import com.google.android.gms.tasks.Task;
     import com.google.android.gms.tasks.Tasks;
+    import com.google.firebase.auth.FirebaseAuth;
+    import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.DocumentReference;
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.firebase.storage.FirebaseStorage;
@@ -58,6 +60,8 @@
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
         StorageReference storageRef = storage.getReference();
 
         EditText editText;
@@ -65,6 +69,7 @@
         TextView showDateTextView;
         Uri imageUri;
         String selectedDate;
+        String uid;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,8 @@
             pickDateButton = findViewById(R.id.pick_date_button);
             showDateTextView = findViewById(R.id.show_date_textView);
             pickImageButton = findViewById(R.id.pick_image_button);
+            uid = user.getUid();
+
 
             // 위치 권한 확인 및 요청
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -251,6 +258,7 @@
             post.put("date", selectedDate);
             post.put("latitude", latitude);
             post.put("longitude", longitude);
+            post.put("uid", uid);
             return post;
         }
 

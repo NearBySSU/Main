@@ -8,12 +8,16 @@ public class Post implements ClusterItem {
     String text;
     double latitude;
     double longitude;
+    String date; // 추가: 날짜를 저장할 필드
+    String userId;
 
-    public Post(String id,String text, double latitude, double longitude) {
+    public Post(String id, String text, double latitude, double longitude, String date, String userId) {
         this.id = id;
         this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.date = date; // 추가: 날짜를 초기화
+        this.userId = userId;
     }
 
     // getters and setters
@@ -23,6 +27,15 @@ public class Post implements ClusterItem {
 
     public String getText(){
         return text;
+    }
+
+    // 추가: 날짜 getter
+    public String getDate() {
+        return date;
+    }
+
+    public String getuserId() {
+        return userId;
     }
 
     //cluster methods
@@ -45,4 +58,3 @@ public class Post implements ClusterItem {
         return null;
     }
 }
-
