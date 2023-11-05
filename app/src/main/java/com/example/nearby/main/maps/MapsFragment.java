@@ -61,11 +61,15 @@ public class MapsFragment extends Fragment {
 
 
 
+
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
+            mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
+
 
             //위치권한 확인
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
