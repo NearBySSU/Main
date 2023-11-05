@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +46,10 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
+    private ProgressDialog progressDialog;
+
     private static final String TAG = "ProfileFragment";
+
 
 
     @Override
@@ -86,6 +90,9 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
+        // ProgressDialog 초기화
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("프로필 이미지 변경 중...");
     }
 
     @Override
@@ -97,6 +104,9 @@ public class ProfileFragment extends Fragment {
                 Uri selectedImageUri = data.getData();
                 StorageReference storageRef = storage.getReference();
                 StorageReference imageRef = storageRef.child("users/" + UUID.randomUUID().toString());
+
+                // ProgressDialog 표시
+                progressDialog.show();
 
                 imageRef.putFile(selectedImageUri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -112,6 +122,9 @@ public class ProfileFragment extends Fragment {
                                                     public void onSuccess(Void aVoid) {
                                                         Log.d(TAG, "DocumentSnapshot successfully updated!");
                                                         Toast.makeText(getContext(),"프로필 이미지 변경 성공!",Toast.LENGTH_SHORT).show();
+
+                                                        // ProgressDialog 닫기
+                                                        progressDialog.dismiss();
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
@@ -119,6 +132,9 @@ public class ProfileFragment extends Fragment {
                                                     public void onFailure(@NonNull Exception e) {
                                                         Log.w(TAG, "Error updating document", e);
                                                         Toast.makeText(getContext(),"프로필 이미지 변경 실패",Toast.LENGTH_SHORT).show();
+
+                                                        // ProgressDialog 닫기
+                                                        progressDialog.dismiss();
 
                                                     }
                                                 });
