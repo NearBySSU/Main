@@ -32,6 +32,7 @@
     import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.DocumentReference;
+    import com.google.firebase.firestore.FieldValue;
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.firebase.storage.FirebaseStorage;
     import com.google.firebase.storage.StorageReference;
@@ -260,8 +261,17 @@
         private void onPostUploaded(DocumentReference documentReference) {
             Log.d(TAG, "Post added with ID: " + documentReference.getId());
             Toast.makeText(UploadContentsActivity.this, "업로드 성공!", Toast.LENGTH_SHORT).show();
+
+            // 포스트의 ID를 사용자 도큐먼트에 추가
+            String postId = documentReference.getId();
+            DocumentReference userRef = db.collection("users").document(uid);
+            userRef.update("postIds", FieldValue.arrayUnion(postId))
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "PostId added to user document"))
+                    .addOnFailureListener(e -> Log.w(TAG, "Error adding postId to user document", e));
+
             onBackPressed();
         }
+
 
         private void onPostUploadFailure(@NonNull Exception e) {
             Log.w(TAG, "Error adding post", e);
