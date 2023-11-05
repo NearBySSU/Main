@@ -37,8 +37,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     }
 
 
-    // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
-    // LayoutInflater - XML에 정의된 Resource(자원) 들을 View의 형태로 반환.
     @Override
     public MultiImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;

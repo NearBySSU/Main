@@ -51,19 +51,15 @@
         private static final int PICK_IMAGE_REQUEST = 1;
         private static final String TAG = "UploadContentsActivity";
         ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
-
         RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
         MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
-
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         StorageReference storageRef = storage.getReference();
-
         EditText editText;
-        Button uploadButton, pickDateButton,pickImageButton;
+        Button uploadButton, pickDateButton, pickImageButton;
         TextView showDateTextView;
         Uri imageUri;
         String selectedDate;
@@ -80,7 +76,6 @@
             showDateTextView = findViewById(R.id.show_date_textView);
             pickImageButton = findViewById(R.id.pick_image_button);
             uid = user.getUid();
-
 
             // 위치 권한 확인 및 요청
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -140,7 +135,7 @@
             DatePickerDialog datePickerDialog = new DatePickerDialog(UploadContentsActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    selectedDate = year+"년" + dayOfMonth + "월" + (month + 1) + "일" ;
+                    selectedDate = year+"년" + (month+1) + "월" + dayOfMonth + "일" ;
                     showDateTextView.setText("Selected date: " + selectedDate);
                 }
             }, year, month, day);
@@ -261,16 +256,17 @@
         }
 
         private void onPostUploaded(DocumentReference documentReference) {
-            Log.d(TAG, "Post added with ID: " + documentReference.getId());
-            Toast.makeText(UploadContentsActivity.this, "업로드 성공!", Toast.LENGTH_SHORT).show();
 
-            // 포스트의 ID를 사용자 도큐먼트에 추가
+            // 포스트의 ID를 사용자 db에 추가
             String postId = documentReference.getId();
             DocumentReference userRef = db.collection("users").document(uid);
             userRef.update("postIds", FieldValue.arrayUnion(postId))
                     .addOnSuccessListener(aVoid -> Log.d(TAG, "PostId added to user document"))
                     .addOnFailureListener(e -> Log.w(TAG, "Error adding postId to user document", e));
 
+            Log.d(TAG, "Post added with ID: " + documentReference.getId());
+            Toast.makeText(UploadContentsActivity.this, "업로드 성공!", Toast.LENGTH_SHORT).show();
+            //MainList로 돌아가기
             Intent intent = new Intent(this, MainPageActivity.class);
             startActivity(intent);
         }

@@ -28,7 +28,6 @@ public class SplashActivity extends AppCompatActivity {
         spannable.setSpan(new LinearGradientSpan(text, text, purple, teal), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvSplash.setText(spannable);
 
-
         loadingStart();
     }
 
