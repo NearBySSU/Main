@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String email = binding.emailText.getText().toString().trim();
-                final String pwd = binding.passwordText.getText().toString().trim();
+                final String pwd = binding.passwordText1.getText().toString().trim();
 
                 // 입력값 검증
                 if(email.isEmpty() || pwd.isEmpty()){
@@ -65,6 +65,19 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "올바른 이메일 형식을 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
+
+                // 비밀번호 점검
+                String password1 = binding.passwordText1.getText().toString();
+                String password2 = binding.passwordText2.getText().toString();
+
+                if (!password1.equals(password2)) {
+                    binding.layoutPasswordText2.setVisibility(View.INVISIBLE);
+                    binding.layoutPasswordText3.setVisibility(View.VISIBLE);
+                    return;
+                }
+
 
                 mAuth.createUserWithEmailAndPassword(email, pwd)
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {

@@ -36,7 +36,7 @@
                 android:id="@+id/btn_filter"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:background="@drawable/round_btn"
+                android:background="@drawable/round_btn_white"
                 android:backgroundTint="@color/firstColor"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

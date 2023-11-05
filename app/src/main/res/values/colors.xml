@@ -8,4 +8,5 @@
     <color name="lastColor">#AABCE8</color>
     <color name="gray">#989898</color>
     <color name="transparent">#00ff0000</color>
+    <color name="red">#FF0000</color>
 </resources>
