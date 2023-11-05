@@ -114,8 +114,7 @@ public class MapsFragment extends Fragment {
             });
 
 
-
-            // 지도의 비 마커 영역을 클릭했을 때 이벤트
+            // 지도의 qls 마커 영역을 클릭했을 때 이벤트
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
