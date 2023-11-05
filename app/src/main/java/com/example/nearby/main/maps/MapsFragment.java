@@ -1,4 +1,4 @@
-package com.example.nearby.main.fragment;
+package com.example.nearby.main.maps;
 
 import static androidx.fragment.app.FragmentManager.TAG;
 
@@ -21,10 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.nearby.Post;
-import com.example.nearby.PostAdapter;
-import com.example.nearby.PostItem;
-import com.example.nearby.PostItemAdapter;
+import com.example.nearby.main.mainpage.Post;
+import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,7 +31,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;

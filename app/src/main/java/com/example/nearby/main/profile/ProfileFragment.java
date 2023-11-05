@@ -1,4 +1,4 @@
-package com.example.nearby.main.fragment;
+package com.example.nearby.main.profile;
 
 import static android.app.Activity.RESULT_OK;
 

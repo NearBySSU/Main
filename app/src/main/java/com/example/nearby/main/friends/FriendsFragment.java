@@ -1,4 +1,4 @@
-package com.example.nearby.main.fragment;
+package com.example.nearby.main.friends;
 
 import android.os.Bundle;
 

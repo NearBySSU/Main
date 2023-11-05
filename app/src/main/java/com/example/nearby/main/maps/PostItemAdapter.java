@@ -1,4 +1,4 @@
-package com.example.nearby;
+package com.example.nearby.main.maps;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.nearby.R;
 
 import java.util.ArrayList;
 import java.util.List;

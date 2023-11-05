@@ -1,4 +1,4 @@
-package com.example.nearby;
+package com.example.nearby.main.mainpage;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
