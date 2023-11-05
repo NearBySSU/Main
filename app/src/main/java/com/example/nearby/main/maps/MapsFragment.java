@@ -61,11 +61,15 @@ public class MapsFragment extends Fragment {
 
 
 
+
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
+            mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
+
 
             //위치권한 확인
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -85,7 +89,7 @@ public class MapsFragment extends Fragment {
                 @Override
                 public boolean onClusterItemClick(Post post) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
-                    getProfilePicUrl(post.getuserId(), profilePicUrl -> {
+                    getProfilePicUrl(post.getUserId(), profilePicUrl -> {
                         postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
                         postItemAdapter.notifyDataSetChanged();
                     });
@@ -100,7 +104,7 @@ public class MapsFragment extends Fragment {
                 public boolean onClusterClick(Cluster<Post> cluster) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     for (Post post : cluster.getItems()) {
-                        getProfilePicUrl(post.getuserId(), profilePicUrl -> {
+                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
                             postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
 
                         });
@@ -206,32 +210,39 @@ public class MapsFragment extends Fragment {
     public void getPosts(Location currentLocation) {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                List<Post> allPosts = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     String text = document.getString("text");
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
                     String date = document.getString("date");
-                    String uid = document.getString("uid"); //
+                    String uid = document.getString("uid");
 
-                    getProfilePicUrl(uid, profilePicUrl -> {
-                        Location postLocation = new Location("");
-                        postLocation.setLatitude(latitude);
-                        postLocation.setLongitude(longitude);
-
-                        float distanceInMeters = currentLocation.distanceTo(postLocation);
-
-                        if (distanceInMeters < pivot_meter) {
-                            Post post = new Post(document.getId(), text, latitude, longitude, date, uid);
-                            postList.add(post);
-                            mClusterManager.addItem(post);
-                            postItemAdapter.addItem(new PostItem(post.getTitle(), date, profilePicUrl));
-                        }
-                        postAdapter.notifyDataSetChanged();
-                    });
+                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid);
+                    allPosts.add(post);
                 }
+
+                for (Post post : allPosts) {
+                    Location postLocation = new Location("");
+                    postLocation.setLatitude(post.getLatitude());
+                    postLocation.setLongitude(post.getLongitude());
+
+                    float distanceInMeters = currentLocation.distanceTo(postLocation);
+
+                    if (distanceInMeters < pivot_meter) {
+                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
+                            mClusterManager.addItem(post);
+                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+                        });
+                        postList.add(post);
+                    }
+                }
+
+                postAdapter.notifyDataSetChanged();
             }
         });
     }
+
 
 
     //user id로 부터 프로필 사진 얻기
