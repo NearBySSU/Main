@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.nearby.Post;
 import com.example.nearby.PostAdapter;
 import com.example.nearby.R;
+import com.example.nearby.databinding.FragmentMainListBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,27 +39,29 @@ public class MainListFragment extends Fragment {
     public float pivot_meter = 1000;
     //스와이프를 위한 객체
     private SwipeRefreshLayout swipeRefreshLayout;
+    private FragmentMainListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentMainListBinding.inflate(inflater, container, false);
+        View rootView = binding.getRoot();
 
-        View view = inflater.inflate(R.layout.fragment_main_list, container, false);
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        // swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
-        recyclerView = view.findViewById(R.id.recyclerView);
+        // recyclerView = view.findViewById(R.id.recyclerView);
         postAdapter = new PostAdapter(postList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(postAdapter);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setAdapter(postAdapter);
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 postList.clear();
                 postAdapter.setPostList(postList);
                 loadNearbyPosts();
-                swipeRefreshLayout.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -69,7 +72,7 @@ public class MainListFragment extends Fragment {
 
         //포스트 로드하기
         loadNearbyPosts();
-        return view;
+        return rootView;
     }
 
 
