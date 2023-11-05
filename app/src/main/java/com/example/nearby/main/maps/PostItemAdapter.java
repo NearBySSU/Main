@@ -29,15 +29,15 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PostItem postItem = postItemList.get(position);
         holder.title.setText(postItem.getTitle());
         holder.date.setText(postItem.getDate());
 
-        // Glide를 사용하여 프로필 사진 URL을 ImageView에 로드합니다.
+        // 프로필 사진을 가져오지 못한 경우에는 기본 프로필 사진을 보여줍니다.
         Glide.with(holder.profilePic.getContext())
                 .load(postItem.getProfilePicUrl())
+                .error(R.drawable.stock_profile)
                 .into(holder.profilePic);
     }
 

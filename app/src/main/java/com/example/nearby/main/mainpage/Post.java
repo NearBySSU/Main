@@ -34,8 +34,16 @@ public class Post implements ClusterItem {
         return date;
     }
 
-    public String getuserId() {
+    public String getUserId() {
         return userId;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     //cluster methods
