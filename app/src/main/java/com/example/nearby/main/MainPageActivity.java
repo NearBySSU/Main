@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import com.example.nearby.R;
 import com.example.nearby.UploadContentsActivity;
 import com.example.nearby.databinding.ActivityMainPageBinding;
-import com.example.nearby.main.fragment.FriendsFragment;
-import com.example.nearby.main.fragment.MainListFragment;
-import com.example.nearby.main.fragment.MapsFragment;
-import com.example.nearby.main.fragment.ProfileFragment;
+import com.example.nearby.main.friends.FriendsFragment;
+import com.example.nearby.main.mainpage.MainListFragment;
+import com.example.nearby.main.maps.MapsFragment;
+import com.example.nearby.main.profile.ProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainPageActivity extends AppCompatActivity {

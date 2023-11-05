@@ -12,7 +12,6 @@
     import android.content.ClipData;
     import android.content.Intent;
     import android.content.pm.PackageManager;
-    import android.location.Location;
     import android.net.Uri;
     import android.os.Bundle;
     import android.provider.MediaStore;
@@ -26,11 +25,8 @@
     import android.Manifest;
 
 
-    import com.example.nearby.auth.SignUpActivity;
     import com.google.android.gms.location.FusedLocationProviderClient;
     import com.google.android.gms.location.LocationServices;
-    import com.google.android.gms.tasks.OnFailureListener;
-    import com.google.android.gms.tasks.OnSuccessListener;
     import com.google.android.gms.tasks.Task;
     import com.google.android.gms.tasks.Tasks;
     import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +35,6 @@
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.firebase.storage.FirebaseStorage;
     import com.google.firebase.storage.StorageReference;
-    import com.google.firebase.storage.UploadTask;
 
     import java.util.ArrayList;
     import java.util.Calendar;

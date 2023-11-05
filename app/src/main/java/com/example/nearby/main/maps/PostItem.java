@@ -1,4 +1,4 @@
-package com.example.nearby;
+package com.example.nearby.main.maps;
 
 import android.widget.TextView;
 

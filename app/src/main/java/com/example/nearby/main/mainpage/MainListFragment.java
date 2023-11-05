@@ -1,4 +1,4 @@
-package com.example.nearby.main.fragment;
+package com.example.nearby.main.mainpage;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.nearby.Post;
-import com.example.nearby.PostAdapter;
-import com.example.nearby.R;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
