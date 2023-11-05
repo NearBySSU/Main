@@ -44,35 +44,35 @@ public class MainListFragment extends Fragment {
         binding = FragmentMainListBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
-        // swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
-        // recyclerView = view.findViewById(R.id.recyclerView);
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(postAdapter);
+
+        //위치 권한 요청
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission();
+        }
+
+        //스와이프 이벤트
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //포스트 리스트 초기화
                 postList.clear();
+                //다시 로드
                 postAdapter.setPostList(postList);
                 loadNearbyPosts();
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        //권한 요청
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermission();
-        }
-
         //포스트 로드하기
         loadNearbyPosts();
         return rootView;
     }
-
-
 
     //근처 포스트를 로드하는 함수
     public void loadNearbyPosts() {
