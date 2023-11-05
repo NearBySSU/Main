@@ -25,6 +25,8 @@
     import android.Manifest;
 
 
+    import com.example.nearby.main.MainPageActivity;
+    import com.example.nearby.main.maps.MapsFragment;
     import com.google.android.gms.location.FusedLocationProviderClient;
     import com.google.android.gms.location.LocationServices;
     import com.google.android.gms.tasks.Task;
@@ -269,8 +271,10 @@
                     .addOnSuccessListener(aVoid -> Log.d(TAG, "PostId added to user document"))
                     .addOnFailureListener(e -> Log.w(TAG, "Error adding postId to user document", e));
 
-            onBackPressed();
+            Intent intent = new Intent(this, MainPageActivity.class);
+            startActivity(intent);
         }
+
 
 
         private void onPostUploadFailure(@NonNull Exception e) {
