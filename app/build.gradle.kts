@@ -43,8 +43,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
-    implementation("androidx.navigation:navigation-fragment:2.7.4")
-    implementation("androidx.navigation:navigation-ui:2.7.4")
     implementation("androidx.annotation:annotation:1.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
@@ -56,8 +54,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-auth")
-    implementation("androidx.navigation:navigation-fragment:2.7.4")
-    implementation ("androidx.navigation:navigation-ui:2.7.4")
+    implementation("androidx.navigation:navigation-fragment:2.7.5")
+    implementation ("androidx.navigation:navigation-ui:2.7.5")
     implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
@@ -66,8 +64,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
     implementation("com.google.firebase:firebase-storage")
-    implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.google.android.material:material:1.10.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
-
 
 }
