@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PostItem {
+
     private String title;
     private String date; // 날짜를 저장할 필드를 추가
     private String profilePicUrl; // 프로필 사진 URL을 저장할 필드를 추가
