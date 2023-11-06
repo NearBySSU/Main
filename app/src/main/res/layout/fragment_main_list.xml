@@ -24,13 +24,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_filter"
             android:layout_width="70dp"
             android:layout_height="30dp"
             android:background="@drawable/round_btn"
             android:backgroundTint="@color/firstColor"
-            android:drawableTop="@drawable/ic_filter_lines"
+            android:src="@drawable/ic_filter_lines"
             android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
