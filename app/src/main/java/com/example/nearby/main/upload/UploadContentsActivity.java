@@ -21,7 +21,6 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 import android.Manifest;
 
-import com.example.nearby.R;
 import com.example.nearby.databinding.ActivityUploadContentsBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,6 +64,14 @@ public class UploadContentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUploadContentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // 백 버튼 처리
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         uid = user.getUid();
 
