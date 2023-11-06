@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.nearby.R;
-import com.example.nearby.UploadContentsActivity;
+import com.example.nearby.main.upload.UploadContentsActivity;
 import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.main.friends.FriendsFragment;
 import com.example.nearby.main.mainpage.MainListFragment;

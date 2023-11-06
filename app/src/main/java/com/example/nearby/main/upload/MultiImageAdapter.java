@@ -1,4 +1,4 @@
-package com.example.nearby;
+package com.example.nearby.main.upload;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.nearby.R;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     private Context mContext = null ;
 
     // 생성자에서 데이터 리스트 객체, Context를 전달받음.
-    MultiImageAdapter(ArrayList<Uri> list, Context context) {
+    public MultiImageAdapter(ArrayList<Uri> list, Context context) {
         mData = list ;
         mContext = context;
     }

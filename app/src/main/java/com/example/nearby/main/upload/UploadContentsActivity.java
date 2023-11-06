@@ -1,4 +1,4 @@
-    package com.example.nearby;
+    package com.example.nearby.main.upload;
 
     import androidx.annotation.NonNull;
     import androidx.annotation.Nullable;
@@ -25,8 +25,8 @@
     import android.Manifest;
 
 
+    import com.example.nearby.R;
     import com.example.nearby.main.MainPageActivity;
-    import com.example.nearby.main.maps.MapsFragment;
     import com.google.android.gms.location.FusedLocationProviderClient;
     import com.google.android.gms.location.LocationServices;
     import com.google.android.gms.tasks.Task;
