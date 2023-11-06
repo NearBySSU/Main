@@ -58,7 +58,7 @@
         android:src="@drawable/img_upload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
         android:layout_marginTop="20dp"/>
 
     <Button
@@ -90,7 +90,86 @@
         android:text="Upload posts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_date_textView"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupScroll"
         android:layout_marginTop="20dp"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chipGroupScroll"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        app:chipSpacingHorizontal="30dp"
+        app:singleSelection="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:theme="@style/AppTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/chip01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipStartPadding="20dp"
+            app:chipEndPadding="20dp"
+            app:chipStrokeColor="@color/secondColor"
+            app:chipStrokeWidth="2dp"
+            app:chipBackgroundColor="@drawable/chip_background"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="Chip 1"/>
+
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/chip02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipStartPadding="20dp"
+            app:chipEndPadding="20dp"
+            app:chipStrokeColor="@color/secondColor"
+            app:chipStrokeWidth="2dp"
+            app:chipBackgroundColor="@drawable/chip_background"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="Chip 2"/>
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/chip03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipStartPadding="20dp"
+            app:chipEndPadding="20dp"
+            app:chipBackgroundColor="@drawable/chip_background"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="Chip 3"/>
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/chip04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipStartPadding="20dp"
+            app:chipEndPadding="20dp"
+            app:chipBackgroundColor="@drawable/chip_background"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="Chip 4"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

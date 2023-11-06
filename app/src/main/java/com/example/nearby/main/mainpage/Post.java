@@ -8,7 +8,7 @@ public class Post implements ClusterItem {
     String text;
     double latitude;
     double longitude;
-    String date; // 추가: 날짜를 저장할 필드
+    String date;
     String userId;
 
     public Post(String id, String text, double latitude, double longitude, String date, String userId) {
@@ -16,7 +16,7 @@ public class Post implements ClusterItem {
         this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.date = date; // 추가: 날짜를 초기화
+        this.date = date;
         this.userId = userId;
     }
 
