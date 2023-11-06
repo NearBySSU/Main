@@ -21,15 +21,19 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 import android.Manifest;
 
+
 import com.example.nearby.R;
+
 import com.example.nearby.databinding.ActivityUploadContentsBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -50,7 +54,9 @@ public class UploadContentsActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final String TAG = "UploadContentsActivity";
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
+
     ArrayList<String> checkedTags = new ArrayList<>();    // 체크된 Chip들의 ID를 저장할 ArrayList 생성
+
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -105,10 +111,12 @@ public class UploadContentsActivity extends AppCompatActivity {
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         chipGroup.setSingleSelection(false);
 
+
         //업로드 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //체크된 태그들을 배열에 담기
                 for (int i = 0; i < chipGroup.getChildCount(); i++) {
                     Chip chip = (Chip) chipGroup.getChildAt(i);
@@ -117,6 +125,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                     }
                 }
                 if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
+
                     uploadPost();
                 }
                 else{
@@ -262,6 +271,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         post.put("longitude", longitude);
         post.put("uid", uid);
         post.put("tags",checkedTags);
+
         return post;
     }
 
