@@ -74,6 +74,15 @@ public class UploadContentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUploadContentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        recyclerView = binding.recyclerView;
+
+
+        uriList.add(null); // 마지막에 null 항목 추가
+
+        adapter = new MultiImageAdapter(uriList, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+
 
         // 백 버튼 처리
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -95,17 +104,6 @@ public class UploadContentsActivity extends AppCompatActivity {
             }
         }
 
-        //이미지 선택 버튼
-        binding.pickImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 2222);
-            }
-        });
 
         recyclerView = binding.recyclerView;
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
@@ -177,7 +175,8 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
 
-                    adapter = new MultiImageAdapter(uriList, getApplicationContext());
+
+                    adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
                 }
@@ -201,7 +200,12 @@ public class UploadContentsActivity extends AppCompatActivity {
                             }
                         }
 
-                        adapter = new MultiImageAdapter(uriList, getApplicationContext());
+                        if (!uriList.contains(null)) {
+                            uriList.add(null); // 마지막에 null 항목 추가
+                        }
+
+
+                        adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                         recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
                         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
                     }
@@ -222,11 +226,14 @@ public class UploadContentsActivity extends AppCompatActivity {
     private List<Task<Uri>> uploadImagesToStorage() {
         List<Task<Uri>> tasks = new ArrayList<>();
         for (Uri uri : uriList) {
-            StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
-            tasks.add(imageRef.putFile(uri).continueWithTask(task -> imageRef.getDownloadUrl()));
+            if (uri != null) { // null 체크를 추가했습니다.
+                StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
+                tasks.add(imageRef.putFile(uri).continueWithTask(task -> imageRef.getDownloadUrl()));
+            }
         }
         return tasks;
     }
+
 
     private void onImagesUploaded(List<Object> urls) {
         if (isLocationPermissionGranted()) {
