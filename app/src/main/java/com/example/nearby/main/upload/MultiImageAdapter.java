@@ -1,12 +1,16 @@
 package com.example.nearby.main.upload;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -14,54 +18,85 @@ import com.example.nearby.R;
 
 import java.util.ArrayList;
 
-public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.ViewHolder>{
-    private ArrayList<Uri> mData = null ;
-    private Context mContext = null ;
+public class MultiImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ArrayList<Uri> mData = null;
+    private Activity mActivity = null;
 
-    // 생성자에서 데이터 리스트 객체, Context를 전달받음.
-    public MultiImageAdapter(ArrayList<Uri> list, Context context) {
-        mData = list ;
-        mContext = context;
+    private static final int VIEW_TYPE_IMAGE = 0;
+    private static final int VIEW_TYPE_BUTTON = 1;
+    private static final int PICK_IMAGE_REQUEST = 2222;
+
+    public MultiImageAdapter(ArrayList<Uri> list, Activity activity) {
+        mData = list;
+        mActivity = activity;
     }
 
-    // 아이템 뷰를 저장하는 뷰홀더 클래스.
-    public class ViewHolder extends RecyclerView.ViewHolder {
 
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
 
-        ViewHolder(View itemView) {
-            super(itemView) ;
-
-            // 뷰 객체에 대한 참조.
+        ImageViewHolder(View itemView) {
+            super(itemView);
             image = itemView.findViewById(R.id.image);
         }
     }
 
+    public class ButtonViewHolder extends RecyclerView.ViewHolder {
+        ImageButton myButton;
 
-    @Override
-    public MultiImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext() ;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;    // context에서 LayoutInflater 객체를 얻는다.
-        View view = inflater.inflate(R.layout.multi_image_item, parent, false) ;	// 리사이클러뷰에 들어갈 아이템뷰의 레이아웃을 inflate.
-        MultiImageAdapter.ViewHolder vh = new MultiImageAdapter.ViewHolder(view) ;
-
-        return vh ;
+        ButtonViewHolder(View itemView) {
+            super(itemView);
+            myButton = itemView.findViewById(R.id.myButton);
+            myButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    mActivity.startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                }
+            });
+        }
     }
 
-    // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
-    public void onBindViewHolder(MultiImageAdapter.ViewHolder holder, int position) {
-        Uri image_uri = mData.get(position) ;
-
-        Glide.with(mContext)
-                .load(image_uri)
-                .into(holder.image);
+    public int getItemViewType(int position) {
+        return (mData.get(position) == null) ? VIEW_TYPE_BUTTON : VIEW_TYPE_IMAGE;
     }
 
-    // getItemCount() - 전체 데이터 갯수 리턴.
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_IMAGE) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.multi_image_item, parent, false);
+            return new ImageViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.button_layout, parent, false);
+            return new ButtonViewHolder(view);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ImageViewHolder) {
+            Uri image_uri = mData.get(position);
+            if (image_uri != null) { // null 체크를 추가했습니다.
+                Glide.with(mActivity)
+                        .load(image_uri)
+                        .into(((ImageViewHolder) holder).image);
+            }
+        } else if (holder instanceof ButtonViewHolder) {
+            // 이미지 추가 버튼에 대한 동작을 설정합니다.
+        }
+    }
+
+
+
     @Override
     public int getItemCount() {
-        return mData.size() ;
+        return mData.size();
     }
 
 }
