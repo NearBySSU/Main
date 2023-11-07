@@ -3,6 +3,8 @@ package com.example.nearby.main.mainpage;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
+import java.util.List;
+
 public class Post implements ClusterItem {
     String id;
     String text;
@@ -10,14 +12,16 @@ public class Post implements ClusterItem {
     double longitude;
     String date;
     String userId;
+    List<String> images;
 
-    public Post(String id, String text, double latitude, double longitude, String date, String userId) {
+    public Post(String id, String text, double latitude, double longitude, String date, String userId, List<String> images) {
         this.id = id;
         this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
         this.userId = userId;
+        this.images = images;
     }
 
     // getters and setters
@@ -36,6 +40,10 @@ public class Post implements ClusterItem {
 
     public String getUserId() {
         return userId;
+    }
+
+    public List<String> getImages() {
+        return images;
     }
 
     public double getLatitude() {

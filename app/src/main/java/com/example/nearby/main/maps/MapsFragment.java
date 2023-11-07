@@ -217,8 +217,9 @@ public class MapsFragment extends Fragment {
                     double longitude = document.getDouble("longitude");
                     String date = document.getString("date");
                     String uid = document.getString("uid");
+                    List<String> imagesList = (List<String>) document.get("images");
 
-                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid);
+                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList);
                     allPosts.add(post);
                 }
 

@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
 <ImageView
     android:id="@+id/img_profile"
@@ -39,8 +38,9 @@
         app:layout_constraintTop_toTopOf="@id/tv_post_name"
         app:layout_constraintBottom_toBottomOf="@id/tv_post_name"/>
 
-    <ImageView
-        android:id="@+id/img_post"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/img_post_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
@@ -58,7 +58,7 @@
         android:textColor="@color/black"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_post"/>
+        app:layout_constraintTop_toBottomOf="@id/img_post_recyclerView"/>
 
     <TextView
         android:id="@+id/tv_post_place"

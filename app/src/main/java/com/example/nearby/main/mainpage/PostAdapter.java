@@ -49,6 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             super(view);
             postText = view.findViewById(R.id.post_text); // 텍스트 뷰 참조를 가져옴
 
+
         }
     }
 }

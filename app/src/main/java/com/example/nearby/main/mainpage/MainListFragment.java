@@ -99,6 +99,7 @@ public class MainListFragment extends Fragment {
                     double longitude = document.getDouble("longitude");
                     String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
                     String profilePicUrl = document.getString("profilePicUrl"); // 추가: 프로필 사진 URL 데이터를 읽어옵니다.
+                    List<String> imagesList = (List<String>) document.get("images");
 
                     Location postLocation = new Location("");
                     postLocation.setLatitude(latitude);
@@ -109,7 +110,7 @@ public class MainListFragment extends Fragment {
 
                     //거리 비교해서 list에 넣기
                     if (distanceInMeters < pivot_meter) {
-                        Post post = new Post(document.getId(), text, latitude, longitude, date, profilePicUrl);
+                        Post post = new Post(document.getId(), text, latitude, longitude, date, profilePicUrl, imagesList);
                         postList.add(post);
                     }
                 }
