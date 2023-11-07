@@ -265,6 +265,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                                 .addOnFailureListener(this::onPostUploadFailure);
                     } else {
                         showLocationError();
+                        requestLocationPermission();
                     }
                 });
     }
@@ -278,7 +279,6 @@ public class UploadContentsActivity extends AppCompatActivity {
         post.put("longitude", longitude);
         post.put("uid", uid);
         post.put("tags",checkedTags);
-
         return post;
     }
 

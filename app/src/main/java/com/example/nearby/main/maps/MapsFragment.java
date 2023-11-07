@@ -19,8 +19,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.nearby.databinding.FragmentMapsBinding;
 import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.R;
@@ -47,9 +49,6 @@ public class MapsFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap mMap;
     private FirebaseFirestore db;
-    private RecyclerView recyclerView;
-    private RecyclerView recyclerViewBottom;
-
 
     private List<Post> postList;
     //포스트를 위한 어댑터
@@ -58,9 +57,7 @@ public class MapsFragment extends Fragment {
     public float pivot_meter = 1000;
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
-
-
-
+    private Button filterButton;
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -141,26 +138,34 @@ public class MapsFragment extends Fragment {
             Toast.makeText(getActivity(),"현위치 가져오기 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
             requestLocationPermission();
         }
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerViewBottom = view.findViewById(R.id.bottom_sheet);
+        RecyclerView recyclerViewBottom = view.findViewById(R.id.bottom_sheet);
         postAdapter = new PostAdapter(postList);
         postItemAdapter = new PostItemAdapter();
-
         recyclerViewBottom.setAdapter(postItemAdapter);
+        filterButton = view.findViewById(R.id.filterButton);
+        MyBottomSheetDialogFragment bottomSheetDialogFragment = MyBottomSheetDialogFragment.newInstance();
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+            }
+        });
 
 
         // SnapHelper를 생성하고 recyclerViewBottom에 붙입니다.
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerViewBottom);
+
+
 
         loadNearbyPosts();
 
