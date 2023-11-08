@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.main.upload.UploadContentsActivity;
@@ -15,13 +17,16 @@ import com.example.nearby.main.maps.MapsFragment;
 import com.example.nearby.main.profile.ProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainPageActivity extends AppCompatActivity {
+public class MainPageActivity extends AppCompatActivity implements MapsFragment.OnDataPass{
     FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
+    private String selectedTag;
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,5 +65,14 @@ public class MainPageActivity extends AppCompatActivity {
         });
     }
 
+    // 선택된 태그 정보를 업데이트하는 메소드
+    public void updateSelectedTag(String tag) {
+        this.selectedTag = tag;
+    }
 
+    //데이터 전송 인터페이스를 구현
+    @Override
+    public void onDataPass(String data) {
+        // 여기에 data를 처리하는 코드를 작성하세요.
+    }
 }
