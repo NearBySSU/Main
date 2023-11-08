@@ -60,13 +60,14 @@ public class MapsFragment extends Fragment {
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
     private Button filterButton;
+    OnDataPass dataPasser;
 
-    // Interface 정의
+
+    // 데이터 전송을 위한 Interface 정의
     public interface OnDataPass {
         void onDataPass(String data);
     }
 
-    OnDataPass dataPasser;
 
     @Override
     public void onAttach(Context context) {
@@ -161,10 +162,14 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //위치권한 확인
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(),"현위치 가져오기 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
             requestLocationPermission();
         }
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);

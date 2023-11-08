@@ -43,7 +43,6 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         MainPageActivity activity = (MainPageActivity) getActivity();
         if (activity != null) {
             activity.updateSelectedTag(selectedChipText);
-            Toast.makeText(getActivity(),selectedChipText,Toast.LENGTH_SHORT).show();
         }
     }
 }

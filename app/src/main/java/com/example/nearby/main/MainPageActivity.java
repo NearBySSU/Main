@@ -70,12 +70,9 @@ public class MainPageActivity extends AppCompatActivity implements MapsFragment.
         this.selectedTag = tag;
     }
 
-
+    //데이터 전송 인터페이스를 구현
     @Override
     public void onDataPass(String data) {
         // 여기에 data를 처리하는 코드를 작성하세요.
-        // 예를 들어, Log로 출력하려면 아래와 같이 작성할 수 있습니다.
-        Log.d("DataPass", data);
-        Toast.makeText(this,"포스트 로드 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
     }
 }
