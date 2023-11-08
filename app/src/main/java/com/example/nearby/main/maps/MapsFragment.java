@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nearby.databinding.FragmentMapsBinding;
@@ -58,6 +60,31 @@ public class MapsFragment extends Fragment {
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
     private Button filterButton;
+
+    // Interface 정의
+    public interface OnDataPass {
+        void onDataPass(String data);
+    }
+
+    OnDataPass dataPasser;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDataPass) {
+            dataPasser = (OnDataPass) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement OnDataPass interface");
+        }
+    }
+
+
+    public void passData(String data) {
+
+    }
+
+
+
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -112,7 +139,7 @@ public class MapsFragment extends Fragment {
             });
 
 
-            // 지도의 qls 마커 영역을 클릭했을 때 이벤트
+            // 지도의 마커 영역 밖을 클릭 했을때 이벤트
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
@@ -151,11 +178,11 @@ public class MapsFragment extends Fragment {
         postItemAdapter = new PostItemAdapter();
         recyclerViewBottom.setAdapter(postItemAdapter);
         filterButton = view.findViewById(R.id.filterButton);
-        MyBottomSheetDialogFragment bottomSheetDialogFragment = MyBottomSheetDialogFragment.newInstance();
 
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
                 bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
             }
         });
