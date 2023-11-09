@@ -63,31 +63,6 @@ public class MapsFragment extends Fragment {
     OnDataPass dataPasser;
 
 
-    // 데이터 전송을 위한 Interface 정의
-    public interface OnDataPass {
-        void onDataPass(String data);
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnDataPass) {
-            dataPasser = (OnDataPass) context;
-        } else {
-            throw new ClassCastException(context.toString() + " must implement OnDataPass interface");
-        }
-    }
-
-
-    public void passData(String data) {
-
-    }
-
-
-
-
-
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -131,7 +106,6 @@ public class MapsFragment extends Fragment {
                     for (Post post : cluster.getItems()) {
                         getProfilePicUrl(post.getUserId(), profilePicUrl -> {
                             postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
-
                         });
                     }
                     postItemAdapter.notifyDataSetChanged();
@@ -169,7 +143,6 @@ public class MapsFragment extends Fragment {
             requestLocationPermission();
         }
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
@@ -179,6 +152,8 @@ public class MapsFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
         RecyclerView recyclerViewBottom = view.findViewById(R.id.bottom_sheet);
+        SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
+        snapHelper.attachToRecyclerView(recyclerViewBottom);
         postAdapter = new PostAdapter(postList);
         postItemAdapter = new PostItemAdapter();
         recyclerViewBottom.setAdapter(postItemAdapter);
@@ -192,13 +167,7 @@ public class MapsFragment extends Fragment {
             }
         });
 
-
-        // SnapHelper를 생성하고 recyclerViewBottom에 붙입니다.
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerViewBottom);
-
-
-
+        //주변 포스트 로드 시작
         loadNearbyPosts();
 
     }
@@ -305,4 +274,18 @@ public class MapsFragment extends Fragment {
         void onProfilePicUrlReceived(String profilePicUrl);
     }
 
+    // 데이터 전송을 위한 Interface 정의
+    public interface OnDataPass {
+        void onDataPass(String data);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDataPass) {
+            dataPasser = (OnDataPass) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement OnDataPass interface");
+        }
+    }
 }
