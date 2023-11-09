@@ -33,16 +33,16 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                 }
             }
         });
-
         return view;
     }
 
+    //다이얼로그가 없어졌을때의 동작 정의
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         MainPageActivity activity = (MainPageActivity) getActivity();
         if (activity != null) {
-            activity.updateSelectedTag(selectedChipText);
+            activity.updateSelectedTag(selectedChipText); //MainActivity로 변경사항 전달
         }
     }
 }

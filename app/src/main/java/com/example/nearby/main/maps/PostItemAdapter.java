@@ -16,8 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
+
+    //포스트가 저장된 리스트
     private List<PostItem> postItemList;
 
+    //생성자,postItemList를 초기화 해줌
     public PostItemAdapter() {
         this.postItemList = new ArrayList<>();
     }
@@ -34,14 +37,14 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         holder.title.setText(postItem.getTitle());
         holder.date.setText(postItem.getDate());
 
-        // 프로필 사진을 가져오지 못한 경우에는 기본 프로필 사진을 보여줍니다.
+        // 프로필 사진을 가져오지 못한 경우에 기본 프로필 사진을 보여주기
         Glide.with(holder.profilePic.getContext())
                 .load(postItem.getProfilePicUrl())
                 .error(R.drawable.stock_profile)
                 .into(holder.profilePic);
     }
 
-
+    //포스트의 개수 리턴
     @Override
     public int getItemCount() {
         return postItemList.size();
@@ -52,6 +55,7 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    //포스트 리스트 초기화
     public void clearItems() {
         postItemList.clear();
         notifyDataSetChanged();
@@ -61,15 +65,13 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView date;
-        private ImageView profilePic; // 추가: 프로필 사진을 표시할 ImageView
+        private ImageView profilePic;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.post_text);
             date = itemView.findViewById(R.id.post_date);
-            profilePic = itemView.findViewById(R.id.profile_pic); // 추가: 프로필 사진을 표시할 ImageView
+            profilePic = itemView.findViewById(R.id.profile_pic);
         }
     }
-
-
 }
