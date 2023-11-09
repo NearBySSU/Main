@@ -75,7 +75,7 @@
         android:hint="텍스트 입력..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/mainText"/>
 
 
     <Button
