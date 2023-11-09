@@ -125,7 +125,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                         checkedTags.add(chip.getText().toString());
                     }
                 }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.etMainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
+                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
 
                     uploadPost();
                 }
@@ -275,7 +275,7 @@ public class UploadContentsActivity extends AppCompatActivity {
 
     private Map<String, Object> createPostMap(List<Object> urls, double latitude, double longitude) {
         Map<String, Object> post = new HashMap<>();
-        post.put("text", binding.etMainText.getText().toString());
+        post.put("text", binding.mainText.getText().toString());
         post.put("imageUrls", urls);
         post.put("date", selectedDate);
         post.put("latitude", latitude);
