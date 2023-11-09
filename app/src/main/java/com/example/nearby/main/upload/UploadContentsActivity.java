@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
@@ -16,7 +17,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.Toast;
 import android.Manifest;
@@ -122,7 +125,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                         checkedTags.add(chip.getText().toString());
                     }
                 }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
+                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.etMainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
 
                     uploadPost();
                 }
@@ -272,7 +275,7 @@ public class UploadContentsActivity extends AppCompatActivity {
 
     private Map<String, Object> createPostMap(List<Object> urls, double latitude, double longitude) {
         Map<String, Object> post = new HashMap<>();
-        post.put("text", binding.mainText.getText().toString());
+        post.put("text", binding.etMainText.getText().toString());
         post.put("imageUrls", urls);
         post.put("date", selectedDate);
         post.put("latitude", latitude);
@@ -317,6 +320,18 @@ public class UploadContentsActivity extends AppCompatActivity {
 
     private void onImageUploadFailure(@NonNull Exception e) {
         Log.w(TAG, "Error uploading images", e);
+    }
+
+    // 배경화면 눌렀을 때 키보드 내려가는 기능
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
     }
 
 }
