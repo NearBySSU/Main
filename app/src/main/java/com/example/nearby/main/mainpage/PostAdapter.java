@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -58,8 +60,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView profile; TextView postName; ImageButton btnMap; TextView date;
-        TextView place; ImageView heart; ImageView reply;    TextView postMemo;
+        ImageView profile;
+        TextView postName;
+        ImageButton btnMap;
+        TextView date;
+        TextView place;
+        ImageView heart;
+        ImageView reply;
+        TextView postMemo;
+        ImageButton commentButton;
+
 
 
         public ViewHolder(View view) {
@@ -70,8 +80,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             date = view.findViewById(R.id.tv_post_date);
             place = view.findViewById(R.id.tv_post_place);
             heart = view.findViewById(R.id.ic_empty_heart);
-            reply = view.findViewById(R.id.ic_reply);
+            commentButton = view.findViewById(R.id.ic_reply);
             postMemo = view.findViewById(R.id.tv_post_memo);
+
+            commentButton.setOnClickListener(v -> {
+                Post post = postList.get(getAdapterPosition());
+                CommentBottomSheetDialogFragment fragment =
+                        CommentBottomSheetDialogFragment.newInstance(post.getId());
+                fragment.show(((FragmentActivity) v.getContext()).getSupportFragmentManager(), "commentDialog");
+            });
         }
     }
 }

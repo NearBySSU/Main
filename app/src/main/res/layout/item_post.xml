@@ -83,30 +83,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_post_date"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/ic_empty_heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@color/transparent"
         android:src="@drawable/ic_empty_heart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_post_memo"/>
 
-    <ImageView
+    <ImageButton
         android:visibility="invisible"
         android:id="@+id/ic_full_heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
         android:layout_margin="10dp"
         android:src="@drawable/ic_full_heart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_post_memo"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/ic_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_reply"
+        android:background="@color/transparent"
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toTopOf="@id/ic_empty_heart"
         app:layout_constraintBottom_toBottomOf="@id/ic_empty_heart"
