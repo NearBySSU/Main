@@ -37,9 +37,9 @@
 
         <TextView
             android:id="@+id/tv_location_title"
-            android:layout_width="108dp"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:autoSizeTextType="uniform"
+            android:textSize="40sp"
             android:text="강원도"
             android:fontFamily="@font/poppins_bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,9 +48,9 @@
 
         <TextView
             android:id="@+id/tv_location_city"
-            android:layout_width="65dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:autoSizeTextType="uniform"
+            android:textSize="16sp"
             android:text="인제군"
             android:fontFamily="@font/poppins_bold"
             app:layout_constraintStart_toStartOf="@id/tv_location_title"

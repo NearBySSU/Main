@@ -2,6 +2,8 @@ package com.example.nearby.main.mainpage;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainListFragment extends Fragment {
 
@@ -84,6 +87,18 @@ public class MainListFragment extends Fragment {
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 getPosts(location);
+
+                // 현재 위치를 주소로 변환
+                try {
+                    Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.
+                    String locality = addresses.get(0).getSubLocality(); // '성북구'와 같은 정보를 가져옵니다.
+                    binding.tvLocationTitle.setText(adminArea);
+                    binding.tvLocationCity.setText(locality);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
