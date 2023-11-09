@@ -1,11 +1,16 @@
 package com.example.nearby.main.mainpage;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nearby.R;
 
 import java.util.List;
@@ -28,8 +33,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Post post = postList.get(position);
-        holder.postText.setText(post.getText());
+        // 날짜 설정
+        holder.date.setText(post.getDate());
+        // 메모 설정
+        holder.postMemo.setText(post.getText());
+
+        // 프로필 이미지 로드 (Glide 라이브러리 사용)
+        List<String> images = post.getImages();
+        if (images != null && !images.isEmpty()) {
+            String imageUrl = images.get(0); // 첫 번째 이미지 URL
+            Glide.with(holder.profile.getContext()).load(imageUrl).into(holder.profile);
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -42,14 +58,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView postText; // 게시물 텍스트를 표시하는 TextView
+        ImageView profile; TextView postName; ImageButton btnMap; TextView date;
+        TextView place; ImageView heart; ImageView reply;    TextView postMemo;
 
 
         public ViewHolder(View view) {
             super(view);
-            postText = view.findViewById(R.id.post_text); // 텍스트 뷰 참조를 가져옴
-
-
+            profile = view.findViewById(R.id.img_profile);
+            postName = view.findViewById(R.id.tv_post_name);
+            btnMap = view.findViewById(R.id.btn_map);
+            date = view.findViewById(R.id.tv_post_date);
+            place = view.findViewById(R.id.tv_post_place);
+            heart = view.findViewById(R.id.ic_empty_heart);
+            reply = view.findViewById(R.id.ic_reply);
+            postMemo = view.findViewById(R.id.tv_post_memo);
         }
     }
 }
