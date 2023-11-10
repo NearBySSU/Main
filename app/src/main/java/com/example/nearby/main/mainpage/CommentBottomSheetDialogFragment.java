@@ -1,9 +1,12 @@
 package com.example.nearby.main.mainpage;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private FirebaseFirestore db;
@@ -27,8 +32,11 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private RecyclerView recyclerView; // 댓글 리스트를 보여줄 RecyclerView
     private CommentAdapter commentAdapter; // 댓글 리스트를 관리할 Adapter
 
+
+
     public CommentBottomSheetDialogFragment() {
     }
+
 
     public static CommentBottomSheetDialogFragment newInstance(String postId) {
         CommentBottomSheetDialogFragment fragment = new CommentBottomSheetDialogFragment();
@@ -77,9 +85,11 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
             }
         });
 
+
         loadComments(); // 댓글 목록 로드
         return view;
     }
+    
 
     private void loadComments() {
         db.collection("posts").document(postId).collection("comments")

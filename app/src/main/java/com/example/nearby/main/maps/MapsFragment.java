@@ -224,8 +224,9 @@ public class MapsFragment extends Fragment {
                     String date = document.getString("date");
                     String uid = document.getString("uid");
                     List<String> imagesList = (List<String>) document.get("images");
+                    List<String> likeList = (List<String>) document.get("likes");
 
-                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList);
+                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList,likeList);
                     allPosts.add(post);
                 }
 
