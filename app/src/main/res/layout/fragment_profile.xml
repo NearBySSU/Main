@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".main.profile.ProfileFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_profile_app_bar" />
+
 
     <TextView
         android:id="@+id/tv_profile_title"
@@ -19,14 +27,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/img_profile_three_dot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_ellipses"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/img_profile_three_dot"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:src="@drawable/ic_ellipses"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
     <TextView
         android:id="@+id/tv_friend"
@@ -42,24 +50,25 @@
         app:layout_constraintBottom_toBottomOf="@id/img_profile"
         app:layout_constraintEnd_toStartOf="@id/img_profile"
         />
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/uploadProfilePicButton"
-        />
 
-    <Button
-        android:id="@+id/uploadProfilePicButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:text="Upload profile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/img_profile_three_dot"
-        />
+<!--    <Button-->
+<!--        android:id="@+id/logoutButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="logout"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/uploadProfilePicButton"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/uploadProfilePicButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="100dp"-->
+<!--        android:text="Upload profile"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/img_profile_three_dot"-->
+<!--        />-->
 
     <ImageView
         android:id="@+id/img_profile"
@@ -69,7 +78,7 @@
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_profile_title" />
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
     <TextView
         android:id="@+id/tv_post"
