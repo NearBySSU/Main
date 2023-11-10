@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,29 +59,29 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        logoutButton = view.findViewById(R.id.logoutButton);
-        uploadProfilePicButton = view.findViewById(R.id.uploadProfilePicButton);
-
-        // Logout button
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                startActivity(new Intent(getActivity(), LogInActivity.class));
-                getActivity().finish();
-            }
-        });
+//        logoutButton = view.findViewById(R.id.btn_logout);
+//        uploadProfilePicButton = view.findViewById(R.id.btn_profile_pic);
+//
+//        // Logout button
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAuth.signOut();
+//                startActivity(new Intent(getActivity(), LogInActivity.class));
+//                getActivity().finish();
+//            }
+//        });
 
         // Profile upload button
-        uploadProfilePicButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-            }
-        });
+//        uploadProfilePicButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+//            }
+//        });
 
         return view;
     }
