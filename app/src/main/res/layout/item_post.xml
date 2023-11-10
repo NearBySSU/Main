@@ -4,16 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="30dp">
 
-<ImageView
-    android:id="@+id/img_profile"
-    android:layout_width="43dp"
-    android:layout_height="43dp"
-    android:src="@drawable/img_temp"
-    android:layout_margin="10dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/img_profile"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:src="@drawable/img_temp"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_post_name"
@@ -30,8 +31,9 @@
         android:id="@+id/btn_map"
         android:backgroundTint="@color/black"
         android:background="@drawable/round_btn"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_map_btn"
         android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +44,7 @@
     <ImageView
         android:id="@+id/img_post_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="330dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/img_post_temp"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,8 +87,9 @@
 
     <ImageButton
         android:id="@+id/ic_empty_heart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitCenter"
         android:layout_margin="10dp"
         android:background="@color/transparent"
         android:src="@drawable/ic_empty_heart"
@@ -96,8 +99,9 @@
     <ImageButton
         android:visibility="invisible"
         android:id="@+id/ic_full_heart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitCenter"
         android:background="@color/transparent"
         android:layout_margin="10dp"
         android:src="@drawable/ic_full_heart"
@@ -106,8 +110,9 @@
 
     <ImageButton
         android:id="@+id/ic_reply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_reply"
         android:background="@color/transparent"
         android:layout_marginStart="10dp"

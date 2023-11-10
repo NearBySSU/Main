@@ -37,8 +37,6 @@ public class MainListFragment extends Fragment {
     private PostAdapter postAdapter;
     //기준 거리
     public float pivot_meter = 1000;
-    //스와이프를 위한 객체
-    private SwipeRefreshLayout swipeRefreshLayout;
     private FragmentMainListBinding binding;
 
     @Override
