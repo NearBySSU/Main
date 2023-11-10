@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Nearby"
         tools:targetApi="31">
         <activity
+            android:name=".auth.ProfileSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".main.upload.UploadFilterActivity"
             android:exported="false" />
 
