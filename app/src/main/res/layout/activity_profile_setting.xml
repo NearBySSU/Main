@@ -24,19 +24,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_profile"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_title"/>
 
     <TextView
+        android:id="@+id/tv_profile_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="사진 선택"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_profile"/>
+
+    <EditText
+        android:id="@+id/et_profile_nickname"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:paddingStart="20dp"
+        android:background="@drawable/round_btn"
+        android:backgroundTint="#F2F2F2"
+        android:textColorHint="@color/gray"
+        android:hint="닉네임을 입력해주세요"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_pic"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="중복체크"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_bold"
+        android:background="@drawable/round_btn"
+        android:backgroundTint="@color/firstColor"
+        app:layout_constraintStart_toEndOf="@id/et_profile_nickname"
+        app:layout_constraintTop_toTopOf="@id/et_profile_nickname"
+        app:layout_constraintBottom_toBottomOf="@id/et_profile_nickname"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
