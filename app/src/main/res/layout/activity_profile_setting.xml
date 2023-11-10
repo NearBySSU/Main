@@ -6,4 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".auth.ProfileSettingActivity">
 
+    <TextView
+        android:id="@+id/tv_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 설정"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/poppins_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/img_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_profile"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사진 선택"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_profile"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
