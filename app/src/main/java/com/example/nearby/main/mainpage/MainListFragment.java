@@ -46,13 +46,14 @@ public class MainListFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentMainListBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(postAdapter);
+
+
 
         //위치 권한 요청
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

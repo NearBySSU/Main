@@ -78,7 +78,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageButton btnMap;
         TextView date;
         TextView place;
-
         TextView postMemo;
         ImageButton commentButton;
         ImageButton likeButton;
@@ -174,6 +173,4 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                 });
     }
-
-
 }
