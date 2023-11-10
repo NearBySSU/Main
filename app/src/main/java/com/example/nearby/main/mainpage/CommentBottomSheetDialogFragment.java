@@ -9,11 +9,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearby.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,11 +37,8 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private RecyclerView recyclerView; // 댓글 리스트를 보여줄 RecyclerView
     private CommentAdapter commentAdapter; // 댓글 리스트를 관리할 Adapter
 
-
-
     public CommentBottomSheetDialogFragment() {
     }
-
 
     public static CommentBottomSheetDialogFragment newInstance(String postId) {
         CommentBottomSheetDialogFragment fragment = new CommentBottomSheetDialogFragment();
@@ -54,6 +56,21 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
         }
         db = FirebaseFirestore.getInstance();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getDialog().setOnShowListener(dialog -> {
+            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
+            FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,12 +101,9 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                         });
             }
         });
-
-
         loadComments(); // 댓글 목록 로드
         return view;
     }
-    
 
     private void loadComments() {
         db.collection("posts").document(postId).collection("comments")

@@ -18,6 +18,4 @@ public class Comment {
     public String getCommenterId() {
         return this.commenterId;
     }
-
-    // 필요에 따라 setter 메소드도 추가할 수 있습니다.
 }
