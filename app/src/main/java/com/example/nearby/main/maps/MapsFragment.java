@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class MapsFragment extends Fragment {
     public float pivot_meter = 1000;
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
-    private Button filterButton;
+    private ImageButton btn_filter;
     OnDataPass dataPasser;
 
 
@@ -157,9 +158,9 @@ public class MapsFragment extends Fragment {
         postAdapter = new PostAdapter(postList);
         postItemAdapter = new PostItemAdapter();
         recyclerViewBottom.setAdapter(postItemAdapter);
-        filterButton = view.findViewById(R.id.filterButton);
+        btn_filter = view.findViewById(R.id.btn_filter);
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        btn_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.

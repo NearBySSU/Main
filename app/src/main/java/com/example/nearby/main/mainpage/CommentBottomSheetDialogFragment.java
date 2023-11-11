@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +21,9 @@ import com.example.nearby.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private String postId; // 포스트 ID
     private RecyclerView recyclerView; // 댓글 리스트를 보여줄 RecyclerView
     private CommentAdapter commentAdapter; // 댓글 리스트를 관리할 Adapter
+    FirebaseAuth mAuth;
+
 
     public CommentBottomSheetDialogFragment() {
     }
@@ -78,20 +83,23 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comment_bottom_sheet_dialog, container, false);
         EditText etComment = view.findViewById(R.id.etComment);
-        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        ImageButton btnSubmit = view.findViewById(R.id.btnSubmit);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAuth = FirebaseAuth.getInstance();
+
 
         // 댓글 제출 버튼 클릭 리스너
         btnSubmit.setOnClickListener(v -> {
             String commentText = etComment.getText().toString();
             if (!commentText.isEmpty()) {
-                Map<String, Object> comment = new HashMap<>();
-                comment.put("commentText", commentText);
-                comment.put("commenterId", "User ID"); // 여기에 실제 사용자 ID를 넣어야 함
+                Map<String, Object> commentMap = new HashMap<>();
+                commentMap.put("commentText", commentText);
+                commentMap.put("commenterId", mAuth.getUid());
+                commentMap.put("timestamp", System.currentTimeMillis()); // 현재 시간 기록
 
                 db.collection("posts").document(postId).collection("comments")
-                        .add(comment)
+                        .add(commentMap)
                         .addOnSuccessListener(documentReference -> {
                             etComment.setText(""); // 댓글 입력창 초기화
                             loadComments(); // 댓글 목록 갱신
@@ -107,6 +115,7 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
 
     private void loadComments() {
         db.collection("posts").document(postId).collection("comments")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -114,15 +123,26 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String commentText = document.getString("commentText");
                             String commenterId = document.getString("commenterId");
-                            Comment comment = new Comment(commentText, commenterId);
-                            comments.add(comment);
+                            long timestamp = document.getLong("timestamp"); // 시간 정보를 long 타입으로 가져옴
+
+                            // 댓글 작성자의 프로필 사진을 가져오기 위해 댓글 작성자의 정보를 가져옴
+                            db.collection("users").document(commenterId).get()
+                                    .addOnSuccessListener(userDocument -> {
+                                        String profilePicUrl = userDocument.getString("profilePicUrl"); // 프로필 사진 URL 가져옴
+                                        Comment comment = new Comment(commentText, commenterId, profilePicUrl, timestamp);
+                                        comments.add(comment);
+                                        commentAdapter = new CommentAdapter(comments);
+                                        recyclerView.setAdapter(commentAdapter);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // 에러 처리
+                                    });
                         }
-                        commentAdapter = new CommentAdapter(comments);
-                        recyclerView.setAdapter(commentAdapter);
                     } else {
                         // 에러 처리
                     }
                 });
     }
+
 
 }

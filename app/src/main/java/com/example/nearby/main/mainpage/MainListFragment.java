@@ -51,8 +51,6 @@ public class MainListFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(postAdapter);
 
-
-
         //위치 권한 요청
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
@@ -86,20 +84,22 @@ public class MainListFragment extends Fragment {
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 getPosts(location);
-
                 // 현재 위치를 주소로 변환
                 try {
                     Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.
-                    String locality = addresses.get(0).getSubLocality(); // '성북구'와 같은 정보를 가져옵니다.
-                    binding.tvLocationTitle.setText(adminArea);
-                    binding.tvLocationCity.setText(locality);
+                    if (!addresses.isEmpty()) { // 추가: Address 리스트가 비어 있지 않을 때만 처리하도록 합니다.
+                        String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.
+                        String locality = addresses.get(0).getSubLocality(); // '성북구'와 같은 정보를 가져옵니다.
+                        binding.tvLocationTitle.setText(adminArea);
+                        binding.tvLocationCity.setText(locality);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
     }
 
 
