@@ -7,13 +7,12 @@
     tools:context=".main.upload.UploadContentsActivity"
     android:layout_gravity="left"
     >
-
     <TextView
         android:id="@+id/tv_upload_title"
         android:layout_width="134dp"
         android:layout_height="36dp"
         android:autoSizeTextType="uniform"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/black"
         android:text="게시물 업로드"
@@ -35,54 +34,103 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="150dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_upload_title"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_line"
+        android:id="@+id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/mainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="800dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/transparent"
+        android:gravity="top"
+        android:fontFamily="@font/poppins_light"
         android:hint="텍스트 입력..."
+        android:maxLines="4"
+        android:maxLength="500"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_line"
+        android:id="@+id/line2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainText"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_date"
+        android:text="날짜"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line2"/>
 
 
     <Button
         android:id="@+id/pick_date_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/chip_rec"
+        android:fontFamily="@font/poppins_bold"
         android:onClick="pickDate"
-        android:text="Pick date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainText"
-        android:layout_marginTop="20dp"/>
+        android:text="선택"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+        app:layout_constraintStart_toEndOf="@+id/tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/line2" />
 
     <TextView
         android:id="@+id/show_date_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selected date: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pick_date_button"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Selected date"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <Button
         android:id="@+id/upload_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="uploadPost"
-        android:text="Upload posts"
+        android:text="업로드"
+        android:background="@drawable/big_button"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupScroll"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"/>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -95,8 +143,9 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
-            app:chipSpacingHorizontal="30dp"
+            app:chipSpacingHorizontal="20dp"
             app:singleSelection="true"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -110,14 +159,14 @@
                 android:id="@+id/chip01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
-                android:text="Chip 1"/>
+                android:text="일상"/>
 
 
             <com.google.android.material.chip.Chip
@@ -125,42 +174,44 @@
                 android:id="@+id/chip02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
-                android:text="Chip 2"/>
+                android:text="맛집"/>
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/chip03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
-                android:text="Chip 3"/>
+                android:text="여행"/>
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/chip04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
-                android:text="Chip 4"/>
+                android:text="직접입력"/>
 
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
