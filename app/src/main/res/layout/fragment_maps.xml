@@ -23,11 +23,15 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-    <Button
-        android:id="@+id/filterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="filter"
-        />
+    <ImageButton
+        android:id="@+id/btn_filter"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:background="@drawable/round_btn"
+        android:backgroundTint="@color/firstColor"
+        android:src="@drawable/ic_filter_lines"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:layout_margin="20dp" />
 
 </RelativeLayout>
