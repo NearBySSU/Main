@@ -2,10 +2,14 @@ package com.example.nearby.main.friends;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +20,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nearby.R;
+import com.example.nearby.databinding.FragmentFriendsBinding;
+import com.example.nearby.databinding.FragmentMainListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment {
+    private FragmentFriendsBinding binding;
     private EditText findEmailEdit;
     private Button followBtn;
     private Button unfollowBtn;
@@ -46,12 +53,18 @@ public class FriendsFragment extends Fragment {
 
     private String inputEmail;
     private String currentUid;
+    ArrayList<String> followings = new ArrayList<>(); // 팔로잉 사용자의 userID들을 담습니다.
+    ArrayList<String> emails = new ArrayList<>(); // 검색된 이메일들을 담을 예정입니다.
 
+    private RecyclerView recyclerView;
+    private FriendsAdapter friendsAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+//        binding = FragmentFriendsBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -60,11 +73,34 @@ public class FriendsFragment extends Fragment {
         findEmailEdit = view.findViewById(R.id.findEmail);
         followBtn = view.findViewById(R.id.followBtn);
         unfollowBtn = view.findViewById(R.id.unFollowBtn);
+        recyclerView = view.findViewById(R.id.recyclerView); // RecyclerView의 id가 'recyclerView'라고 가정했습니다.
+        friendsAdapter = new FriendsAdapter(emails);
+        recyclerView.setAdapter(friendsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         Log.d("ODG", currentUid);
 
         // DB에서 users 문서에 followings 필드 체크 후 추가해줌
         addFollowingsField();
+
+        // FriendsList 로드
+                emails.clear();
+                friendsAdapter.setFriendsList(emails);
+                loadFriendsList();
+                friendsAdapter.notifyDataSetChanged();
+
+        // 스와이프 이벤트
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public void onRefresh() {
+                    emails.clear();
+                    friendsAdapter.setFriendsList(emails);
+                    loadFriendsList();
+                    friendsAdapter.notifyDataSetChanged();
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         // 팔로우 버튼
         followBtn.setOnClickListener(new View.OnClickListener() {
@@ -256,5 +292,54 @@ public class FriendsFragment extends Fragment {
 
         Log.d("ODG", "Following removed with ID: " + inputUid);
         Toast.makeText(getContext(), "언팔로잉 성공!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadFriendsList() {
+        // db에서 user -> followings 가져오기
+        DocumentReference userRef = db.collection("users").document(currentUid);
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        followings = (ArrayList<String>) document.get("followings");
+                        // 이제 'followings' 배열 리스트를 원하는대로 사용할 수 있습니다.
+                    } else {
+                        Log.d("ODG", "해당 문서를 찾을 수 없습니다.");
+                    }
+                } else {
+                    Log.d("ODG", "문서 가져오기에 실패했습니다.", task.getException());
+                }
+            }
+        });
+
+        Log.d("ODG", "실행됨메롱 ");
+
+        // List 채우기
+
+        emails.clear();
+        for (String userID : followings) {
+            db.collection("users").document(userID)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String email = document.getString("email"); // email 필드의 이름이 'email'이라고 가정했습니다.
+                                    emails.add(email);
+                                    Log.d("ODG", email);
+                                    friendsAdapter.notifyDataSetChanged();
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+        }
     }
 }
