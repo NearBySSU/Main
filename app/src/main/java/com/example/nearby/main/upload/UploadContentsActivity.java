@@ -92,6 +92,8 @@ public class UploadContentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                Intent intent = new Intent(UploadContentsActivity.this, MainPageActivity.class);
+                startActivity(intent);
             }
         });
 
