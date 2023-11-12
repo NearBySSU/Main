@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment {
@@ -51,9 +54,7 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         auth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference();
         findEmailEdit = view.findViewById(R.id.findEmail);
@@ -61,6 +62,9 @@ public class FriendsFragment extends Fragment {
         unfollowBtn = view.findViewById(R.id.unFollowBtn);
 
         Log.d("ODG", currentUid);
+
+        // DB에서 users 문서에 followings 필드 체크 후 추가해줌
+        addFollowingsField();
 
         // 팔로우 버튼
         followBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,9 +91,9 @@ public class FriendsFragment extends Fragment {
 
                                             // 자신 추가가 아니라면
                                             if ( !findUid.equals(currentUid) ) {
+                                                DocumentReference docRef = db.collection("users").document(currentUid);
 
                                                 // 이미 followings db에 존재하는지 검사
-                                                DocumentReference docRef = db.collection("users").document(currentUid);
                                                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -153,11 +157,11 @@ public class FriendsFragment extends Fragment {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             String findUid = document.getId();
 
-                                            // 자신 추가가 아니라면
+                                            // 자신 삭제가 아니라면
                                             if ( !findUid.equals(currentUid) ) {
+                                                DocumentReference docRef = db.collection("users").document(currentUid);
 
                                                 // 이미 followings db에 존재하는지 검사
-                                                DocumentReference docRef = db.collection("users").document(currentUid);
                                                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -198,9 +202,38 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
+    private void addFollowingsField() {
+        DocumentReference docRef = db.collection("users").document(currentUid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists() && !document.contains("followings")) {
+                        // Document가 존재하고 'followings' 필드가 없을 때만 필드를 추가합니다.
+                        db.collection("users").document(currentUid)
+                                .update("followings", new ArrayList<>())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("ODG", "DocumentSnapshot successfully updated!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("ODG", "Error updating document", e);
+                                    }
+                                });
+                    }
+                } else {
+                    Log.d("ODG", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 
     private void onFollowingAdded(String inputUid) {
-        // 시발 뭐야
         // 팔로잉 + 1 해줘야지
         // 검색된 이메일의 사용자 id를 following DB에 추가
 
