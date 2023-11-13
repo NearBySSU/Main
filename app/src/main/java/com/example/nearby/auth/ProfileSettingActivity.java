@@ -1,7 +1,5 @@
 package com.example.nearby.auth;
 
-<<<<<<< HEAD
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.example.nearby.R;
 import com.example.nearby.databinding.ActivityProfileSettingBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,20 +34,11 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
-=======
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-
-import com.example.nearby.R;
-
-public class ProfileSettingActivity extends AppCompatActivity {
->>>>>>> origin/leeyoubin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         ActivityProfileSettingBinding binding = ActivityProfileSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -113,7 +101,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             selectedImageUri = data.getData();
             uploadImage(selectedImageUri);
@@ -158,8 +145,3 @@ public class ProfileSettingActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 }
-=======
-        setContentView(R.layout.activity_profile_setting);
-    }
-}
->>>>>>> origin/leeyoubin

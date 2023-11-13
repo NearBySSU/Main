@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -55,10 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_profile_pic"/>
 
     <TextView
-<<<<<<< HEAD
         android:id="@+id/tv_nickname_have_to_check"
-=======
->>>>>>> origin/leeyoubin
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:text="중복체크"
@@ -72,7 +70,6 @@
         app:layout_constraintBottom_toBottomOf="@id/et_profile_nickname"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-<<<<<<< HEAD
     <TextView
         android:id="@+id/tv_nickname_is_checked"
         android:layout_width="100dp"
@@ -104,6 +101,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-=======
->>>>>>> origin/leeyoubin
 </androidx.constraintlayout.widget.ConstraintLayout>
