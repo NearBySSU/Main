@@ -86,7 +86,7 @@ public class MainListFragment extends Fragment {
                 getPosts(location);
                 // 현재 위치를 주소로 변환
                 try {
-                    Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(getActivity(), Locale.KOREAN);
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (!addresses.isEmpty()) { // 추가: Address 리스트가 비어 있지 않을 때만 처리하도록 합니다.
                         String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.

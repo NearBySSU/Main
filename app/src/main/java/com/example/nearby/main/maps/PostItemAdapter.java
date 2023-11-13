@@ -40,6 +40,7 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         // 프로필 사진을 가져오지 못한 경우에 기본 프로필 사진을 보여주기
         Glide.with(holder.profilePic.getContext())
                 .load(postItem.getProfilePicUrl())
+                .circleCrop()
                 .error(R.drawable.stock_profile)
                 .into(holder.profilePic);
     }
