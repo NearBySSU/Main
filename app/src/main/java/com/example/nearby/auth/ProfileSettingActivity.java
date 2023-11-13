@@ -43,7 +43,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // 사진 업로드 버튼 처리 추가
-        binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
+        binding.tvProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickImage();
