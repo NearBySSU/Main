@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import com.bumptech.glide.Glide;
 import com.example.nearby.databinding.ActivityProfileSettingBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,22 +36,24 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
-
+    ActivityProfileSettingBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityProfileSettingBinding binding = ActivityProfileSettingBinding.inflate(getLayoutInflater());
+        binding = ActivityProfileSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 사진 업로드 버튼 처리 추가
+        // 프로필 사진 업로드 버튼
         binding.tvProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickImage();
+
             }
         });
 
+        // 버튼을 눌렀을 때 이미지, 닉네임 저장
         binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +85,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     } else {
                                         Log.d("ProfileSettingActivity", "Error checking nickname.", task.getException());
                                     }
-                                }
+
+
+                               }
                             });
                 }
 
@@ -89,7 +95,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         });
     }
 
-    // 사진 선택 메소드 추가
+    // 사진 선택 메소드
     private void pickImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -120,6 +126,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     Log.d("ProfileSettingActivity", "Image uploaded. URL: " + uri.toString());
                                     // 여기서 uri를 사용하여 사용자 프로필에 이미지 URL을 저장할 수 있습니다.
                                     // 예: db.collection("users").document(uid).update("profileImageUrl", uri.toString());
+                                    Glide.with(ProfileSettingActivity.this).load(uri).into(binding.imgProfile);
                                 }
                             });
                         }
