@@ -51,24 +51,22 @@
         app:layout_constraintEnd_toStartOf="@id/img_profile"
         />
 
-<!--    <Button-->
-<!--        android:id="@+id/logoutButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="logout"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/uploadProfilePicButton"-->
-<!--        />-->
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="logout"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+app:layout_constraintStart_toStartOf="parent"        />
 
-<!--    <Button-->
-<!--        android:id="@+id/uploadProfilePicButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:text="Upload profile"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/img_profile_three_dot"-->
-<!--        />-->
+    <Button
+        android:id="@+id/uploadProfilePicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload profile"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+        app:layout_constraintStart_toEndOf="@id/logoutButton"
+        />
 
     <ImageView
         android:id="@+id/img_profile"
@@ -136,7 +134,7 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+        app:layout_constraintTop_toBottomOf="@id/logoutButton"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
