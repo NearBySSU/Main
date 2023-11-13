@@ -1,5 +1,6 @@
 package com.example.nearby.auth;
 
+<<<<<<< HEAD
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,10 +37,20 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
+=======
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.example.nearby.R;
+
+public class ProfileSettingActivity extends AppCompatActivity {
+>>>>>>> origin/leeyoubin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
         ActivityProfileSettingBinding binding = ActivityProfileSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -147,3 +158,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 }
+=======
+        setContentView(R.layout.activity_profile_setting);
+    }
+}
+>>>>>>> origin/leeyoubin
