@@ -38,15 +38,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_margin="20dp">
 
         <EditText
             android:id="@+id/etComment"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:paddingStart="15dp"
             android:textSize="12sp"
@@ -60,7 +58,6 @@
             android:layout_height="50dp"
             android:padding="5dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
             android:scaleType="fitXY"
             android:src="@drawable/btn_comment_submit"
             android:background="@color/transparent"
