@@ -125,8 +125,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Log.d("ProfileSettingActivity", "Image uploaded. URL: " + uri.toString());
                                     // 여기서 uri를 사용하여 사용자 프로필에 이미지 URL을 저장할 수 있습니다.
-                                    // 예: db.collection("users").document(uid).update("profileImageUrl", uri.toString());
-                                    Glide.with(ProfileSettingActivity.this).load(uri).into(binding.imgProfile);
+                                    Glide.with(ProfileSettingActivity.this).load(uri).circleCrop().into(binding.imgProfile);
                                 }
                             });
                         }

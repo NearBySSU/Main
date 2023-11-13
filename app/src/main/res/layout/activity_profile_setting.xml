@@ -14,7 +14,7 @@
         android:text="프로필 설정"
         android:textSize="25sp"
         android:textColor="@color/black"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,23 +22,25 @@
 
     <ImageView
         android:id="@+id/img_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="117dp"
+        android:layout_height="117dp"
         android:src="@drawable/ic_profile"
+        android:background="@drawable/round_btn"
         android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_profile_title"
+        app:layout_constraintEnd_toEndOf="@id/tv_profile_title"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_title"/>
 
     <TextView
         android:id="@+id/tv_profile_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진 선택"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text=" 사진 선택"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintStart_toStartOf="@id/img_profile"
+        app:layout_constraintEnd_toEndOf="@id/img_profile"
         app:layout_constraintTop_toBottomOf="@id/img_profile"/>
 
     <EditText
@@ -89,14 +91,14 @@
 
     <Button
         android:id="@+id/btn_check_finish"
-        android:layout_width="322.95dp"
+        android:layout_width="0dp"
         android:layout_height="57.66dp"
         android:text="완료"
         android:backgroundTint="@color/firstColor"
         android:background="@drawable/round_btn"
         android:textColor="@color/white"
-        android:layout_marginBottom="40dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
