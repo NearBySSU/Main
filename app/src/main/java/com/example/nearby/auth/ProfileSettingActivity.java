@@ -79,20 +79,29 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                             binding.tvNicknameHaveToCheck.setVisibility(View.INVISIBLE);
                                             Toast.makeText(ProfileSettingActivity.this, "닉네임 사용이 가능합니다.", Toast.LENGTH_SHORT).show();
                                             Log.d("ProfileSettingActivity", "Nickname is available.");
-                                            Intent intent = new Intent(ProfileSettingActivity.this, MainPageActivity.class);
-                                            startActivity(intent);
                                         }
                                     } else {
                                         Log.d("ProfileSettingActivity", "Error checking nickname.", task.getException());
                                     }
-
-
                                }
                             });
                 }
 
             }
         });
+        binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(binding.tvNicknameIsChecked.getVisibility() == View.VISIBLE) {
+                    Intent intent = new Intent(ProfileSettingActivity.this, MainPageActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(ProfileSettingActivity.this, "닉네임 중복 확인을 먼저 해주세요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     // 사진 선택 메소드
