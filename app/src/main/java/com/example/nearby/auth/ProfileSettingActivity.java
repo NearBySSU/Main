@@ -37,7 +37,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     ActivityProfileSettingBinding binding;
-
+    private boolean isImageUpdated = false; // 이미지가 업데이트 되었는지 확인하는 변수
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +53,21 @@ public class ProfileSettingActivity extends AppCompatActivity {
             }
         });
 
-        // 버튼을 눌렀을 때 이미지, 닉네임 저장
-        binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
+        // 닉네임 중복 확인 버튼
+        binding.tvNicknameHaveToCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nicknameToCheck = binding.etProfileNickname.getText().toString(); // EditText에서 닉네임을 가져옴
 
+                if (!isImageUpdated) {
+                    Toast.makeText(ProfileSettingActivity.this, "프로필 사진을 먼저 업로드해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(nicknameToCheck.isEmpty()){
-                    Toast.makeText(ProfileSettingActivity.this, "닉네임 중복 확인을 먼저 해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileSettingActivity.this, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show();
                 }else{
+                    Log.d("LYB", "중복 확인 중");
                     db.collection("users")
                             .whereEqualTo("nickname", nicknameToCheck)
                             .get()
@@ -89,6 +95,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
             }
         });
+
+        // 메인 화면으로 넘어가는 버튼
         binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +143,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     Log.d("ProfileSettingActivity", "Image uploaded. URL: " + uri.toString());
                                     // 여기서 uri를 사용하여 사용자 프로필에 이미지 URL을 저장할 수 있습니다.
                                     Glide.with(ProfileSettingActivity.this).load(uri).circleCrop().into(binding.imgProfile);
+                                    isImageUpdated = true;
                                 }
                             });
                         }

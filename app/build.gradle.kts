@@ -67,5 +67,4 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.android.material:material:1.10.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
-
 }
