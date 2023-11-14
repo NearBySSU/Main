@@ -52,11 +52,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = postList.get(position);
         holder.date.setText(post.getDate());
         holder.mainText.setText(post.getText());
-
         String postUid = post.getUserId();
 
         Log.d(TAG, postUid);
 
+        //post의 uid로 부터 프로필 사진 가져오기
         db.collection("users").document(postUid)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -75,6 +75,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                     else {
                         Log.d(TAG, "get failed with ", task.getException());
+                    }
+                });
+
+        //post의 uid로 부터 닉네임 가져오기
+        db.collection("users").document(postUid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null){
+                            String nickname = document.getString("nickname");
+                            holder.nickName.setText(nickname);
+                        }
                     }
                 });
 
