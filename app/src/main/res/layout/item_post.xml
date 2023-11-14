@@ -75,7 +75,7 @@
         app:layout_constraintStart_toEndOf="@id/tv_post_date"/>
     
     <TextView
-        android:id="@+id/tv_post_memo"
+        android:id="@+id/tv_post_mainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="여기에 업로드한 내용이 들어갑니다."
@@ -94,7 +94,7 @@
         android:background="@color/transparent"
         android:src="@drawable/ic_empty_heart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_post_memo"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_post_mainText"/>
 
     <ImageButton
         android:visibility="invisible"
@@ -106,7 +106,7 @@
         android:layout_margin="10dp"
         android:src="@drawable/ic_full_heart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_post_memo"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_post_mainText"/>
 
     <ImageButton
         android:id="@+id/ic_reply"
@@ -126,6 +126,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/ic_reply"
         app:layout_constraintBottom_toBottomOf="@id/ic_reply"
-        app:layout_constraintTop_toTopOf="@id/tv_post_memo"/>
+        app:layout_constraintTop_toTopOf="@id/tv_post_mainText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

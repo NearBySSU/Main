@@ -51,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Post post = postList.get(position);
         holder.date.setText(post.getDate());
-        holder.postMemo.setText(post.getText());
+        holder.mainText.setText(post.getText());
 
         String postUid = post.getUserId();
 
@@ -109,11 +109,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
-        TextView postName;
+        TextView nickName;
         ImageButton btnMap;
         TextView date;
         TextView place;
-        TextView postMemo;
+        TextView mainText;
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
@@ -121,12 +121,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
             profile = view.findViewById(R.id.img_profile);
-            postName = view.findViewById(R.id.tv_nick_name);
+            nickName = view.findViewById(R.id.tv_nick_name);
             btnMap = view.findViewById(R.id.btn_map);
             date = view.findViewById(R.id.tv_post_date);
             place = view.findViewById(R.id.tv_post_place);
             commentButton = view.findViewById(R.id.ic_reply);
-            postMemo = view.findViewById(R.id.tv_post_memo);
+            mainText = view.findViewById(R.id.tv_post_mainText);
             likeButton = view.findViewById(R.id.ic_empty_heart);
             images = view.findViewById(R.id.img_post_recyclerView);
 
