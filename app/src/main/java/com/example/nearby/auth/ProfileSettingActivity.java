@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,6 +28,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProfileSettingActivity extends AppCompatActivity {
@@ -58,7 +61,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nicknameToCheck = binding.etProfileNickname.getText().toString(); // EditText에서 닉네임을 가져옴
-
                 if (!isImageUpdated) {
                     Toast.makeText(ProfileSettingActivity.this, "프로필 사진을 먼저 업로드해주세요", Toast.LENGTH_SHORT).show();
                     return;
@@ -85,6 +87,24 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                             binding.tvNicknameHaveToCheck.setVisibility(View.INVISIBLE);
                                             Toast.makeText(ProfileSettingActivity.this, "닉네임 사용이 가능합니다.", Toast.LENGTH_SHORT).show();
                                             Log.d("ProfileSettingActivity", "Nickname is available.");
+                                            // 파이어베이스에 닉네임 저장
+                                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                            Map<String, Object> user = new HashMap<>();
+                                            user.put("nickname", nicknameToCheck);
+
+                                            db.collection("users").document(uid).update(user)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("ProfileSettingActivity", "Nickname successfully updated!");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w("ProfileSettingActivity", "Error updating nickname", e);
+                                                        }
+                                                    });
                                         }
                                     } else {
                                         Log.d("ProfileSettingActivity", "Error checking nickname.", task.getException());
