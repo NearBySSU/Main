@@ -1,11 +1,16 @@
 package com.example.nearby.main.mainpage;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.main.maps.MapsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -23,6 +29,8 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
     private FirebaseFirestore db;
+    private static final String TAG = "PostAdapter";
+
     FirebaseAuth auth;
 
     public PostAdapter(List<Post> postList) {
@@ -30,6 +38,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,11 +53,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.date.setText(post.getDate());
         holder.postMemo.setText(post.getText());
 
-        // 프로필 이미지 로드 (Glide 라이브러리 사용)
-        String profilePicUrl = post.getProfilePicUrl();
-        if (profilePicUrl != null) {
-            Glide.with(holder.profile.getContext()).load(profilePicUrl).into(holder.profile);
-        }
+        String postUid = post.getUserId();
+
+        Log.d(TAG, postUid);
+
+        db.collection("users").document(postUid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            String profilePicUrl = document.getString("profilePicUrl");
+
+                            // 프로필 이미지 로드 (Glide 라이브러리 사용)
+                                Glide.with(holder.images.getContext())
+                                        .load(profilePicUrl)
+                                        .circleCrop()
+                                        .error(R.drawable.stock_profile)
+                                        .into(holder.profile);
+                        }
+                    }
+                    else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                });
 
         //게시물 이미지 로드
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);

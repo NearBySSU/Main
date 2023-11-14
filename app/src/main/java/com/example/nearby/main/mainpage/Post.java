@@ -12,11 +12,10 @@ public class Post implements ClusterItem {
     double longitude;
     String date;
     String userId;
-    String profilePicUrl;
     List<String> images;
     List<String> likes;
 
-    public Post(String id, String text, double latitude, double longitude, String date, String userId,String profilePicUrl, List<String> images,List<String> likes) {
+    public Post(String id, String text, double latitude, double longitude, String date, String userId, List<String> images,List<String> likes) {
         this.id = id;
         this.text = text;
         this.latitude = latitude;
@@ -25,7 +24,6 @@ public class Post implements ClusterItem {
         this.userId = userId;
         this.images = images;
         this.likes = likes;
-        this.profilePicUrl = profilePicUrl;
     }
 
     // getters and setters
@@ -45,7 +43,6 @@ public class Post implements ClusterItem {
     public String getUserId() {
         return userId;
     }
-    public String getProfilePicUrl(){return profilePicUrl;}
 
     public List<String> getImages() {
         return images;
