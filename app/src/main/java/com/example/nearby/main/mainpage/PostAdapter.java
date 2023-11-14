@@ -1,17 +1,24 @@
 package com.example.nearby.main.mainpage;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.main.maps.MapsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -22,6 +29,8 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
     private FirebaseFirestore db;
+    private static final String TAG = "PostAdapter";
+
     FirebaseAuth auth;
 
     public PostAdapter(List<Post> postList) {
@@ -29,6 +38,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,12 +53,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.date.setText(post.getDate());
         holder.postMemo.setText(post.getText());
 
-        // 프로필 이미지 로드 (Glide 라이브러리 사용)
-        List<String> images = post.getImages();
-        if (images != null && !images.isEmpty()) {
-            String imageUrl = images.get(0); // 첫 번째 이미지 URL
-            Glide.with(holder.profile.getContext()).load(imageUrl).into(holder.profile);
-        }
+        String postUid = post.getUserId();
+
+        Log.d(TAG, postUid);
+
+        db.collection("users").document(postUid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            String profilePicUrl = document.getString("profilePicUrl");
+
+                            // 프로필 이미지 로드 (Glide 라이브러리 사용)
+                                Glide.with(holder.images.getContext())
+                                        .load(profilePicUrl)
+                                        .circleCrop()
+                                        .error(R.drawable.stock_profile)
+                                        .into(holder.profile);
+                        }
+                    }
+                    else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                });
+
+        //게시물 이미지 로드
+        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        holder.images.setLayoutManager(layoutManager);
+        ImageAdapter imageAdapter = new ImageAdapter(holder.itemView.getContext(), post.getImages());
+        holder.images.setAdapter(imageAdapter);
 
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
@@ -81,6 +116,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView postMemo;
         ImageButton commentButton;
         ImageButton likeButton;
+        RecyclerView images;
 
         public ViewHolder(View view) {
             super(view);
@@ -92,18 +128,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             commentButton = view.findViewById(R.id.ic_reply);
             postMemo = view.findViewById(R.id.tv_post_memo);
             likeButton = view.findViewById(R.id.ic_empty_heart);
+            images = view.findViewById(R.id.img_post_recyclerView);
 
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
                 CommentBottomSheetDialogFragment fragment =
-                        CommentBottomSheetDialogFragment.newInstance(post.getId());
+                        CommentBottomSheetDialogFragment.newInstance(post.getPostId());
                 fragment.show(((FragmentActivity) v.getContext()).getSupportFragmentManager(), "commentDialog");
             });
 
             likeButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
                 String uid = auth.getUid();
-                checkLikeStatus(post.getId(), uid, likeButton);
+                checkLikeStatus(post.getPostId(), uid, likeButton);
             });
         }
     }

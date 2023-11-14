@@ -6,7 +6,7 @@ import com.google.maps.android.clustering.ClusterItem;
 import java.util.List;
 
 public class Post implements ClusterItem {
-    String id;
+    String postId;
     String text;
     double latitude;
     double longitude;
@@ -15,8 +15,8 @@ public class Post implements ClusterItem {
     List<String> images;
     List<String> likes;
 
-    public Post(String id, String text, double latitude, double longitude, String date, String userId, List<String> images,List<String> likes) {
-        this.id = id;
+    public Post(String postId, String text, double latitude, double longitude, String date, String userId, List<String> images,List<String> likes) {
+        this.postId = postId;
         this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -27,8 +27,8 @@ public class Post implements ClusterItem {
     }
 
     // getters and setters
-    public String getId(){
-        return id;
+    public String getPostId(){
+        return postId;
     }
 
     public String getText(){
@@ -69,7 +69,7 @@ public class Post implements ClusterItem {
     @Override
     public String getTitle() {
         if (text.length() > 20) {
-            return text.substring(0, 20);
+            return text.substring(0, 20)+"...";
         } else {
             return text;
         }

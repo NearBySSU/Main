@@ -44,7 +44,7 @@
             android:textSize="16sp"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_regular"
-            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/post_date"
             app:layout_constraintStart_toEndOf="@id/profile_pic"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
