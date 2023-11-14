@@ -121,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
             profile = view.findViewById(R.id.img_profile);
-            postName = view.findViewById(R.id.tv_post_name);
+            postName = view.findViewById(R.id.tv_nick_name);
             btnMap = view.findViewById(R.id.btn_map);
             date = view.findViewById(R.id.tv_post_date);
             place = view.findViewById(R.id.tv_post_place);
