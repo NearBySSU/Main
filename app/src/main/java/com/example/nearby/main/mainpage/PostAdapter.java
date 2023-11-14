@@ -133,14 +133,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
                 CommentBottomSheetDialogFragment fragment =
-                        CommentBottomSheetDialogFragment.newInstance(post.getId());
+                        CommentBottomSheetDialogFragment.newInstance(post.getPostId());
                 fragment.show(((FragmentActivity) v.getContext()).getSupportFragmentManager(), "commentDialog");
             });
 
             likeButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
                 String uid = auth.getUid();
-                checkLikeStatus(post.getId(), uid, likeButton);
+                checkLikeStatus(post.getPostId(), uid, likeButton);
             });
         }
     }
