@@ -49,11 +49,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Post post = postList.get(position);
-        holder.date.setText(post.getDate());
-        holder.mainText.setText(post.getText());
-        String postUid = post.getUserId();
-
+        Post post = postList.get(position); //포스트 한개의 객체 얻기
+        holder.date.setText(post.getDate()); //날짜 설정
+        holder.mainText.setText(post.getText()); //메인 텍스트 설정
+        String postUid = post.getUserId(); //포스트 주인의 아이디
         Log.d(TAG, postUid);
 
         //post의 uid로 부터 프로필 사진 가져오기
@@ -88,6 +87,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             String nickname = document.getString("nickname");
                             holder.nickName.setText(nickname);
                         }
+                        else{
+                            Log.d(TAG, "failed to get nickname ", task.getException());
+                        }
+                    }
+                    else{
+                        Log.d(TAG, "failed to get nickname ", task.getException());
                     }
                 });
 
