@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,11 +44,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.postMemo.setText(post.getText());
 
         // 프로필 이미지 로드 (Glide 라이브러리 사용)
-        List<String> images = post.getImages();
-        if (images != null && !images.isEmpty()) {
-            String imageUrl = images.get(0); // 첫 번째 이미지 URL
-            Glide.with(holder.profile.getContext()).load(imageUrl).into(holder.profile);
+        String profilePicUrl = post.getProfilePicUrl();
+        if (profilePicUrl != null) {
+            Glide.with(holder.profile.getContext()).load(profilePicUrl).into(holder.profile);
         }
+
+        //게시물 이미지 로드
+        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        holder.images.setLayoutManager(layoutManager);
+        ImageAdapter imageAdapter = new ImageAdapter(holder.itemView.getContext(), post.getImages());
+        holder.images.setAdapter(imageAdapter);
 
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
@@ -81,6 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView postMemo;
         ImageButton commentButton;
         ImageButton likeButton;
+        RecyclerView images;
 
         public ViewHolder(View view) {
             super(view);
@@ -92,6 +99,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             commentButton = view.findViewById(R.id.ic_reply);
             postMemo = view.findViewById(R.id.tv_post_memo);
             likeButton = view.findViewById(R.id.ic_empty_heart);
+            images = view.findViewById(R.id.img_post_recyclerView);
 
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());

@@ -222,12 +222,13 @@ public class MapsFragment extends Fragment {
                     String text = document.getString("text");
                     double latitude = document.getDouble("latitude");
                     double longitude = document.getDouble("longitude");
+                    String profilePicUrl = document.getString("profilePicUrl");
                     String date = document.getString("date");
                     String uid = document.getString("uid");
                     List<String> imagesList = (List<String>) document.get("images");
                     List<String> likeList = (List<String>) document.get("likes");
 
-                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList,likeList);
+                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, profilePicUrl, imagesList,likeList);
                     allPosts.add(post);
                 }
 

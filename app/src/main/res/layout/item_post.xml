@@ -42,12 +42,11 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_post_name"/>
 
 
-    <ImageView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/img_post_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="330dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/img_post_temp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_map"/>
 
