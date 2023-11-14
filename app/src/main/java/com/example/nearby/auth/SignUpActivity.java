@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 //가입 성공
                                 if (task.isSuccessful()) {
                                     addUserInfoToFirestore(email);
-                                    Intent intent = new Intent(SignUpActivity.this, MainPageActivity.class);
+                                    Intent intent = new Intent(SignUpActivity.this, ProfileSettingActivity.class);
                                     startActivity(intent);
                                     finish();
                                 //가입 실패

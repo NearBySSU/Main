@@ -1,6 +1,9 @@
 package com.example.nearby.main.mainpage;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,6 +11,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainListFragment extends Fragment {
+    private long initTime = 0L;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -68,6 +74,23 @@ public class MainListFragment extends Fragment {
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+//        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                // 3초 이내에 백 버튼을 누르면 앱을 종료합니다.
+//                if (System.currentTimeMillis() - initTime <= 3000) {
+//                    Intent intent = new Intent(Intent.ACTION_MAIN);
+//                    intent.addCategory(Intent.CATEGORY_HOME);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//                } else {
+//                    // 3초 이내에 백 버튼을 누르지 않았다면, 토스트 메시지를 보여주고 시간을 재설정합니다.
+//                    Toast.makeText(getActivity(), "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+//                    initTime = System.currentTimeMillis();
+//                }
+//            }
+//        });
 
         //포스트 로드하기
         loadNearbyPosts();
@@ -144,4 +167,5 @@ public class MainListFragment extends Fragment {
                     REQUEST_LOCATION_PERMISSION);
         }
     }
+
 }

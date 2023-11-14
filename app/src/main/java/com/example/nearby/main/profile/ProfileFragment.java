@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,20 +61,18 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-//        logoutButton = view.findViewById(R.id.btn_logout);
-//        uploadProfilePicButton = view.findViewById(R.id.btn_profile_pic);
-//
-//        // Logout button
-//        logoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mAuth.signOut();
-//                startActivity(new Intent(getActivity(), LogInActivity.class));
-//                getActivity().finish();
-//            }
-//        });
 
-        // Profile upload button
+        logoutButton = view.findViewById(R.id.logoutButton);
+//        uploadProfilePicButton = view.findViewById(R.id.btn_profile_pic);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(getActivity(), LogInActivity.class));
+                getActivity().finish();
+            }
+        });
 //        uploadProfilePicButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -86,9 +86,33 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.menu_profile_app_bar, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.btn_logout) {
+//            // 로그아웃 코드
+//            mAuth.signOut();
+//            Log.d("LYB" ,"LOGOUT");
+//            startActivity(new Intent(getActivity(), LogInActivity.class));
+//            getActivity().finish();
+//            return true;
+//        } else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
+//
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         // ProgressDialog 초기화

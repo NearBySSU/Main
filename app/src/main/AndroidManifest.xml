@@ -20,7 +20,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBElV1skkLoxFgCE4F2BwlXMKyywqih_fg" />
-
+        <activity
+            android:name=".auth.ProfileSettingActivity"
+            android:exported="false" />
         <activity
             android:name=".auth.SignUpActivity"
             android:exported="false" />
@@ -38,8 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".main.upload.UploadContentsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:exported="false" />
         <activity
             android:name=".main.MainPageActivity"
             android:exported="false" />
