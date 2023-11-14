@@ -24,7 +24,7 @@
         android:id="@+id/img_profile"
         android:layout_width="117dp"
         android:layout_height="117dp"
-        android:src="@drawable/ic_profile"
+        android:src="@drawable/stock_profile"
         android:background="@drawable/round_btn"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="@id/tv_profile_title"
