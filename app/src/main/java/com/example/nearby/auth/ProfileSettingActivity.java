@@ -164,6 +164,25 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     // 여기서 uri를 사용하여 사용자 프로필에 이미지 URL을 저장할 수 있습니다.
                                     Glide.with(ProfileSettingActivity.this).load(uri).circleCrop().into(binding.imgProfile);
                                     isImageUpdated = true;
+
+                                    // 파이어베이스에 프로필 사진 저장
+                                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    Map<String, Object> user = new HashMap<>();
+                                    user.put("profilePicUrl", uri.toString());
+
+                                    db.collection("users").document(uid).update(user)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("ProfileSettingActivity", "Profile image URL successfully updated!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w("ProfileSettingActivity", "Error updating profile image URL", e);
+                                                }
+                                            });
                                 }
                             });
                         }
