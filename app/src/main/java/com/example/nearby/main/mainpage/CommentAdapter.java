@@ -40,6 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.tvTimestamp.setText(getFormattedTimestamp(comment.getTimestamp())); // 시간 정보 설정
         Glide.with(holder.ivProfilePic.getContext())
                 .load(comment.getProfilePicUrl())
+                .circleCrop()
                 .into(holder.ivProfilePic); // 프로필 사진 설정
     }
 

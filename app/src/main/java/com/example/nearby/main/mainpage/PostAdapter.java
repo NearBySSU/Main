@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
@@ -49,14 +51,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Post post = postList.get(position);
-        holder.date.setText(post.getDate());
-        holder.postMemo.setText(post.getText());
-
-        String postUid = post.getUserId();
-
+        Post post = postList.get(position); //포스트 한개의 객체 얻기
+        holder.date.setText(post.getDate()); //날짜 설정
+        holder.mainText.setText(post.getText()); //메인 텍스트 설정
+        String postUid = post.getUserId(); //포스트 주인의 아이디
         Log.d(TAG, postUid);
 
+        //post의 uid로 부터 프로필 사진 가져오기
         db.collection("users").document(postUid)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -78,11 +79,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                 });
 
+        //post의 uid로 부터 닉네임 가져오기
+        db.collection("users").document(postUid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null){
+                            String nickname = document.getString("nickname");
+                            holder.nickName.setText(nickname);
+                        }
+                        else{
+                            Log.d(TAG, "failed to get nickname ", task.getException());
+                        }
+                    }
+                    else{
+                        Log.d(TAG, "failed to get nickname ", task.getException());
+                    }
+                });
+
         //게시물 이미지 로드
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         holder.images.setLayoutManager(layoutManager);
         ImageAdapter imageAdapter = new ImageAdapter(holder.itemView.getContext(), post.getImages());
         holder.images.setAdapter(imageAdapter);
+
 
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
@@ -109,26 +130,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
-        TextView postName;
+        TextView nickName;
         ImageButton btnMap;
         TextView date;
         TextView place;
-        TextView postMemo;
+        TextView mainText;
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
+        SnapHelper snapHelper; // SnapHelper를 ViewHolder에 추가
+
 
         public ViewHolder(View view) {
             super(view);
             profile = view.findViewById(R.id.img_profile);
-            postName = view.findViewById(R.id.tv_post_name);
+            nickName = view.findViewById(R.id.tv_nick_name);
             btnMap = view.findViewById(R.id.btn_map);
             date = view.findViewById(R.id.tv_post_date);
             place = view.findViewById(R.id.tv_post_place);
             commentButton = view.findViewById(R.id.ic_reply);
-            postMemo = view.findViewById(R.id.tv_post_memo);
+            mainText = view.findViewById(R.id.tv_post_mainText);
             likeButton = view.findViewById(R.id.ic_empty_heart);
             images = view.findViewById(R.id.img_post_recyclerView);
+
+            SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
+            snapHelper.attachToRecyclerView(images);
+
 
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
