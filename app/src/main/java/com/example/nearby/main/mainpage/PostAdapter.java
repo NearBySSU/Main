@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
@@ -102,6 +104,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageAdapter imageAdapter = new ImageAdapter(holder.itemView.getContext(), post.getImages());
         holder.images.setAdapter(imageAdapter);
 
+
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
         List<String> likes = post.getLikes();
@@ -135,6 +138,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
+        SnapHelper snapHelper; // SnapHelper를 ViewHolder에 추가
+
 
         public ViewHolder(View view) {
             super(view);
@@ -147,6 +152,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mainText = view.findViewById(R.id.tv_post_mainText);
             likeButton = view.findViewById(R.id.ic_empty_heart);
             images = view.findViewById(R.id.img_post_recyclerView);
+
+            SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
+            snapHelper.attachToRecyclerView(images);
+
 
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
