@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ProfileSettingActivity extends AppCompatActivity {
+    // 주석
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     // 사진 업로드를 위한 필드 추가
     private static final int PICK_IMAGE_REQUEST = 2222;
