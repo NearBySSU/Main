@@ -35,7 +35,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
@@ -59,7 +59,9 @@
         android:background="@color/transparent"
         android:gravity="top"
         android:fontFamily="@font/poppins_light"
-        android:hint="텍스트 입력..."
+        android:layout_margin="10dp"
+        android:hint="텍스트를 입력..."
+        android:paddingBottom="170dp"
         android:maxLines="4"
         android:maxLength="500"
         android:inputType="textMultiLine"
@@ -119,14 +121,29 @@
         app:layout_constraintStart_toStartOf="@+id/tv_date"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
+    <TextView
+        android:id="@+id/tv_chip_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="태그"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_date_textView"/>
+
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="uploadPost"
         android:text="업로드"
         android:background="@drawable/big_button"
         android:textColor="@color/white"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +156,7 @@
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+        app:layout_constraintTop_toBottomOf="@+id/tv_chip_title">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
@@ -148,11 +165,11 @@
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:theme="@style/AppTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+            app:layout_constraintTop_toBottomOf="@+id/tv_chip_title">
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -161,7 +178,7 @@
                 android:layout_height="wrap_content"
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/secondColor"
+                app:chipStrokeColor="@color/thirdColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
@@ -176,7 +193,7 @@
                 android:layout_height="wrap_content"
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/secondColor"
+                app:chipStrokeColor="@color/thirdColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
