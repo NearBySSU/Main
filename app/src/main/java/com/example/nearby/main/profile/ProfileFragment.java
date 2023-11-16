@@ -3,6 +3,7 @@ package com.example.nearby.main.profile;
 import static android.app.Activity.RESULT_OK;
 
 import static androidx.fragment.app.FragmentManager.TAG;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -44,8 +45,6 @@ import java.util.UUID;
 public class ProfileFragment extends Fragment {
 
     private static final int PICK_IMAGE = 1;
-    private Button logoutButton;
-    private Button uploadProfilePicButton;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
@@ -53,66 +52,54 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
 
-
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        toolbar = view.findViewById(R.id.top_app_bar);
         mAuth = FirebaseAuth.getInstance();
 
-        logoutButton = view.findViewById(R.id.logoutButton);
-//        uploadProfilePicButton = view.findViewById(R.id.btn_profile_pic);
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        // 상단 바 눌렀을 때의 버튼 처리
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                startActivity(new Intent(getActivity(), LogInActivity.class));
-                getActivity().finish();
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.btn_logout) {
+                    // 로그아웃 버튼
+                    mAuth.signOut();
+                    Log.d("LYB" ,"LOGOUT");
+                    startActivity(new Intent(getActivity(), LogInActivity.class));
+                    getActivity().finish();
+                    return true;
+                } else if(id == R.id.btn_profile_pic){
+                    // 프로필 변경 버튼
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                    return true;
+                }else {
+                    return false;
+                }
             }
         });
-//        uploadProfilePicButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setType("image/*");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-//            }
-//        });
 
         return view;
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.menu_profile_app_bar, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.btn_logout) {
-//            // 로그아웃 코드
-//            mAuth.signOut();
-//            Log.d("LYB" ,"LOGOUT");
-//            startActivity(new Intent(getActivity(), LogInActivity.class));
-//            getActivity().finish();
-//            return true;
-//        } else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
-//
-
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_profile_app_bar, menu);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         // ProgressDialog 초기화
