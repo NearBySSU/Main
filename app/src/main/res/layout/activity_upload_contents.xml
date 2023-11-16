@@ -31,6 +31,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_upload_title"
+        app:layout_constraintBottom_toTopOf="@id/upload_button">
+
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
@@ -38,7 +52,7 @@
         android:layout_marginTop="50dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -60,13 +74,12 @@
         android:gravity="top"
         android:fontFamily="@font/poppins_light"
         android:layout_margin="10dp"
-        android:hint="텍스트를 입력..."
-        android:paddingBottom="170dp"
+        android:hint="텍스트 입력..."
+        android:paddingBottom="150dp"
         android:maxLines="4"
         android:maxLength="500"
         android:inputType="textMultiLine"
         android:scrollHorizontally="false"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1" />
 
@@ -131,23 +144,9 @@
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/show_date_textView"/>
 
-    <Button
-        android:id="@+id/upload_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:onClick="uploadPost"
-        android:text="업로드"
-        android:background="@drawable/big_button"
-        android:textColor="@color/white"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"/>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -165,7 +164,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:theme="@style/AppTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -229,6 +228,23 @@
     </HorizontalScrollView>
 
 
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="uploadPost"
+        android:text="업로드"
+        android:background="@drawable/big_button"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
