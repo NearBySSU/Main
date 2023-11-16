@@ -121,12 +121,13 @@
 
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="uploadPost"
         android:text="업로드"
         android:background="@drawable/big_button"
         android:textColor="@color/white"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
