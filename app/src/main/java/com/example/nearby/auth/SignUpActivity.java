@@ -93,6 +93,7 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("email", email);
         userMap.put("uid", user.getUid());  // 사용자 ID를 추가
+        userMap.put("nickname", user.getUid());  // 사용자 nickname을 ID로 설정
 
         db.collection("users")
                 .document(user.getUid())

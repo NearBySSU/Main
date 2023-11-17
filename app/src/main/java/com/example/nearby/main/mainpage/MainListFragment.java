@@ -38,10 +38,8 @@ public class MainListFragment extends Fragment {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private FirebaseFirestore db;
     private List<Post> postList;
-    private RecyclerView recyclerView;
-    //포스트를 위한 어댑터
-    private PostAdapter postAdapter;
-    //기준 거리
+    private RecyclerView recyclerView; //포스트를 위한 어댑터
+    private PostAdapter postAdapter; //기준 거리
     public float pivot_meter = 1000;
     private FragmentMainListBinding binding;
 
