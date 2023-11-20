@@ -51,23 +51,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_upload_title"/>
 
+<ImageView
+    android:id="@+id/img_line1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@drawable/ic_line"
+    android:layout_marginTop="10dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/recyclerView"/>
 
     <EditText
         android:id="@+id/mainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_text_line"
         android:fontFamily="@font/poppins_light"
         android:hint="텍스트 입력..."
-        android:paddingBottom="150dp"
         android:paddingStart="10dp"
-        android:maxLines="15"
-        android:maxLength="500"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:maxLines="7"
+        android:background="@color/transparent"
         android:inputType="textMultiLine"
         android:scrollHorizontally="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@id/img_line1" />
+
+    <ImageView
+        android:id="@+id/img_line2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_line"
+        android:layout_marginTop="220dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_line1"/>
 
 
     <TextView
@@ -81,7 +97,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainText"/>
+        app:layout_constraintTop_toBottomOf="@+id/img_line2"/>
 
 
     <Button
@@ -98,7 +114,7 @@
         android:layout_marginLeft="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_date"
         app:layout_constraintStart_toEndOf="@+id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/mainText" />
+        app:layout_constraintTop_toBottomOf="@+id/img_line2" />
 
     <TextView
         android:id="@+id/show_date_textView"
@@ -214,7 +230,7 @@
         android:background="@drawable/big_button"
         android:textColor="@color/white"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chipGroupScroll"/>
