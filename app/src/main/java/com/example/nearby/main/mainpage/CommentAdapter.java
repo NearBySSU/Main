@@ -42,6 +42,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 .load(comment.getProfilePicUrl())
                 .circleCrop()
                 .into(holder.ivProfilePic); // 프로필 사진 설정
+
+
     }
 
     @Override
