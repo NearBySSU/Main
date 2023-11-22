@@ -62,6 +62,19 @@ public class MapsFragment extends Fragment {
     private PostItemAdapter postItemAdapter;
     private ImageButton btn_filter;
     OnDataPass dataPasser;
+    private static MapsFragment instance;
+    private String postId;
+
+    public static MapsFragment getInstance() {
+        if (instance == null) {
+            instance = new MapsFragment();
+        }
+        return instance;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -208,10 +221,74 @@ public class MapsFragment extends Fragment {
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                getPosts(location);
+                getPosts(location, () -> {
+                    // post를 모두 로드한 후에 postId에 해당하는 post를 찾습니다.
+                    Post post = findPostById(postId);
+                    if (post != null) {
+                        // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
+                        Toast.makeText(getContext(),"로드 성공", Toast.LENGTH_SHORT).show();
+                        LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 50));
+                    }
+                });
             }
         });
     }
+
+    // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
+    public void getPosts(Location currentLocation, final Runnable callback) {
+        db.collection("posts").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Post> allPosts = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String text = document.getString("text");
+                    double latitude = document.getDouble("latitude");
+                    double longitude = document.getDouble("longitude");
+                    String date = document.getString("date");
+                    String uid = document.getString("uid");
+                    List<String> imagesList = (List<String>) document.get("images");
+                    List<String> likeList = (List<String>) document.get("likes");
+
+                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList,likeList);
+                    allPosts.add(post);
+                }
+
+                for (Post post : allPosts) {
+                    Location postLocation = new Location("");
+                    postLocation.setLatitude(post.getLatitude());
+                    postLocation.setLongitude(post.getLongitude());
+
+                    float distanceInMeters = currentLocation.distanceTo(postLocation);
+
+                    if (distanceInMeters < pivot_meter) {
+                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
+                            mClusterManager.addItem(post);
+                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+                        });
+                        postList.add(post);
+                    }
+                }
+
+                postAdapter.notifyDataSetChanged();
+
+                // 모든 포스트 로딩이 완료되면 callback 함수를 호출합니다.
+                callback.run();
+            }
+        });
+    }
+
+
+
+    //특정 포스트를 찾는 메서드
+    public Post findPostById(String postId) {
+        for (Post post : postList) {
+            if (post.getPostId().equals(postId)) {
+                return post;
+            }
+        }
+        return null;  // postId에 해당하는 post를 찾지 못한 경우 null을 반환합니다.
+    }
+
 
     // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
     public void getPosts(Location currentLocation) {
