@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nearby.databinding.FragmentMapsBinding;
+import com.example.nearby.main.MainPageActivity;
+import com.example.nearby.main.PostLoader;
 import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.R;
@@ -54,26 +58,55 @@ public class MapsFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap mMap;
     private FirebaseFirestore db;
-
     private List<Post> postList;
-    private PostAdapter postAdapter; //포스트를 위한 어댑터
-    public float pivot_meter = 1000; //기준 거리
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
     private ImageButton btn_filter;
     private static MapsFragment instance;
     private String postId;
+    private PostLoader postLoader;
 
-    public static MapsFragment getInstance() {
-        if (instance == null) {
-            instance = new MapsFragment();
-        }
-        return instance;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
-    //post에서 전달 받은 postId를 설정
-    public void setPostId(String postId) {
-        this.postId = postId;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
+
+        // MainPageActivity의 postList를 가져옴
+        postList = ((MainPageActivity) getActivity()).getPostList();
+        Log.d("marker", "count: "+postList.size());
+
+
+
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        db = FirebaseFirestore.getInstance();
+        RecyclerView post_item_recyclerView = view.findViewById(R.id.post_item_recyclerView);
+        SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 post_item_recyclerView에 붙임
+        snapHelper.attachToRecyclerView(post_item_recyclerView);
+        postItemAdapter = new PostItemAdapter();
+        post_item_recyclerView.setAdapter(postItemAdapter);
+        btn_filter = view.findViewById(R.id.btn_filter);
+
+        btn_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+            }
+        });
     }
 
     //지도가 준비 됐을 때의 콜백
@@ -83,6 +116,7 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
+
 
             //위치 권한 확인
             if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
@@ -95,6 +129,22 @@ public class MapsFragment extends Fragment {
             // 클러스터링을 위한 맵의 클릭 리스너 설정
             mMap.setOnCameraIdleListener(mClusterManager);
             mMap.setOnMarkerClickListener(mClusterManager);
+
+            // MainPageActivity의 LiveData 객체를 가져옴
+            ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
+                @Override
+                public void onChanged(List<Post> posts) {
+                    postList = posts;
+
+                    // 마커를 추가합니다.
+                    if (mClusterManager != null) {
+                        mClusterManager.clearItems();
+                        mClusterManager.addItems(postList);
+                        mClusterManager.cluster();
+                        Log.d("marker", "onChanged: ");
+                    }
+                }
+            });
 
             //마커 하나를 클릭했을 때 이벤트
             mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
@@ -124,7 +174,6 @@ public class MapsFragment extends Fragment {
                 }
             });
 
-
             // 지도의 마커 영역 밖을 클릭 했을때 이벤트
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
@@ -136,46 +185,6 @@ public class MapsFragment extends Fragment {
         }
     };
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_maps, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
-        }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        db = FirebaseFirestore.getInstance();
-        postList = new ArrayList<>();
-        RecyclerView recyclerViewBottom = view.findViewById(R.id.bottom_sheet);
-        SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
-        snapHelper.attachToRecyclerView(recyclerViewBottom);
-        postAdapter = new PostAdapter(postList);
-        postItemAdapter = new PostItemAdapter();
-        recyclerViewBottom.setAdapter(postItemAdapter);
-        btn_filter = view.findViewById(R.id.btn_filter);
-
-        btn_filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
-                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
-            }
-        });
-
-        //주변 포스트 로드 시작
-        loadNearbyPosts();
-    }
-
     @SuppressLint("MissingPermission")
     private void moveToLastKnownLocation() {
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
@@ -184,86 +193,25 @@ public class MapsFragment extends Fragment {
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
 
-                //post에서 지도 버튼을 눌러서 로드 됐을 때의 처리
-                getPosts(location, () -> {
-                    if (postId != null) {
-                        // postId가 있을 경우, postId에 해당하는 post를 찾습니다.
-                        Post post = findPostById(postId);
-                        if (post != null) {
-                            // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
-                            Toast.makeText(getContext(),postId+"로드 성공", Toast.LENGTH_SHORT).show();
-                            LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 30));
-                        }
-                        else{
-                            Toast.makeText(getContext(),postId+"로드 실패", Toast.LENGTH_SHORT).show();
-                        }
+                if (postId != null) {
+                    // postId가 있을 경우, postId에 해당하는 post를 찾습니다.
+                    Post post = findPostById(postId);
+                    if (post != null) {
+                        // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
+                        Toast.makeText(getContext(),postId+"로드 성공", Toast.LENGTH_SHORT).show();
+                        LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 30));
                     }
-                });
-            }
-        });
-    }
-
-    //근처 포스트를 로드하는 함수
-    public void loadNearbyPosts() {
-        //위치 권한 체크
-        if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-                getPosts(location,null);
-            }
-        });
-    }
-
-    // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
-    public void getPosts(Location currentLocation,@Nullable final Runnable callback) {
-        db.collection("posts").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<Post> allPosts = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String text = document.getString("text");
-                    double latitude = document.getDouble("latitude");
-                    double longitude = document.getDouble("longitude");
-                    String date = document.getString("date");
-                    String uid = document.getString("uid");
-                    List<String> imagesList = (List<String>) document.get("images");
-                    List<String> likeList = (List<String>) document.get("likes");
-
-                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList,likeList);
-                    allPosts.add(post);
-                }
-
-                Location postLocation = new Location("");
-
-                for (Post post : allPosts) {
-                    postLocation.setLatitude(post.getLatitude());
-                    postLocation.setLongitude(post.getLongitude());
-                    //거리 계산
-                    float distanceInMeters = currentLocation.distanceTo(postLocation);
-
-                    if (distanceInMeters < pivot_meter) {
-                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-                            mClusterManager.addItem(post);
-                            //postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
-                        });
-                        postList.add(post);
+                    else{
+                        Toast.makeText(getContext(),postId+"로드 실패", Toast.LENGTH_SHORT).show();
                     }
                 }
 
-                postAdapter.notifyDataSetChanged();
-
-                // 모든 포스트 로딩이 완료되면 callback 함수를 호출합니다.
-                if (callback != null) {
-                    callback.run();
-                }
             }
         });
     }
 
-
-    //특정 포스트를 찾는 메서드
+    //아이디로 특정 포스트 찾는 메서드
     public Post findPostById(String postId) {
         for (Post post : postList) {
             if (post.getPostId().equals(postId)) {
@@ -272,7 +220,6 @@ public class MapsFragment extends Fragment {
         }
         return null;  // postId에 해당하는 post를 찾지 못한 경우 null을 반환합니다.
     }
-
 
     //user id로 부터 프로필 사진 얻기
     @SuppressLint("RestrictedApi")
@@ -294,5 +241,28 @@ public class MapsFragment extends Fragment {
 
     interface OnProfilePicUrlReceivedListener {
         void onProfilePicUrlReceived(String profilePicUrl);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof PostLoader) {
+            postLoader = (PostLoader) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement PostLoader");
+        }
+    }
+
+    public static MapsFragment getInstance() {
+        if (instance == null) {
+            instance = new MapsFragment();
+        }
+        return instance;
+    }
+
+    //post에서 전달 받은 postId를 설정
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }

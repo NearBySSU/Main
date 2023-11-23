@@ -92,8 +92,6 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
         loadNearbyPosts();
     }
 
-
-
     private void loadNearbyPosts() {
         //위치 권한 확인
         if(!checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE)){

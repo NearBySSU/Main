@@ -71,8 +71,6 @@ public class MainListFragment extends Fragment {
         View rootView = binding.getRoot();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //포스트 리스트 가져오기
-        postList = postLoader.getPostList();
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setAdapter(postAdapter);
 
