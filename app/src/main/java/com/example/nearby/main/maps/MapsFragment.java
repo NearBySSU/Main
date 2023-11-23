@@ -61,7 +61,6 @@ public class MapsFragment extends Fragment {
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
     private ImageButton btn_filter;
-    OnDataPass dataPasser;
     private static MapsFragment instance;
     private String postId;
 
@@ -295,20 +294,5 @@ public class MapsFragment extends Fragment {
 
     interface OnProfilePicUrlReceivedListener {
         void onProfilePicUrlReceived(String profilePicUrl);
-    }
-
-    // 데이터 전송을 위한 Interface 정의
-    public interface OnDataPass {
-        void onDataPass(String data);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnDataPass) {
-            dataPasser = (OnDataPass) context;
-        } else {
-            throw new ClassCastException(context.toString() + " must implement OnDataPass interface");
-        }
     }
 }

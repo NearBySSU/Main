@@ -31,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -41,7 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     FirebaseAuth auth;
 
     public PostAdapter(List<Post> postList) {
-        this.postList = postList;
+        this.postList = postList != null ? postList : new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
     }
@@ -129,7 +130,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public void setPostList(List<Post> postList) {
-        this.postList = postList;
+        this.postList = postList != null ? postList : new ArrayList<>();
         notifyDataSetChanged();
     }
 

@@ -1,30 +1,52 @@
 package com.example.nearby.main;
 
+import static com.example.nearby.Utils.checkLocationPermission;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.nearby.R;
+import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.upload.UploadContentsActivity;
 import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.main.friends.FriendsFragment;
 import com.example.nearby.main.mainpage.MainListFragment;
 import com.example.nearby.main.maps.MapsFragment;
 import com.example.nearby.main.profile.ProfileFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class MainPageActivity extends AppCompatActivity implements MapsFragment.OnDataPass{
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+public class MainPageActivity extends AppCompatActivity implements PostLoader{
     FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
-    private String selectedTag;
+    private List<Post> postList = new ArrayList<>();
+    private FusedLocationProviderClient fusedLocationClient;
+    private FirebaseFirestore db;
+    public float pivot_meter = 1000;
+
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    public MutableLiveData<List<Post>> livePostList = new MutableLiveData<>();
 
 
     @Override
@@ -35,6 +57,9 @@ public class MainPageActivity extends AppCompatActivity implements MapsFragment.
         mainListFragment = new MainListFragment();
         mapsFragment = new MapsFragment();
         profileFragment = new ProfileFragment();
+        db = FirebaseFirestore.getInstance();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
@@ -63,16 +88,67 @@ public class MainPageActivity extends AppCompatActivity implements MapsFragment.
                 return false;
             }
         });
+
+        loadNearbyPosts();
     }
 
-    // 선택된 태그 정보를 업데이트하는 메소드
-    public void updateSelectedTag(String tag) {
-        this.selectedTag = tag;
+
+
+    private void loadNearbyPosts() {
+        //위치 권한 확인
+        if(!checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE)){
+            return;
+        }
+        //현재 위치 가져오기
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                getPosts(location);
+            }
+        });
     }
 
-    //데이터 전송 인터페이스를 구현
+    public void getPosts(Location currentLocation) {
+        db.collection("posts").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                    double latitude = document.getDouble("latitude");
+                    double longitude = document.getDouble("longitude");
+                    Location postLocation = new Location("");
+                    postLocation.setLatitude(latitude);
+                    postLocation.setLongitude(longitude);
+
+                    //거리 재기
+                    float distanceInMeters = currentLocation.distanceTo(postLocation);
+
+                    //거리 비교해서 list에 넣기
+                    if (distanceInMeters < pivot_meter) {
+
+                        //나머지 정보들 로드
+                        String uid = document.getString("uid");
+                        String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
+                        List<String> imageUrls = (List<String>) document.get("imageUrls");
+                        List<String> likeList = (List<String>) document.get("likes");
+                        String text = document.getString("text");
+
+                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList);
+                        postList.add(post);
+                        livePostList.setValue(postList);
+                    }
+                }
+            }
+        });
+    }
+
     @Override
-    public void onDataPass(String data) {
-        // 여기에 data를 처리하는 코드를 작성하세요.
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    @Override
+    public void reloadPostList() {
+        postList.clear();
+        loadNearbyPosts();
     }
 }
+
