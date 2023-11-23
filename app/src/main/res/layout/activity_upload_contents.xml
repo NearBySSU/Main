@@ -138,6 +138,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="기간 별로 보기"

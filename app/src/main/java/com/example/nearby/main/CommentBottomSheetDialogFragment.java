@@ -1,4 +1,4 @@
-package com.example.nearby.main.mainpage;
+package com.example.nearby.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearby.R;
+import com.example.nearby.main.mainpage.Comment;
+import com.example.nearby.main.mainpage.CommentAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
