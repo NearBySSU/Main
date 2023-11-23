@@ -138,9 +138,9 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/date"
             android:text="기간 별로 보기"
             android:textStyle="bold"
             android:layout_marginStart="20dp"
@@ -160,7 +160,7 @@
             app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+                android:id="@+id/chipGroupDate"
                 app:chipSpacingHorizontal="20dp"
                 app:singleSelection="true"
                 android:layout_width="wrap_content"
@@ -241,7 +241,7 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/tag"
+            android:id="@+id/tv_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -262,7 +262,7 @@
             app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup2"
+                android:id="@+id/chipGroupTag"
                 app:chipSpacingHorizontal="30dp"
                 app:singleSelection="true"
                 android:layout_width="wrap_content"
@@ -343,7 +343,7 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/area"
+            android:id="@+id/tv_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -365,7 +365,7 @@
             app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup3"
+                android:id="@+id/chipGroupArea"
                 app:chipSpacingHorizontal="30dp"
                 app:singleSelection="true"
                 android:layout_width="wrap_content"
