@@ -79,27 +79,23 @@ public class MapsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
-        }
-
-        // MainPageActivity의 postList를 가져옴
-        postList = ((MainPageActivity) getActivity()).getPostList();
-        Log.d("marker", "count: "+postList.size());
-
-
-
-
+        postList = ((MainPageActivity) getActivity()).getPostList();    // MainPageActivity의 postList를 가져옴
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         RecyclerView post_item_recyclerView = view.findViewById(R.id.post_item_recyclerView);
-        SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 post_item_recyclerView에 붙임
+        SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(post_item_recyclerView);
         postItemAdapter = new PostItemAdapter();
         post_item_recyclerView.setAdapter(postItemAdapter);
         btn_filter = view.findViewById(R.id.btn_filter);
 
+        //지도 로드를 위해 지도 콜백 호출
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
+
+        //필터 버튼의 클릭 리스너
         btn_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,12 +113,12 @@ public class MapsFragment extends Fragment {
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
 
-
             //위치 권한 확인
             if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
                 return;
             }
 
+            //현재 내 위치 추적 활성화
             mMap.setMyLocationEnabled(true);
             moveToLastKnownLocation();
 
@@ -134,14 +130,13 @@ public class MapsFragment extends Fragment {
             ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
                 @Override
                 public void onChanged(List<Post> posts) {
+                    //포스트 리스트 가져오기
                     postList = posts;
-
                     // 마커를 추가합니다.
                     if (mClusterManager != null) {
                         mClusterManager.clearItems();
                         mClusterManager.addItems(postList);
                         mClusterManager.cluster();
-                        Log.d("marker", "onChanged: ");
                     }
                 }
             });
@@ -151,6 +146,7 @@ public class MapsFragment extends Fragment {
                 @Override
                 public boolean onClusterItemClick(Post post) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
+                    //포스트의 uid이용해 유저의 ProfilePicUrl 로드하고 adapter에 추가
                     getProfilePicUrl(post.getUserId(), profilePicUrl -> {
                         postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
                         postItemAdapter.notifyDataSetChanged();
@@ -206,7 +202,6 @@ public class MapsFragment extends Fragment {
                         Toast.makeText(getContext(),postId+"로드 실패", Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
         });
     }
