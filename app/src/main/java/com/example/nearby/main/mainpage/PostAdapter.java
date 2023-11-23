@@ -1,8 +1,5 @@
 package com.example.nearby.main.mainpage;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +16,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
-import com.example.nearby.main.maps.MapsFragment;
+import com.example.nearby.main.CommentBottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;

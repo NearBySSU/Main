@@ -81,6 +81,4 @@ public class MainPageActivity extends AppCompatActivity implements MapsFragment.
     public void onDataPass(String data) {
         // 여기에 data를 처리하는 코드를 작성하세요.
     }
-
-
 }
