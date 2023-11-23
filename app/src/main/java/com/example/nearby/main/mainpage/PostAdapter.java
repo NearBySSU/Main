@@ -3,6 +3,8 @@ package com.example.nearby.main.mainpage;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +23,15 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.maps.MapsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -36,7 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     FirebaseAuth auth;
 
     public PostAdapter(List<Post> postList) {
-        this.postList = postList;
+        this.postList = postList != null ? postList : new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
     }
@@ -124,7 +130,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public void setPostList(List<Post> postList) {
-        this.postList = postList;
+        this.postList = postList != null ? postList : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -138,7 +144,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
-        SnapHelper snapHelper; // SnapHelper를 ViewHolder에 추가
 
 
         public ViewHolder(View view) {
@@ -168,6 +173,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Post post = postList.get(getAdapterPosition());
                 String uid = auth.getUid();
                 checkLikeStatus(post.getPostId(), uid, likeButton);
+            });
+
+            btnMap.setOnClickListener(v -> {
+                Post post = postList.get(getAdapterPosition());
+
+                // MapsFragment의 인스턴스를 가져옵니다.
+                MapsFragment mapsFragment = MapsFragment.getInstance();
+
+                // 포스트 아이디를 설정합니다.
+                mapsFragment.setPostId(post.getPostId());
+
+                // 화면을 MapsFragment로 전환합니다.
+                ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containers, mapsFragment) // 'R.id.containers'는 실제로 프래그먼트를 교체할 레이아웃의 id로 교체해주세요.
+                        .addToBackStack(null)
+                        .commit();
+
+                // 하단 네비게이션의 선택된 아이템을 변경합니다.
+                BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
+                bottomNavigationView.setSelectedItemId(R.id.MapNav); // 'R.id.MapNav'는 실제로 MapsFragment에 해당하는 메뉴 아이템의 id로 교체해주세요.
             });
         }
     }

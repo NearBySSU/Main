@@ -42,7 +42,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         MainPageActivity activity = (MainPageActivity) getActivity();
         if (activity != null) {
-            activity.updateSelectedTag(selectedChipText); //MainActivity로 변경사항 전달
+            //activity.updateSelectedTag(selectedChipText); //MainActivity로 변경사항 전달
         }
     }
 }

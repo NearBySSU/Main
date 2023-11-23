@@ -42,8 +42,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 .load(comment.getProfilePicUrl())
                 .circleCrop()
                 .into(holder.ivProfilePic); // 프로필 사진 설정
-
-
     }
 
     @Override
@@ -55,7 +53,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         TextView tvCommentText; // 댓글 내용 텍스트뷰
         TextView tvTimestamp; // 댓글 작성 시간 텍스트뷰
         ImageView ivProfilePic; // 댓글 작성자의 프로필 사진 이미지뷰
-
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
