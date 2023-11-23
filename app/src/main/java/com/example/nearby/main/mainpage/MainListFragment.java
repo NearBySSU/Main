@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nearby.databinding.FragmentMainListBinding;
+import com.example.nearby.main.maps.MyBottomSheetDialogFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +43,9 @@ public class MainListFragment extends Fragment {
     private PostAdapter postAdapter; //기준 거리
     public float pivot_meter = 1000;
     private FragmentMainListBinding binding;
+
+    private String selectedTag = null; // 선택된 태그
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +94,14 @@ public class MainListFragment extends Fragment {
 //            }
 //        });
 
+        binding.btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+            }
+        });
+
         //포스트 로드하기
         loadNearbyPosts();
         return rootView;
@@ -129,25 +141,31 @@ public class MainListFragment extends Fragment {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
+                    List<String> tags = (List<String>) document.get("tags"); // 태그 정보를 읽어옵니다.
 
-                    String text = document.getString("text");
-                    double latitude = document.getDouble("latitude");
-                    double longitude = document.getDouble("longitude");
-                    String uid = document.getString("uid");
-                    String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
-                    List<String> imageUrls = (List<String>) document.get("imageUrls");
-                    List<String> likeList = (List<String>) document.get("likes");
-                    Location postLocation = new Location("");
-                    postLocation.setLatitude(latitude);
-                    postLocation.setLongitude(longitude);
 
-                    //거리 재기
-                    float distanceInMeters = currentLocation.distanceTo(postLocation);
+                    // 선택된 태그가 없거나, 게시물의 태그 중 선택된 태그가 있다면 게시물을 추가합니다.
+                    if (selectedTag == null || (tags != null && tags.contains(selectedTag))) {
 
-                    //거리 비교해서 list에 넣기
-                    if (distanceInMeters < pivot_meter) {
-                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList);
-                        postList.add(post);
+                        String text = document.getString("text");
+                        double latitude = document.getDouble("latitude");
+                        double longitude = document.getDouble("longitude");
+                        String uid = document.getString("uid");
+                        String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
+                        List<String> imageUrls = (List<String>) document.get("imageUrls");
+                        List<String> likeList = (List<String>) document.get("likes");
+                        Location postLocation = new Location("");
+                        postLocation.setLatitude(latitude);
+                        postLocation.setLongitude(longitude);
+
+                        //거리 재기
+                        float distanceInMeters = currentLocation.distanceTo(postLocation);
+
+                        //거리 비교해서 list에 넣기
+                        if (distanceInMeters < pivot_meter) {
+                            Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList);
+                            postList.add(post);
+                        }
                     }
                 }
                 postAdapter.notifyDataSetChanged();
@@ -162,6 +180,14 @@ public class MainListFragment extends Fragment {
             requestPermissions(
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
+        }
+    }
+
+    public void setSelectedTag(String tag) {
+        this.selectedTag = tag;
+        if(getActivity() != null) {
+            Toast.makeText(getActivity(), "태그 반영 됨!", Toast.LENGTH_SHORT).show();
+            loadNearbyPosts(); // 태그가 변경되면 게시물을 다시 로드합니다.
         }
     }
 
