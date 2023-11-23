@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -73,6 +74,11 @@ public class UploadContentsActivity extends AppCompatActivity {
     String selectedDate;
     String uid;
 
+    // Chip 필터링을 위한 변수 선언
+//   ChipGroup chipGroupDate = binding.chipGroupDate;
+//   ChipGroup chipGroupTag = binding.chipGroupTag;
+//   ChipGroup chipGroupArea = binding.chipGroupArea;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +106,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Chip chip = (Chip) chipGroup.getChildAt(i);
                     if (chip.isChecked()) {
                         checkedTags.add(chip.getText().toString());
+
                     }
                 }
                 if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("") ){
@@ -266,6 +273,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         post.put("longitude", longitude);
         post.put("uid", uid);
         post.put("tags",checkedTags);
+
         return post;
     }
 
