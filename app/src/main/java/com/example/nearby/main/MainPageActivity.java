@@ -73,7 +73,6 @@ public class MainPageActivity extends AppCompatActivity implements MapsFragment.
     // 선택된 태그 정보를 업데이트하는 메소드
     public void updateSelectedTag(String tag) {
         this.selectedTag = tag;
-        mainListFragment.setSelectedTag(tag); // 태그 업데이트
     }
 
     //데이터 전송 인터페이스를 구현

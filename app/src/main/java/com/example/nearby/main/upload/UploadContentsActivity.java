@@ -72,12 +72,6 @@ public class UploadContentsActivity extends AppCompatActivity {
     Uri imageUri;
     String selectedDate;
     String uid;
-
-    // Chip 필터링을 위한 변수 선언
-//   ChipGroup chipGroupDate = binding.chipGroupDate;
-//   ChipGroup chipGroupTag = binding.chipGroupTag;
-//   ChipGroup chipGroupArea = binding.chipGroupArea;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
