@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 public class Utils {
+    //위치 권한 확인 함수
     public static boolean checkLocationPermission(Activity activity, int requestCode) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -19,6 +20,7 @@ public class Utils {
         return true;
     }
 
+    //위치 권한 요청 함수
     public static void requestLocationPermission(Activity activity, int requestCode) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

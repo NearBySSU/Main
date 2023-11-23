@@ -85,7 +85,7 @@ public class MapsFragment extends Fragment {
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
 
-            //위치권한 확인 후 내 위치 표시
+            //위치 권한 확인
             if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
                 return;
             }
@@ -213,13 +213,13 @@ public class MapsFragment extends Fragment {
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                getPosts(location);
+                getPosts(location,null);
             }
         });
     }
 
     // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
-    public void getPosts(Location currentLocation, final Runnable callback) {
+    public void getPosts(Location currentLocation,@Nullable final Runnable callback) {
         db.collection("posts").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Post> allPosts = new ArrayList<>();
@@ -236,17 +236,18 @@ public class MapsFragment extends Fragment {
                     allPosts.add(post);
                 }
 
+                Location postLocation = new Location("");
+
                 for (Post post : allPosts) {
-                    Location postLocation = new Location("");
                     postLocation.setLatitude(post.getLatitude());
                     postLocation.setLongitude(post.getLongitude());
-
+                    //거리 계산
                     float distanceInMeters = currentLocation.distanceTo(postLocation);
 
                     if (distanceInMeters < pivot_meter) {
                         getProfilePicUrl(post.getUserId(), profilePicUrl -> {
                             mClusterManager.addItem(post);
-                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+                            //postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
                         });
                         postList.add(post);
                     }
@@ -255,7 +256,9 @@ public class MapsFragment extends Fragment {
                 postAdapter.notifyDataSetChanged();
 
                 // 모든 포스트 로딩이 완료되면 callback 함수를 호출합니다.
-                callback.run();
+                if (callback != null) {
+                    callback.run();
+                }
             }
         });
     }
@@ -270,49 +273,6 @@ public class MapsFragment extends Fragment {
         }
         return null;  // postId에 해당하는 post를 찾지 못한 경우 null을 반환합니다.
     }
-
-
-
-
-    // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
-    public void getPosts(Location currentLocation) {
-        db.collection("posts").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<Post> allPosts = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String text = document.getString("text");
-                    double latitude = document.getDouble("latitude");
-                    double longitude = document.getDouble("longitude");
-                    String date = document.getString("date");
-                    String uid = document.getString("uid");
-                    List<String> imagesList = (List<String>) document.get("images");
-                    List<String> likeList = (List<String>) document.get("likes");
-
-                    Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imagesList,likeList);
-                    allPosts.add(post);
-                }
-
-                for (Post post : allPosts) {
-                    Location postLocation = new Location("");
-                    postLocation.setLatitude(post.getLatitude());
-                    postLocation.setLongitude(post.getLongitude());
-
-                    float distanceInMeters = currentLocation.distanceTo(postLocation);
-
-                    if (distanceInMeters < pivot_meter) {
-                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-                            mClusterManager.addItem(post);
-                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
-                        });
-                        postList.add(post);
-                    }
-                }
-
-                postAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
 
 
     //user id로 부터 프로필 사진 얻기
