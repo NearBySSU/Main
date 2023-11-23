@@ -27,11 +27,14 @@
         android:id="@+id/btn_filter"
         android:layout_width="60dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/round_btn"
         android:backgroundTint="@color/firstColor"
-        android:src="@drawable/ic_filter_lines"
-        android:scaleType="fitCenter"
         android:padding="5dp"
-        android:layout_margin="20dp" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_filter_lines" />
 
 </RelativeLayout>
