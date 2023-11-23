@@ -2,6 +2,9 @@ package com.example.nearby.main.mainpage;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
+import static com.example.nearby.Utils.checkLocationPermission;
+import static com.example.nearby.Utils.requestLocationPermission;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -56,9 +59,7 @@ public class MainListFragment extends Fragment {
         binding.recyclerView.setAdapter(postAdapter);
 
         //위치 권한 요청
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermission();
-        }
+        checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION);
 
         //스와이프 이벤트
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,16 +154,6 @@ public class MainListFragment extends Fragment {
                 postAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    //위치 권한 요청 함수
-    private void requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION_PERMISSION);
-        }
     }
 
 }

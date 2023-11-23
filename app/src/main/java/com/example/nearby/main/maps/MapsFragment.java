@@ -2,6 +2,8 @@ package com.example.nearby.main.maps;
 
 import static androidx.fragment.app.FragmentManager.TAG;
 
+import static com.example.nearby.Utils.checkLocationPermission;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -54,10 +56,8 @@ public class MapsFragment extends Fragment {
     private FirebaseFirestore db;
 
     private List<Post> postList;
-    //포스트를 위한 어댑터
-    private PostAdapter postAdapter;
-    //기준 거리
-    public float pivot_meter = 1000;
+    private PostAdapter postAdapter; //포스트를 위한 어댑터
+    public float pivot_meter = 1000; //기준 거리
     private ClusterManager<Post> mClusterManager;
     private PostItemAdapter postItemAdapter;
     private ImageButton btn_filter;
@@ -72,11 +72,12 @@ public class MapsFragment extends Fragment {
         return instance;
     }
 
+    //post에서 전달 받은 postId를 설정
     public void setPostId(String postId) {
         this.postId = postId;
     }
 
-
+    //지도가 준비 됐을 때의 콜백
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -84,15 +85,13 @@ public class MapsFragment extends Fragment {
             mClusterManager = new ClusterManager<Post>(getActivity(), mMap);
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
 
-
-            //위치권한 확인
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestLocationPermission();
-            } else {
-                mMap.setMyLocationEnabled(true);
-                moveToLastKnownLocation();
+            //위치권한 확인 후 내 위치 표시
+            if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
+                return;
             }
+
+            mMap.setMyLocationEnabled(true);
+            moveToLastKnownLocation();
 
             // 클러스터링을 위한 맵의 클릭 리스너 설정
             mMap.setOnCameraIdleListener(mClusterManager);
@@ -110,7 +109,6 @@ public class MapsFragment extends Fragment {
                     return false;
                 }
             });
-
 
             //클러스터 덩어리를 클릭했을때 이벤트
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
@@ -151,12 +149,6 @@ public class MapsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //위치권한 확인
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(),"현위치 가져오기 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
-            requestLocationPermission();
-        }
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
@@ -183,54 +175,45 @@ public class MapsFragment extends Fragment {
 
         //주변 포스트 로드 시작
         loadNearbyPosts();
-
     }
 
-
-
-    //위치권한 요청 함수
-    private void requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION_PERMISSION);
-        }
-    }
-
-
+    @SuppressLint("MissingPermission")
     private void moveToLastKnownLocation() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
+                //현재 위치로 카메라 세팅
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+
+                //post에서 지도 버튼을 눌러서 로드 됐을 때의 처리
+                getPosts(location, () -> {
+                    if (postId != null) {
+                        // postId가 있을 경우, postId에 해당하는 post를 찾습니다.
+                        Post post = findPostById(postId);
+                        if (post != null) {
+                            // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
+                            Toast.makeText(getContext(),postId+"로드 성공", Toast.LENGTH_SHORT).show();
+                            LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 30));
+                        }
+                        else{
+                            Toast.makeText(getContext(),postId+"로드 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
 
     //근처 포스트를 로드하는 함수
     public void loadNearbyPosts() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(),"포스트 로드 실패! 위치권한을 허용해 주세요",Toast.LENGTH_SHORT).show();
+        //위치 권한 체크
+        if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
             return;
         }
-
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                getPosts(location, () -> {
-                    // post를 모두 로드한 후에 postId에 해당하는 post를 찾습니다.
-                    Post post = findPostById(postId);
-                    if (post != null) {
-                        // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
-                        Toast.makeText(getContext(),"로드 성공", Toast.LENGTH_SHORT).show();
-                        LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 50));
-                    }
-                });
+                getPosts(location);
             }
         });
     }
@@ -278,7 +261,6 @@ public class MapsFragment extends Fragment {
     }
 
 
-
     //특정 포스트를 찾는 메서드
     public Post findPostById(String postId) {
         for (Post post : postList) {
@@ -288,6 +270,8 @@ public class MapsFragment extends Fragment {
         }
         return null;  // postId에 해당하는 post를 찾지 못한 경우 null을 반환합니다.
     }
+
+
 
 
     // 현재 위치와 거리를 재서, 일정 위치 안에 있는 포스트만 postList에 추가
