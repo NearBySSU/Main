@@ -64,6 +64,7 @@ public class MapsFragment extends Fragment {
     private ImageButton btn_filter;
     private static MapsFragment instance;
     private String postId;
+    SnapHelper snapHelper;
     private PostLoader postLoader;
 
 
@@ -83,7 +84,7 @@ public class MapsFragment extends Fragment {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         db = FirebaseFirestore.getInstance();
         RecyclerView post_item_recyclerView = view.findViewById(R.id.post_item_recyclerView);
-        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(post_item_recyclerView);
         postItemAdapter = new PostItemAdapter();
         post_item_recyclerView.setAdapter(postItemAdapter);
@@ -104,6 +105,15 @@ public class MapsFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        postLoader = null;
+    }
+
+
+
 
     //지도가 준비 됐을 때의 콜백
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -143,34 +153,28 @@ public class MapsFragment extends Fragment {
                 });
             }
 
-            //마커 하나를 클릭했을 때 이벤트
             mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
                 @Override
                 public boolean onClusterItemClick(Post post) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
-                    //포스트의 uid이용해 유저의 ProfilePicUrl 로드하고 adapter에 추가
-                    getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-                        postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
-                        postItemAdapter.notifyDataSetChanged();
-                    });
+                    loadProfilePicAndAddItem(post);
+                    postItemAdapter.notifyDataSetChanged();
                     return false;
                 }
             });
 
-            //클러스터 덩어리를 클릭했을때 이벤트
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
                 @Override
                 public boolean onClusterClick(Cluster<Post> cluster) {
                     postItemAdapter.clearItems();  // 아이템을 초기화합니다.
                     for (Post post : cluster.getItems()) {
-                        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-                            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
-                        });
+                        loadProfilePicAndAddItem(post);
                     }
                     postItemAdapter.notifyDataSetChanged();
                     return false;
                 }
             });
+
 
             // 지도의 마커 영역 밖을 클릭 했을때 이벤트
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -182,6 +186,13 @@ public class MapsFragment extends Fragment {
             });
         }
     };
+
+    private void loadProfilePicAndAddItem(Post post) {
+        getProfilePicUrl(post.getUserId(), profilePicUrl -> {
+            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+        });
+    }
+
 
     @SuppressLint("MissingPermission")
     private void moveToLastKnownLocation() {
@@ -197,11 +208,8 @@ public class MapsFragment extends Fragment {
                     if (post != null) {
                         // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
                         Toast.makeText(getContext(),postId+"로드 성공", Toast.LENGTH_SHORT).show();
-                        LatLng postLocation = new LatLng(post.getLatitude(), post.getLongitude());
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 30));
-                    }
-                    else{
-                        Toast.makeText(getContext(),postId+"로드 실패", Toast.LENGTH_SHORT).show();
+                        LatLng postLocation = new LatLng(post.getLatitude(),post.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(postLocation, 10));
                     }
                 }
             }
