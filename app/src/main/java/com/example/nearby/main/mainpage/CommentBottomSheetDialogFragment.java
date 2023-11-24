@@ -26,9 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-
 public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private FirebaseFirestore db;
@@ -36,7 +33,6 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private RecyclerView recyclerView; // 댓글 리스트를 보여줄 RecyclerView
     private CommentAdapter commentAdapter; // 댓글 리스트를 관리할 Adapter
     FirebaseAuth mAuth;
-
 
     public CommentBottomSheetDialogFragment() {
     }

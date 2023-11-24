@@ -30,6 +30,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
+import com.example.nearby.main.maps.MyBottomSheetDialogFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -68,7 +69,6 @@ public class MainListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMainListBinding.inflate(inflater, container, false);
-        View rootView = binding.getRoot();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         postAdapter = new PostAdapter(postList);
@@ -115,7 +115,16 @@ public class MainListFragment extends Fragment {
 //            }
 //        });
 
-        return rootView;
+        //필터 버튼의 클릭 리스너
+        binding.btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+            }
+        });
+
+        return binding.getRoot();
     }
 
     @SuppressLint("MissingPermission")
