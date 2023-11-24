@@ -85,7 +85,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         uid = user.getUid();
         recyclerView = binding.recyclerView;
-        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        ChipGroup chipGroup = findViewById(R.id.chipGroupTag);
         chipGroup.setSingleSelection(false);
 
         //위치권한 확인
