@@ -3,7 +3,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -58,10 +57,10 @@
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
+
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="전체"/>
 
 
@@ -73,10 +72,10 @@
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
+
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="6개월 이내"/>
 
             <com.google.android.material.chip.Chip
@@ -88,7 +87,7 @@
                 app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="1년 이내"/>
 
             <com.google.android.material.chip.Chip
@@ -100,7 +99,7 @@
                 app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="3년 이내"/>
 
             <com.google.android.material.chip.Chip
@@ -113,7 +112,7 @@
                 android:layout_marginEnd="20dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="직접 설정"/>
 
         </com.google.android.material.chip.ChipGroup>
@@ -143,7 +142,7 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup2"
-            app:chipSpacingHorizontal="30dp"
+            app:chipSpacingHorizontal="20dp"
             app:singleSelection="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -161,10 +160,9 @@
                 app:chipStartPadding="20dp"
                 app:chipEndPadding="20dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="맛집"/>
 
 
@@ -176,10 +174,9 @@
                 app:chipStartPadding="20dp"
                 app:chipEndPadding="20dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="여행"/>
 
             <com.google.android.material.chip.Chip
@@ -191,7 +188,7 @@
                 app:chipEndPadding="20dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="일상"/>
 
             <com.google.android.material.chip.Chip
@@ -203,7 +200,7 @@
                 app:chipEndPadding="20dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="추억"
                 android:layout_marginEnd="20dp" />
 
@@ -216,7 +213,7 @@
                 app:chipEndPadding="20dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="태그 추가"/>
 
         </com.google.android.material.chip.ChipGroup>
@@ -247,7 +244,7 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup3"
-            app:chipSpacingHorizontal="30dp"
+            app:chipSpacingHorizontal="20dp"
             app:singleSelection="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -265,10 +262,9 @@
                 app:chipStartPadding="20dp"
                 app:chipEndPadding="20dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="가까이"/>
 
 
@@ -280,10 +276,9 @@
                 app:chipStartPadding="20dp"
                 app:chipEndPadding="20dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="적당히"/>
 
             <com.google.android.material.chip.Chip
@@ -295,13 +290,14 @@
                 app:chipEndPadding="20dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="멀리"/>
 
         </com.google.android.material.chip.ChipGroup>
 
-    </HorizontalScrollView>
+        </HorizontalScrollView>
 
-</LinearLayout>
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>
 
