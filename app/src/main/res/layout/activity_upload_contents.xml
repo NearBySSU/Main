@@ -151,7 +151,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_chip_title">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+            android:id="@+id/chipGroupTag"
             app:chipSpacingHorizontal="20dp"
             app:singleSelection="true"
             android:layout_marginLeft="20dp"
@@ -171,10 +171,9 @@
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/thirdColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="일상"/>
 
 
@@ -186,10 +185,9 @@
                 app:chipStartPadding="10dp"
                 app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/thirdColor"
-                app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="맛집"/>
 
             <com.google.android.material.chip.Chip
@@ -201,7 +199,7 @@
                 app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="여행"/>
 
             <com.google.android.material.chip.Chip
@@ -213,7 +211,7 @@
                 app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="직접입력"/>
 
         </com.google.android.material.chip.ChipGroup>

@@ -25,11 +25,9 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBottomSheetDialogBinding.inflate(inflater, container, false);
 
-        ChipGroup chipGroupDate = binding.chipGroupDate;
-//        ChipGroup chipGroupTag = binding.chipGroupTag;
-//        ChipGroup chipGroupArea = binding.chipGroupArea;
+        ChipGroup chipGroupTag = binding.chipGroupTag;
 
-        chipGroupDate.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        chipGroupTag.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 Chip chip = group.findViewById(checkedId);
@@ -38,7 +36,6 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                 }
             }
         });
-
 
         return binding.getRoot();
     }
