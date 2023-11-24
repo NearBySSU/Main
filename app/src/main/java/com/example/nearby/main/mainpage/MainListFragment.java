@@ -6,6 +6,7 @@ import static com.example.nearby.Utils.checkLocationPermission;
 import static com.example.nearby.Utils.requestLocationPermission;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +46,6 @@ public class MainListFragment extends Fragment {
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private FragmentMainListBinding binding;
@@ -73,6 +73,9 @@ public class MainListFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setAdapter(postAdapter);
+
+        //현재 위치 띄우기
+        setLocationTv();
 
         // MainPageActivity의 LiveData 객체를 가져옴
         ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
@@ -115,6 +118,28 @@ public class MainListFragment extends Fragment {
         return rootView;
     }
 
+    @SuppressLint("MissingPermission")
+    private void setLocationTv(){
+        //권한 체크
+        if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
+            return;
+        }
 
-
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                try {
+                    Geocoder geocoder = new Geocoder(getActivity(), Locale.KOREAN);
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    if (!addresses.isEmpty()) { // 추가: Address 리스트가 비어 있지 않을 때만 처리하도록 합니다.
+                        String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.
+                        String locality = addresses.get(0).getSubLocality(); // '성북구'와 같은 정보를 가져옵니다.
+                        binding.tvLocationTitle.setText(adminArea);
+                        binding.tvLocationCity.setText(locality);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
