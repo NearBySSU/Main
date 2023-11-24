@@ -127,19 +127,21 @@ public class MapsFragment extends Fragment {
             mMap.setOnMarkerClickListener(mClusterManager);
 
             // MainPageActivity의 LiveData 객체를 가져옴
-            ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
-                @Override
-                public void onChanged(List<Post> posts) {
-                    //포스트 리스트 가져오기
-                    postList = posts;
-                    // 마커를 추가합니다.
-                    if (mClusterManager != null) {
-                        mClusterManager.clearItems();
-                        mClusterManager.addItems(postList);
-                        mClusterManager.cluster();
+            if (getView() != null) {
+                ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
+                    @Override
+                    public void onChanged(List<Post> posts) {
+                        //포스트 리스트 가져오기
+                        postList = posts;
+                        // 마커를 추가합니다.
+                        if (mClusterManager != null) {
+                            mClusterManager.clearItems();
+                            mClusterManager.addItems(postList);
+                            mClusterManager.cluster();
+                        }
                     }
-                }
-            });
+                });
+            }
 
             //마커 하나를 클릭했을 때 이벤트
             mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
