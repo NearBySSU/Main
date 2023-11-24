@@ -47,6 +47,18 @@
             app:layout_constraintTop_toBottomOf="@id/post_date"
             app:layout_constraintStart_toEndOf="@id/profile_pic"/>
 
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="37dp"
+            android:text="see it"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_button_blue"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

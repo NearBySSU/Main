@@ -58,7 +58,6 @@ public class UploadContentsActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final String TAG = "UploadContentsActivity";
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
-
     ArrayList<String> checkedTags = new ArrayList<>();    // 체크된 Chip들의 ID를 저장할 ArrayList 생성
 
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
@@ -109,11 +108,11 @@ public class UploadContentsActivity extends AppCompatActivity {
             }
         }
 
-
         recyclerView = binding.recyclerView;
-        ChipGroup chipGroup = findViewById(R.id.chipGroup);
-        chipGroup.setSingleSelection(false);
 
+        ChipGroup chipGroupTag = binding.chipGroupTag;
+
+        chipGroupTag.setSingleSelection(false);
 
         //업로드 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -121,15 +120,13 @@ public class UploadContentsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //체크된 태그들을 배열에 담기
-                for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) chipGroup.getChildAt(i);
+                for (int i = 0; i < chipGroupTag.getChildCount(); i++) {
+                    Chip chip = (Chip) chipGroupTag.getChildAt(i);
                     if (chip.isChecked()) {
                         checkedTags.add(chip.getText().toString());
-
                     }
                 }
                 if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
-
                     uploadPost();
                 }
                 else{
@@ -180,7 +177,6 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Log.e("single choice: ", String.valueOf(data.getData()));
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
-
 
                     adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                     recyclerView.setAdapter(adapter);

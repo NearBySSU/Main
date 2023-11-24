@@ -14,6 +14,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +30,10 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.auth.LogInActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,7 +43,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -48,19 +55,38 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
+    private String uid;
     private ProgressDialog progressDialog;
+    private RecyclerView recyclerView;
+    private ProfileAdapter profileAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static final String TAG = "ProfileFragment";
 
     private Toolbar toolbar;
 
+    private ArrayList<String> imageUrlList = new ArrayList<>();
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+//        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        toolbar = view.findViewById(R.id.top_app_bar);
+        setHasOptionsMenu(true);
+        storage = FirebaseStorage.getInstance();
+        db = FirebaseFirestore.getInstance();
+        // ProgressDialog 초기화
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("프로필 이미지 변경 중...");
+
+        toolbar = rootView.findViewById(R.id.top_app_bar);
         mAuth = FirebaseAuth.getInstance();
+        recyclerView = rootView.findViewById(R.id.recyclerView);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
+
 
         // 상단 바 눌렀을 때의 버튼 처리
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -87,7 +113,69 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        return view;
+
+        // recyclerView 등록
+        profileAdapter = new ProfileAdapter(getContext(), imageUrlList);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setAdapter(profileAdapter);
+
+        // 스와이프 이벤트
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public void onRefresh() {
+                imageUrlList.clear();
+                profileAdapter.setImageUrlList(imageUrlList);
+                addProfileList();
+//                Log.d("ODG", imageUrlList.get(1));
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
+        // profile img list 로드 하기
+        imageUrlList.clear();
+        profileAdapter.notifyDataSetChanged();
+
+        addProfileList();
+
+        return rootView;
+    }
+
+    private void addProfileList() {
+        db = FirebaseFirestore.getInstance();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        List<String> postIds = (List<String>) document.get("postIds");
+                        for (String postId : postIds) {
+                            db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    ArrayList<String> imageUrls = (ArrayList<String>) documentSnapshot.get("imageUrls");
+                                    if (imageUrls == null) {
+                                        // If "imageUrls" field doesn't exist, create it as an empty list
+                                        imageUrls = new ArrayList<>();
+                                        documentSnapshot.getReference().update("imageUrls", imageUrls);
+                                    }
+                                    if (imageUrls.size() > 0) {
+                                        imageUrlList.add(imageUrls.get(0));
+                                        Log.d("ODG", imageUrlList.get(0));
+                                        profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -96,16 +184,16 @@ public class ProfileFragment extends Fragment {
         inflater.inflate(R.menu.menu_profile_app_bar, menu);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        storage = FirebaseStorage.getInstance();
-        db = FirebaseFirestore.getInstance();
-        // ProgressDialog 초기화
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("프로필 이미지 변경 중...");
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//        storage = FirebaseStorage.getInstance();
+//        db = FirebaseFirestore.getInstance();
+//        // ProgressDialog 초기화
+//        progressDialog = new ProgressDialog(getActivity());
+//        progressDialog.setMessage("프로필 이미지 변경 중...");
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

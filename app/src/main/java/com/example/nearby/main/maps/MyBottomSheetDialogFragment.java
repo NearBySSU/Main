@@ -11,20 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.nearby.R;
+import com.example.nearby.databinding.FragmentBottomSheetDialogBinding;
+import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
+    private FragmentBottomSheetDialogBinding binding;
     String selectedChipText;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bottom_sheet_dialog, container, false);
+        binding = FragmentBottomSheetDialogBinding.inflate(inflater, container, false);
 
-        ChipGroup chipGroup = view.findViewById(R.id.chipGroup);
+        ChipGroup chipGroupDate = binding.chipGroupDate;
+//        ChipGroup chipGroupTag = binding.chipGroupTag;
+//        ChipGroup chipGroupArea = binding.chipGroupArea;
 
-        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        chipGroupDate.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 Chip chip = group.findViewById(checkedId);
@@ -33,7 +38,9 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                 }
             }
         });
-        return view;
+
+
+        return binding.getRoot();
     }
 
     //다이얼로그가 없어졌을때의 동작 정의
@@ -42,7 +49,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         MainPageActivity activity = (MainPageActivity) getActivity();
         if (activity != null) {
-            activity.updateSelectedTag(selectedChipText); //MainActivity로 변경사항 전달
+        //    activity.updateSelectedTag(selectedChipText); //MainActivity로 변경사항 전달
         }
     }
 }
