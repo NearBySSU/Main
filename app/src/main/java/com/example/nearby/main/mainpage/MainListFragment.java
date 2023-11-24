@@ -46,7 +46,6 @@ public class MainListFragment extends Fragment {
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private FragmentMainListBinding binding;

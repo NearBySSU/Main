@@ -42,7 +42,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
     private List<Post> postList = new ArrayList<>();
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore db;
-    public float pivot_meter = 1000;
+    public float pivot_meter = 5000;
 
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -127,9 +127,10 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                         String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
                         List<String> imageUrls = (List<String>) document.get("imageUrls");
                         List<String> likeList = (List<String>) document.get("likes");
+                        List<String> tags = (List<String>) document.get("tags");
                         String text = document.getString("text");
 
-                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList);
+                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList,tags);
                         postList.add(post);
                         livePostList.setValue(postList);
                     }
