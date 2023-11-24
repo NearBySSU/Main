@@ -1,7 +1,5 @@
 package com.example.nearby.main.upload;
 
-import static com.example.nearby.Utils.checkLocationPermission;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,8 +55,8 @@ import java.util.UUID;
 
 public class UploadContentsActivity extends AppCompatActivity {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private static final String TAG = "UploadContentsActivity";
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     ArrayList<String> checkedTags = new ArrayList<>();    // 체크된 Chip들의 ID를 저장할 ArrayList 생성
 
@@ -79,38 +77,14 @@ public class UploadContentsActivity extends AppCompatActivity {
         binding = ActivityUploadContentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         recyclerView = binding.recyclerView;
+
+
         uriList.add(null); // 마지막에 null 항목 추가
+
         adapter = new MultiImageAdapter(uriList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
-        uid = user.getUid();
-        recyclerView = binding.recyclerView;
-        ChipGroup chipGroup = findViewById(R.id.chipGroupTag);
-        chipGroup.setSingleSelection(false);
 
-        //위치권한 확인
-        checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE);
-
-        //업로드 버튼
-        binding.uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //체크된 태그들을 배열에 담기
-                for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) chipGroup.getChildAt(i);
-                    if (chip.isChecked()) {
-                        checkedTags.add(chip.getText().toString());
-
-                    }
-                }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
-                    uploadPost();
-                }
-                else{
-                    Toast.makeText(UploadContentsActivity.this, "항목을 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         // 백 버튼 처리
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +93,45 @@ public class UploadContentsActivity extends AppCompatActivity {
                 onBackPressed();
                 Intent intent = new Intent(UploadContentsActivity.this, MainPageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        uid = user.getUid();
+
+        // 위치 권한 확인 및 요청
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "업로드를 위해 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+
+        recyclerView = binding.recyclerView;
+
+        ChipGroup chipGroupTag = binding.chipGroupTag;
+
+        chipGroupTag.setSingleSelection(false);
+
+        //업로드 버튼
+        binding.uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //체크된 태그들을 배열에 담기
+                for (int i = 0; i < chipGroupTag.getChildCount(); i++) {
+                    Chip chip = (Chip) chipGroupTag.getChildAt(i);
+                    if (chip.isChecked()) {
+                        checkedTags.add(chip.getText().toString());
+                    }
+                }
+                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
+                    uploadPost();
+                }
+                else{
+                    Toast.makeText(UploadContentsActivity.this, "항목을 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -149,6 +162,8 @@ public class UploadContentsActivity extends AppCompatActivity {
     }
 
     /*------------------------------------------------------------------------------이미지를 갤러리에서 가져오고 썸네일을 만드는 함수-------------------------------------------------------------------------------------*/
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -162,7 +177,6 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Log.e("single choice: ", String.valueOf(data.getData()));
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
-
 
                     adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                     recyclerView.setAdapter(adapter);
@@ -214,7 +228,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     private List<Task<Uri>> uploadImagesToStorage() {
         List<Task<Uri>> tasks = new ArrayList<>();
         for (Uri uri : uriList) {
-            if (uri != null) {
+            if (uri != null) { // null 체크를 추가했습니다.
                 StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
                 tasks.add(imageRef.putFile(uri).continueWithTask(task -> imageRef.getDownloadUrl()));
             }
@@ -308,7 +322,6 @@ public class UploadContentsActivity extends AppCompatActivity {
         Log.w(TAG, "Error uploading images", e);
     }
 
-    /*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 배경화면 눌렀을 때 키보드 내려가는 기능
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

@@ -61,6 +61,11 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
+        mainListFragment = new MainListFragment(); // MainListFragment 인스턴스 생성
+
+        // 생성한 인스턴스를 화면에 추가
+        getSupportFragmentManager().beginTransaction().add(R.id.containers, mainListFragment).commit();
+
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
 
