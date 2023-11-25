@@ -71,6 +71,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mainListFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.MapNav) {
+                    mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출합니다.
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mapsFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.Upload) {
