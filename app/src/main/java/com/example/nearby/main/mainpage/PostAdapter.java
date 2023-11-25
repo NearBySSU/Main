@@ -184,16 +184,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 // 포스트 아이디를 설정합니다.
                 mapsFragment.setPostId(post.getPostId());
 
-
                 // 화면을 MapsFragment로 전환합니다.
                 ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.containers, mapsFragment)
                         .addToBackStack(null)
                         .commit();
-
-                // 하단 네비게이션의 선택된 아이템을 변경합니다.
-                BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
-                bottomNavigationView.setSelectedItemId(R.id.MapNav);
             });
         }
     }
