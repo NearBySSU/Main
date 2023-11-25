@@ -102,7 +102,7 @@ public class UploadContentsActivity extends AppCompatActivity {
                         checkedTags.add(chip.getText().toString());
                     }
                 }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
+                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("") ){
                     uploadPost();
                 }
                 else{
