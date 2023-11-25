@@ -20,7 +20,7 @@
         android:id="@+id/tv_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="닉네임"
+        android:text=""
         android:layout_marginStart="10dp"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintTop_toTopOf="@id/img_profile"
@@ -73,7 +73,17 @@
         app:layout_constraintTop_toTopOf="@id/tv_post_date"
         app:layout_constraintBottom_toBottomOf="@id/tv_post_date"
         app:layout_constraintStart_toEndOf="@id/tv_post_date"/>
-    
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tag_recyclerview"
+        android:layout_width="266dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="12dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/tv_post_mainText"
+        app:layout_constraintStart_toEndOf="@id/tv_post_place"
+        app:layout_constraintTop_toBottomOf="@id/img_post_recyclerView" />
+
     <TextView
         android:id="@+id/tv_post_mainText"
         android:layout_width="match_parent"
