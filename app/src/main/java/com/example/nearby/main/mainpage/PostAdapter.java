@@ -110,6 +110,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageAdapter imageAdapter = new ImageAdapter(holder.itemView.getContext(), post.getImages());
         holder.images.setAdapter(imageAdapter);
 
+        // 태그 리사이클러뷰 로드
+        LinearLayoutManager tagsLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        holder.tagsRecyclerView.setLayoutManager(tagsLayoutManager);
+        TagsAdapter tagsAdapter = new TagsAdapter(post.getTags());
+        holder.tagsRecyclerView.setAdapter(tagsAdapter);
+
 
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
@@ -144,6 +150,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
+        RecyclerView tagsRecyclerView;
 
 
         public ViewHolder(View view) {
@@ -157,6 +164,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mainText = view.findViewById(R.id.tv_post_mainText);
             likeButton = view.findViewById(R.id.ic_empty_heart);
             images = view.findViewById(R.id.img_post_recyclerView);
+            tagsRecyclerView = view.findViewById(R.id.tag_recyclerview);
 
             SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
             snapHelper.attachToRecyclerView(images);
