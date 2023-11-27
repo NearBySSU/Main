@@ -90,6 +90,8 @@
         android:layout_height="wrap_content"
         android:text="여기에 업로드한 내용이 들어갑니다."
         android:layout_margin="10dp"
+        android:lineSpacingExtra="-2sp"
+        android:maxLines="6"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

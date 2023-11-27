@@ -130,13 +130,15 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
 
                         //나머지 정보들 로드
                         String uid = document.getString("uid");
-                        String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
+                        String date = document.getString("date");
+                        String bigLocationName = document.getString("bigLocationName");
+                        String smallLocationName = document.getString("smallLocationName");
                         List<String> imageUrls = (List<String>) document.get("imageUrls");
                         List<String> likeList = (List<String>) document.get("likes");
                         List<String> tags = (List<String>) document.get("tags");
                         String text = document.getString("text");
 
-                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList,tags);
+                        Post post = new Post(document.getId(), text,bigLocationName,smallLocationName,latitude, longitude, date, uid, imageUrls, likeList,tags);
                         postList.add(post);
                         livePostList.setValue(postList);
                     }

@@ -1,6 +1,7 @@
 package com.example.nearby.main.upload;
 
 import static com.example.nearby.Utils.checkLocationPermission;
+import static com.example.nearby.Utils.getLocationName;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +70,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     FirebaseUser user = auth.getCurrentUser();
     StorageReference storageRef = storage.getReference();
     ActivityUploadContentsBinding binding;
+    String[] locationNames;
     Uri imageUri;
     String selectedDate;
     String uid;
@@ -243,6 +245,8 @@ public class UploadContentsActivity extends AppCompatActivity {
                     if (location != null) {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
+                        locationNames = getLocationName(this,location);
+                        Log.e("llll", locationNames[0]+" "+locationNames[1]);
 
                         Map<String, Object> post = createPostMap(urls, latitude, longitude);
 
@@ -261,6 +265,8 @@ public class UploadContentsActivity extends AppCompatActivity {
         Map<String, Object> post = new HashMap<>();
         post.put("text", binding.mainText.getText().toString());
         post.put("imageUrls", urls);
+        post.put("bigLocationName",locationNames[0]);
+        post.put("smallLocationName",locationNames[1]);
         post.put("date", selectedDate);
         post.put("latitude", latitude);
         post.put("longitude", longitude);
