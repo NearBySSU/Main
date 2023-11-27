@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -43,7 +44,9 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore db;
     public float pivot_meter = 5000;
-
+    public boolean nullPostId = true;
+    private long backKeyPressedTime = 0;
+    private Toast toast;
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public MutableLiveData<List<Post>> livePostList = new MutableLiveData<>();
@@ -71,7 +74,9 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mainListFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.MapNav) {
-                    mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출합니다.
+                    if(nullPostId==true){
+                        mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출합니다.
+                    }
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mapsFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.Upload) {
@@ -125,13 +130,15 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
 
                         //나머지 정보들 로드
                         String uid = document.getString("uid");
-                        String date = document.getString("date"); // 추가: 날짜 데이터를 읽어옵니다.
+                        String date = document.getString("date");
+                        String bigLocationName = document.getString("bigLocationName");
+                        String smallLocationName = document.getString("smallLocationName");
                         List<String> imageUrls = (List<String>) document.get("imageUrls");
                         List<String> likeList = (List<String>) document.get("likes");
                         List<String> tags = (List<String>) document.get("tags");
                         String text = document.getString("text");
 
-                        Post post = new Post(document.getId(), text, latitude, longitude, date, uid, imageUrls, likeList,tags);
+                        Post post = new Post(document.getId(), text,bigLocationName,smallLocationName,latitude, longitude, date, uid, imageUrls, likeList,tags);
                         postList.add(post);
                         livePostList.setValue(postList);
                     }
@@ -149,6 +156,21 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
     public void reloadPostList() {
         postList.clear();
         loadNearbyPosts();
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+            toast.cancel();
+        }
     }
 }
 

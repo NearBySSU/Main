@@ -38,6 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
     private FirebaseFirestore db;
     private static final String TAG = "PostAdapter";
+    private MainPageActivity mainPageActivity;
 
     FirebaseAuth auth;
 
@@ -60,6 +61,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = postList.get(position); //포스트 한개의 객체 얻기
         holder.date.setText(post.getDate()); //날짜 설정
         holder.mainText.setText(post.getText()); //메인 텍스트 설정
+        holder.bigLocationName.setText(post.bigLocationName);
+        holder.smallLocationName.setText(post.smallLocationName);
         String postUid = post.getUserId(); //포스트 주인의 아이디
         Log.d(TAG, postUid);
 
@@ -145,12 +148,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView nickName;
         ImageButton btnMap;
         TextView date;
-        TextView place;
         TextView mainText;
         ImageButton commentButton;
         ImageButton likeButton;
         RecyclerView images;
         RecyclerView tagsRecyclerView;
+        TextView bigLocationName;
+        TextView smallLocationName;
 
 
         public ViewHolder(View view) {
@@ -159,12 +163,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             nickName = view.findViewById(R.id.tv_nick_name);
             btnMap = view.findViewById(R.id.btn_map);
             date = view.findViewById(R.id.tv_post_date);
-            place = view.findViewById(R.id.tv_post_place);
             commentButton = view.findViewById(R.id.ic_reply);
             mainText = view.findViewById(R.id.tv_post_mainText);
             likeButton = view.findViewById(R.id.ic_empty_heart);
             images = view.findViewById(R.id.img_post_recyclerView);
             tagsRecyclerView = view.findViewById(R.id.tag_recyclerview);
+            bigLocationName = view.findViewById(R.id.tv_bigLocationName);
+            smallLocationName = view.findViewById(R.id.tv_smallLocationName);
 
             SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
             snapHelper.attachToRecyclerView(images);
@@ -197,6 +202,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                         .replace(R.id.containers, mapsFragment)
                         .addToBackStack(null)
                         .commit();
+
+                ((MainPageActivity) v.getContext()).nullPostId = false;
+
+                BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
+                bottomNavigationView.setSelectedItemId(R.id.MapNav);
+
+                ((MainPageActivity) v.getContext()).nullPostId = true;
+
             });
         }
     }

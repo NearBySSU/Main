@@ -3,6 +3,7 @@ package com.example.nearby.main.mainpage;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 import static com.example.nearby.Utils.checkLocationPermission;
+import static com.example.nearby.Utils.getLocationName;
 import static com.example.nearby.Utils.requestLocationPermission;
 
 import android.Manifest;
@@ -97,49 +98,28 @@ public class MainListFragment extends Fragment {
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-//        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                // 3초 이내에 백 버튼을 누르면 앱을 종료합니다.
-//                if (System.currentTimeMillis() - initTime <= 3000) {
-//                    Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.addCategory(Intent.CATEGORY_HOME);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                } else {
-//                    // 3초 이내에 백 버튼을 누르지 않았다면, 토스트 메시지를 보여주고 시간을 재설정합니다.
-//                    Toast.makeText(getActivity(), "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//                    initTime = System.currentTimeMillis();
-//                }
-//            }
-//        });
-
         return rootView;
     }
 
+    //현재위치의 이름을 set하는 함수
     @SuppressLint("MissingPermission")
-    private void setLocationTv(){
+    private void setLocationTv() {
         //권한 체크
-        if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
+        if (!checkLocationPermission(getActivity(), REQUEST_LOCATION_PERMISSION)) {
             return;
         }
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                try {
-                    Geocoder geocoder = new Geocoder(getActivity(), Locale.KOREAN);
-                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    if (!addresses.isEmpty()) { // 추가: Address 리스트가 비어 있지 않을 때만 처리하도록 합니다.
-                        String adminArea = addresses.get(0).getAdminArea(); // '서울특별시'와 같은 정보를 가져옵니다.
-                        String locality = addresses.get(0).getSubLocality(); // '성북구'와 같은 정보를 가져옵니다.
-                        binding.tvLocationTitle.setText(adminArea);
-                        binding.tvLocationCity.setText(locality);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String[] locationNames = getLocationName(getActivity(),location);
+                if (locationNames != null) {
+                    binding.tvLocationTitle.setText(locationNames[0]);
+                    binding.tvLocationCity.setText(locationNames[1]);
                 }
             }
         });
     }
+
+
+
 }
