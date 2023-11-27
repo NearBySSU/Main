@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -111,10 +112,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.images.setAdapter(imageAdapter);
 
         // 태그 리사이클러뷰 로드
-        LinearLayoutManager tagsLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager tagsLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, true);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         holder.tagsRecyclerView.setLayoutManager(tagsLayoutManager);
-        TagsAdapter tagsAdapter = new TagsAdapter(post.getTags());
+        List<String> uniqueTags = new ArrayList<>(new LinkedHashSet<>(post.getTags()));
+        TagsAdapter tagsAdapter = new TagsAdapter(uniqueTags);
         holder.tagsRecyclerView.setAdapter(tagsAdapter);
+
 
         // 좋아요 상태 불러오기
         String uid = auth.getUid();

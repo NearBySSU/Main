@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        android:layout_margin="20dp"
+        android:layout_marginTop="25sp"
         android:id="@+id/tv_comment"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_above="@id/commentLayout"
-        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_comment"

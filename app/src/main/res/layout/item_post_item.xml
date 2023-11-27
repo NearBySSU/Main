@@ -4,21 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="160dp"
     android:layout_margin="10dp"
     app:cardCornerRadius="30dp"
     app:cardBackgroundColor="#FFFFFF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp">
 
         <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
             android:scaleType="fitCenter"
             android:src="@drawable/stock_profile"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_bold"
             android:text="date"
+            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/profile_pic"
             app:layout_constraintTop_toTopOf="@id/profile_pic" />
@@ -41,23 +43,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_regular"
-            android:maxLines="2"
             android:lineSpacingExtra="-2sp"
+            android:maxLines="2"
             android:text="text"
+            android:textColor="#9D9D9D"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/profile_pic"
             app:layout_constraintTop_toBottomOf="@id/post_date" />
 
         <Button
-            android:layout_width="80dp"
-            android:layout_height="37dp"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button_blue"
             android:text="see it"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@+id/post_text" />
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
