@@ -53,10 +53,11 @@ public class MainListFragment extends Fragment {
     private PostLoader postLoader;
     private List<Post> postList;
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
+        //PostLoader를 초기화
         if (context instanceof PostLoader) {
             postLoader = (PostLoader) context;
         } else {
@@ -90,7 +91,7 @@ public class MainListFragment extends Fragment {
         });
 
 
-        //스와이프 이벤트
+        //스와이프 이벤트 : 포스트 다시 로드
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -108,7 +109,7 @@ public class MainListFragment extends Fragment {
         if (!checkLocationPermission(getActivity(), REQUEST_LOCATION_PERMISSION)) {
             return;
         }
-
+        //tv에 이름을 set
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 String[] locationNames = getLocationName(getActivity(),location);
@@ -119,7 +120,4 @@ public class MainListFragment extends Fragment {
             }
         });
     }
-
-
-
 }

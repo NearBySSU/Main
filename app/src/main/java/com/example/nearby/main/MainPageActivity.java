@@ -63,7 +63,6 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
 
@@ -75,7 +74,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                     return true;
                 } else if (item.getItemId() == R.id.MapNav) {
                     if(nullPostId==true){
-                        mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출합니다.
+                        mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mapsFragment).commit();
                     return true;
@@ -95,6 +94,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
             }
         });
 
+        //포스트 로드 시작
         loadNearbyPosts();
     }
 
@@ -147,17 +147,20 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
         });
     }
 
+    //포스트 리스트를 리턴하는 메서드
     @Override
     public List<Post> getPostList() {
         return postList;
     }
 
+    //포스트를 다시 로드하는 메서드
     @Override
     public void reloadPostList() {
         postList.clear();
         loadNearbyPosts();
     }
 
+    //뒤로가기 눌렀을때의 이벤트
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {

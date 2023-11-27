@@ -13,14 +13,12 @@ public class Comment {
         this.commenterId = commenterId;
         this.profilePicUrl = profilePicUrl;
         this.timestamp = timestamp;
-
     }
 
     // getter 메소드
     public String getCommentText() {
         return this.commentText;
     }
-
     public String getCommenterId() {
         return this.commenterId;
     }

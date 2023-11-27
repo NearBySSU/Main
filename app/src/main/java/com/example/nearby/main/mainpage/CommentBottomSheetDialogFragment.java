@@ -76,7 +76,6 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
         });
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,7 +86,6 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAuth = FirebaseAuth.getInstance();
-
 
         // 댓글 제출 버튼 클릭 리스너
         btnSubmit.setOnClickListener(v -> {
@@ -143,6 +141,4 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                     }
                 });
     }
-
-
 }

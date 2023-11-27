@@ -38,17 +38,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
     private FirebaseFirestore db;
     private static final String TAG = "PostAdapter";
-    private MainPageActivity mainPageActivity;
-
     FirebaseAuth auth;
 
+    //생성자
     public PostAdapter(List<Post> postList) {
         this.postList = postList != null ? postList : new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
     }
-
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -119,7 +116,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TagsAdapter tagsAdapter = new TagsAdapter(post.getTags());
         holder.tagsRecyclerView.setAdapter(tagsAdapter);
 
-
         // 좋아요 상태 불러오기
         String uid = auth.getUid();
         List<String> likes = post.getLikes();
@@ -156,7 +152,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView bigLocationName;
         TextView smallLocationName;
 
-
         public ViewHolder(View view) {
             super(view);
             profile = view.findViewById(R.id.img_profile);
@@ -170,10 +165,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tagsRecyclerView = view.findViewById(R.id.tag_recyclerview);
             bigLocationName = view.findViewById(R.id.tv_bigLocationName);
             smallLocationName = view.findViewById(R.id.tv_smallLocationName);
-
             SnapHelper snapHelper = new PagerSnapHelper(); //SnapHelper를 생성하고 recyclerViewBottom에 붙임
             snapHelper.attachToRecyclerView(images);
-
 
             commentButton.setOnClickListener(v -> {
                 Post post = postList.get(getAdapterPosition());
@@ -256,6 +249,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .addOnFailureListener(e -> {
                     // 에러 처리
                 });
+
     }
 
     private void loadLikes(String postId, String userId, ImageButton likeButton) {

@@ -57,8 +57,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCommentText = itemView.findViewById(R.id.tvCommentText);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestamp); // 뷰 바인딩
-            ivProfilePic = itemView.findViewById(R.id.ivProfilePic); // 뷰 바인딩
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            ivProfilePic = itemView.findViewById(R.id.ivProfilePic);
         }
     }
 

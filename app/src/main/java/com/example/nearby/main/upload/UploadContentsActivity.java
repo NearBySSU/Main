@@ -223,7 +223,6 @@ public class UploadContentsActivity extends AppCompatActivity {
         return tasks;
     }
 
-
     private void onImagesUploaded(List<Object> urls) {
         if (isLocationPermissionGranted()) {
             uploadPostWithLocation(urls);
