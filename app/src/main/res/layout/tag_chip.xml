@@ -16,12 +16,16 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:id="@+id/tag"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@drawable/chip_background"
+            android:layout_height="45dp"
+            app:chipBackgroundColor="@color/firstColor"
             android:textSize="12sp"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_bold"
-            android:text="태그"/>
+            android:text="태그"
+            android:clickable="false"
+            android:focusable="false"
+            app:chipStrokeColor="@color/transparent"
+            app:chipStrokeWidth="1dp"/>
 
     </com.google.android.material.chip.ChipGroup>
 

@@ -18,16 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:paddingTop="10dp"
+        android:background="@color/white"
         app:itemIconTint="@drawable/menu_selector_color"
         app:labelVisibilityMode="labeled"
         app:itemBackground="@color/white"
         app:menu="@menu/bottom_navigation"
         />
-
-
     </FrameLayout>
-
-
-
-
 </LinearLayout>
