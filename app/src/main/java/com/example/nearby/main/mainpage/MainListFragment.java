@@ -97,24 +97,6 @@ public class MainListFragment extends Fragment {
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-//        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                // 3초 이내에 백 버튼을 누르면 앱을 종료합니다.
-//                if (System.currentTimeMillis() - initTime <= 3000) {
-//                    Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.addCategory(Intent.CATEGORY_HOME);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                } else {
-//                    // 3초 이내에 백 버튼을 누르지 않았다면, 토스트 메시지를 보여주고 시간을 재설정합니다.
-//                    Toast.makeText(getActivity(), "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//                    initTime = System.currentTimeMillis();
-//                }
-//            }
-//        });
-
         return rootView;
     }
 

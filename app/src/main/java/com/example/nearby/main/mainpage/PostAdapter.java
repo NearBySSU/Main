@@ -38,6 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
     private FirebaseFirestore db;
     private static final String TAG = "PostAdapter";
+    private MainPageActivity mainPageActivity;
 
     FirebaseAuth auth;
 
@@ -197,6 +198,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                         .replace(R.id.containers, mapsFragment)
                         .addToBackStack(null)
                         .commit();
+
+                ((MainPageActivity) v.getContext()).nullPostId = false;
+
+                BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
+                bottomNavigationView.setSelectedItemId(R.id.MapNav);
+
+                ((MainPageActivity) v.getContext()).nullPostId = true;
+
             });
         }
     }
