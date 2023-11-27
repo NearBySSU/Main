@@ -95,10 +95,16 @@ public class MainListFragment extends Fragment {
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                postLoader.reloadPostList();
-                binding.swipeRefreshLayout.setRefreshing(false);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        postLoader.reloadPostList();
+                        binding.swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
             }
         });
+
         return rootView;
     }
 

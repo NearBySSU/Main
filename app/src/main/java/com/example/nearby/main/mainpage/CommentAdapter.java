@@ -37,12 +37,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         Comment comment = commentList.get(position);
         holder.tvCommentText.setText(comment.getCommentText());
+        holder.tvNickname.setText(comment.getNickname());
         holder.tvTimestamp.setText(getFormattedTimestamp(comment.getTimestamp())); // 시간 정보 설정
         Glide.with(holder.ivProfilePic.getContext())
                 .load(comment.getProfilePicUrl())
                 .circleCrop()
                 .into(holder.ivProfilePic); // 프로필 사진 설정
     }
+
 
     @Override
     public int getItemCount() {
@@ -52,6 +54,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView tvCommentText; // 댓글 내용 텍스트뷰
         TextView tvTimestamp; // 댓글 작성 시간 텍스트뷰
+        TextView tvNickname;
         ImageView ivProfilePic; // 댓글 작성자의 프로필 사진 이미지뷰
 
         public CommentViewHolder(@NonNull View itemView) {
@@ -59,6 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             tvCommentText = itemView.findViewById(R.id.tvCommentText);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             ivProfilePic = itemView.findViewById(R.id.ivProfilePic);
+            tvNickname = itemView.findViewById(R.id.tvNickname);
         }
     }
 

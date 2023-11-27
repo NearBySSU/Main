@@ -41,7 +41,6 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private CommentAdapter commentAdapter; // 댓글 리스트를 관리할 Adapter
     FirebaseAuth mAuth;
 
-
     public CommentBottomSheetDialogFragment() {
     }
 
@@ -117,7 +116,7 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<Comment> comments = new ArrayList<>();
+                        List<Comment> commentList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String commentText = document.getString("commentText");
                             String commenterId = document.getString("commenterId");
@@ -127,9 +126,10 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                             db.collection("users").document(commenterId).get()
                                     .addOnSuccessListener(userDocument -> {
                                         String profilePicUrl = userDocument.getString("profilePicUrl"); // 프로필 사진 URL 가져옴
-                                        Comment comment = new Comment(commentText, commenterId, profilePicUrl, timestamp);
-                                        comments.add(comment);
-                                        commentAdapter = new CommentAdapter(comments);
+                                        String nickname = userDocument.getString("nickname");
+                                        Comment comment = new Comment(commentText, commenterId, profilePicUrl, timestamp, nickname);
+                                        commentList.add(comment);
+                                        commentAdapter = new CommentAdapter(commentList);
                                         recyclerView.setAdapter(commentAdapter);
                                     })
                                     .addOnFailureListener(e -> {
