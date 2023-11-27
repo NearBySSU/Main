@@ -68,7 +68,16 @@ public class MapsFragment extends Fragment {
     private PostLoader postLoader;
     private static MapsFragment instance = null;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 
+        if (context instanceof PostLoader) {
+            postLoader = (PostLoader) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement PostLoader");
+        }
+    }
 
     @Nullable
     @Override
@@ -86,8 +95,6 @@ public class MapsFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString("postId", postId);
     }
-
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -125,9 +132,6 @@ public class MapsFragment extends Fragment {
         postLoader = null;
     }
 
-
-
-
     //지도가 준비 됐을 때의 콜백
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
@@ -143,8 +147,6 @@ public class MapsFragment extends Fragment {
 
             //현재 내 위치 추적 활성화
             mMap.setMyLocationEnabled(true);
-            Log.e("location", "onMapReady");
-
             moveToLastKnownLocation();
 
             // 클러스터링을 위한 맵의 클릭 리스너 설정
@@ -168,20 +170,22 @@ public class MapsFragment extends Fragment {
                 });
             }
 
+            //마커 하나를 클릭했을때의 이벤트
             mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Post>() {
                 @Override
                 public boolean onClusterItemClick(Post post) {
-                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
+                    postItemAdapter.clearItems();
                     loadProfilePicAndAddItem(post);
                     postItemAdapter.notifyDataSetChanged();
                     return false;
                 }
             });
 
+            //클러스터를 클릭했을때 이벤트
             mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Post>() {
                 @Override
                 public boolean onClusterClick(Cluster<Post> cluster) {
-                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
+                    postItemAdapter.clearItems();
                     for (Post post : cluster.getItems()) {
                         loadProfilePicAndAddItem(post);
                     }
@@ -195,13 +199,14 @@ public class MapsFragment extends Fragment {
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    postItemAdapter.clearItems();  // 아이템을 초기화합니다.
+                    postItemAdapter.clearItems();
                     postItemAdapter.notifyDataSetChanged();
                 }
             });
         }
     };
 
+    //userid로 db에서 프로필 사진을 가져오는 메서드
     private void loadProfilePicAndAddItem(Post post) {
         getProfilePicUrl(post.getUserId(), profilePicUrl -> {
             postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
@@ -244,7 +249,7 @@ public class MapsFragment extends Fragment {
         return null;  // postId에 해당하는 post를 찾지 못한 경우 null을 반환합니다.
     }
 
-    //user id로 부터 프로필 사진 얻기
+    //user id로 부터 프로필 사진 얻는 메서드
     @SuppressLint("RestrictedApi")
     private void getProfilePicUrl(String userId, final OnProfilePicUrlReceivedListener listener) {
         db.collection("users").document(userId).get().addOnCompleteListener(task -> {
@@ -266,17 +271,7 @@ public class MapsFragment extends Fragment {
         void onProfilePicUrlReceived(String profilePicUrl);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof PostLoader) {
-            postLoader = (PostLoader) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement PostLoader");
-        }
-    }
-
+    //MapsFragment의 인스턴스를 리턴하는 함수
     public static MapsFragment getInstance() {
         if (instance == null) {
             instance = new MapsFragment();
@@ -293,6 +288,7 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    //포스트 아이디를 초기화하는 메서드.
     public void initializePostId() {
         this.postId = null;
     }
