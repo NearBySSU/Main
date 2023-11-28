@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,6 +72,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     Uri imageUri;
     String selectedDate;
     String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +85,11 @@ public class UploadContentsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         uid = user.getUid();
         recyclerView = binding.recyclerView;
-        ChipGroup chipGroup = findViewById(R.id.chipGroupTag);
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
         chipGroup.setSingleSelection(false);
 
         //위치권한 확인
         checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE);
-
-//        addChip();
 
         //업로드 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +100,9 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Chip chip = (Chip) chipGroup.getChildAt(i);
                     if (chip.isChecked()) {
                         checkedTags.add(chip.getText().toString());
-
                     }
                 }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("") ){
+                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("Selected date: ") ){
                     uploadPost();
                 }
                 else{
@@ -267,7 +266,6 @@ public class UploadContentsActivity extends AppCompatActivity {
         post.put("longitude", longitude);
         post.put("uid", uid);
         post.put("tags",checkedTags);
-
         return post;
     }
 
