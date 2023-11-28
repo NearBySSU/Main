@@ -106,7 +106,7 @@ public class MapsFragment extends Fragment {
         RecyclerView post_item_recyclerView = view.findViewById(R.id.post_item_recyclerView);
         snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(post_item_recyclerView);
-        postItemAdapter = new PostItemAdapter();
+        postItemAdapter = new PostItemAdapter(getActivity());
         post_item_recyclerView.setAdapter(postItemAdapter);
         btn_filter = view.findViewById(R.id.btn_filter);
 
@@ -177,6 +177,7 @@ public class MapsFragment extends Fragment {
                     postItemAdapter.clearItems();
                     loadProfilePicAndAddItem(post);
                     postItemAdapter.notifyDataSetChanged();
+//                    Log.d("singlepage", postId);
                     return false;
                 }
             });
@@ -209,7 +210,7 @@ public class MapsFragment extends Fragment {
     //userid로 db에서 프로필 사진을 가져오는 메서드
     private void loadProfilePicAndAddItem(Post post) {
         getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl));
+            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl, post.getPostId()));
         });
     }
 
