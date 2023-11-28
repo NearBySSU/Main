@@ -76,6 +76,9 @@ public class MainListFragment extends Fragment {
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setAdapter(postAdapter);
 
+        //포스트 로드
+        postLoader.reloadPostList();
+
         //현재 위치 띄우기
         setLocationTv();
 
