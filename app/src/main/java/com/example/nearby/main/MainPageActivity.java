@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.main.mainpage.Post;
+import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.main.upload.UploadContentsActivity;
 import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.main.friends.FriendsFragment;
@@ -30,11 +31,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
 
-public class MainPageActivity extends AppCompatActivity implements PostLoader{
+public class MainPageActivity extends AppCompatActivity implements PostLoader, MyBottomSheetDialogFragment.OnTagSelectedListener {
     FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
@@ -150,5 +152,31 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
         postList.clear();
         loadNearbyPosts();
     }
+
+    public void filterPostsByTag(String selectedTag) {
+        List<Post> filterList = new ArrayList<>(postList);
+        Iterator<Post> iterator = filterList.iterator();
+
+        while (iterator.hasNext()) {
+            Post post = iterator.next();
+            if (!post.getTags().contains(selectedTag)) {
+                iterator.remove();
+            }
+        }
+
+        postAdapter.setPostList(filterList);
+        postAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTagSelected(String tag) {
+        // Handle tag selection here
+    }
+
+    private PostAdapter postAdapter;
+    public PostAdapter getPostAdapter() {
+        return postAdapter;
+    }
+
 }
 

@@ -1,26 +1,17 @@
 package com.example.nearby.main.mainpage;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-
 import static com.example.nearby.Utils.checkLocationPermission;
-import static com.example.nearby.Utils.requestLocationPermission;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,19 +21,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
-import com.example.nearby.main.maps.MyBottomSheetDialogFragment;
+import com.example.nearby.main.MyBottomSheetDialogFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import android.location.Location;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainListFragment extends Fragment {
+public class MainListFragment extends Fragment implements MyBottomSheetDialogFragment.OnTagSelectedListener{
     private long initTime = 0L;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -119,12 +107,27 @@ public class MainListFragment extends Fragment {
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
-                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+                MyBottomSheetDialogFragment bottomSheetDialog = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
+                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
             }
         });
 
         return binding.getRoot();
+    }
+
+    // 선택된 태그 받기
+    @Override
+    public void onTagSelected(String tag) {
+        ((MainPageActivity) getActivity()).filterPostsByTag(tag);
+        postList = ((MainPageActivity) getActivity()).getPostList();
+        PostAdapter postAdapter = ((MainPageActivity) getActivity()).getPostAdapter();
+        postAdapter.setPostList(postList);
+        postAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTagsSelected(List<String> tags) {
+
     }
 
     @SuppressLint("MissingPermission")

@@ -53,7 +53,7 @@ public class Post implements ClusterItem {
     public List<String> getLikes() {
         return likes;
     }
-    List<String> getTags(){ return tags;}
+    public List<String> getTags(){ return tags;}
 
 
     public double getLatitude() {
