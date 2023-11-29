@@ -1,50 +1,26 @@
 package com.example.nearby.main.mainpage;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-
 import static com.example.nearby.Utils.checkLocationPermission;
 import static com.example.nearby.Utils.getLocationName;
-import static com.example.nearby.Utils.requestLocationPermission;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import android.location.Location;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainListFragment extends Fragment {
-    private long initTime = 0L;
-
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private RecyclerView recyclerView;
@@ -107,7 +83,6 @@ public class MainListFragment extends Fragment {
                 });
             }
         });
-
         return rootView;
     }
 
