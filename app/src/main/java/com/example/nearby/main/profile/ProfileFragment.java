@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.auth.LogInActivity;
+import com.example.nearby.main.mainpage.Post;
+import com.example.nearby.main.maps.PostItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,12 +62,14 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProfileAdapter profileAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private String currentPostId;
+    private String currentImageUrl;
+    private String currentDate;
     private static final String TAG = "ProfileFragment";
 
     private Toolbar toolbar;
 
-    private ArrayList<String> imageUrlList = new ArrayList<>();
+    private ArrayList<ProfileItem> profileItemList = new ArrayList<>();
 
 
 
@@ -73,7 +77,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-//        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         setHasOptionsMenu(true);
         storage = FirebaseStorage.getInstance();
@@ -115,15 +118,15 @@ public class ProfileFragment extends Fragment {
 
 
         // recyclerView 등록
-        profileAdapter = new ProfileAdapter(getContext(), imageUrlList);
+        profileAdapter = new ProfileAdapter(getContext(), profileItemList);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setAdapter(profileAdapter);
 
         // 스와이프 이벤트
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
-                imageUrlList.clear();
-                profileAdapter.setImageUrlList(imageUrlList);
+                profileItemList.clear();
+                profileAdapter.setProfileItemList(profileItemList);
                 addProfileList();
 //                Log.d("ODG", imageUrlList.get(1));
                 swipeRefreshLayout.setRefreshing(false);
@@ -132,14 +135,54 @@ public class ProfileFragment extends Fragment {
 
 
         // profile img list 로드 하기
-        imageUrlList.clear();
+        profileItemList.clear();
         profileAdapter.notifyDataSetChanged();
 
         addProfileList();
+        profileAdapter.setProfileItemList(profileItemList);
 
         return rootView;
     }
 
+//    private void addProfileList() {
+//        db = FirebaseFirestore.getInstance();
+//        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        List<String> postIds = (List<String>) document.get("postIds");
+//                        for (String postId : postIds) {
+//                            db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                                    ArrayList<String> imageUrls = (ArrayList<String>) documentSnapshot.get("imageUrls");
+//                                    if (imageUrls == null) {
+//                                        // If "imageUrls" field doesn't exist, create it as an empty list
+//                                        imageUrls = new ArrayList<>();
+//                                        documentSnapshot.getReference().update("imageUrls", imageUrls);
+//                                    }
+//                                    if (imageUrls.size() > 0) {
+//                                        imageUrlList.add(imageUrls.get(0));
+//                                        Log.d("ODG", imageUrlList.get(0));
+//                                        profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
+//    }
+
+    //수정본
     private void addProfileList() {
         db = FirebaseFirestore.getInstance();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -150,22 +193,38 @@ public class ProfileFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> postIds = (List<String>) document.get("postIds");
+                        if (postIds == null) {
+                            postIds = new ArrayList<>(); // "postIds" 필드가 없을 경우 빈 리스트로 초기화
+                        }
                         for (String postId : postIds) {
+                            currentPostId = postId;
                             db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    // img
                                     ArrayList<String> imageUrls = (ArrayList<String>) documentSnapshot.get("imageUrls");
                                     if (imageUrls == null) {
-                                        // If "imageUrls" field doesn't exist, create it as an empty list
+                                        // "imageUrls" 필드가 없을 경우 빈 리스트로 초기화
                                         imageUrls = new ArrayList<>();
                                         documentSnapshot.getReference().update("imageUrls", imageUrls);
                                     }
                                     if (imageUrls.size() > 0) {
-                                        imageUrlList.add(imageUrls.get(0));
-                                        Log.d("ODG", imageUrlList.get(0));
-                                        profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
+                                        currentImageUrl = imageUrls.get(0);
                                     }
+
+                                    // date
+                                    String dates = (String) documentSnapshot.get("date");
+
+                                    currentDate = dates;
+
+
+
+                                    ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
+                                    profileItemList.add(profileItem);
+                                    profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
+
                                 }
+
                             });
                         }
                     } else {
@@ -177,6 +236,7 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
