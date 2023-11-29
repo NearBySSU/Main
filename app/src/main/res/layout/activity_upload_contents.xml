@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -14,7 +14,8 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20dp">
 
     <TextView
         android:id="@+id/tv_upload_title"
@@ -40,8 +41,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
@@ -51,39 +50,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_upload_title"/>
 
-<ImageView
-    android:id="@+id/img_line1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:src="@drawable/ic_line"
-    android:layout_marginTop="10dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/recyclerView"/>
 
-    <EditText
-        android:id="@+id/mainText"
+    <LinearLayout
+        android:id="@+id/editTextBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_light"
-        android:hint="텍스트 입력..."
-        android:paddingStart="10dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="10dp"
-        android:maxLines="7"
-        android:background="@color/transparent"
-        android:inputType="textMultiLine"
-        android:scrollHorizontally="false"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_line1" />
-
-    <ImageView
-        android:id="@+id/img_line2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_line"
-        android:layout_marginTop="220dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_line1"/>
+        app:layout_constraintTop_toBottomOf="@id/recyclerView">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/greyLine" />
+            <EditText
+                android:id="@+id/mainText"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:fontFamily="@font/poppins_light"
+                android:hint="텍스트 입력..."
+                android:scrollbars="none"
+                android:textSize="16sp"
+                android:gravity="top|start"
+                android:paddingStart="10dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="10dp"
+                android:maxLines="7"
+                android:background="@color/transparent"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/greyLine" />
+    </LinearLayout>
 
 
     <TextView
@@ -97,7 +97,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_line2"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextBox"/>
 
 
     <Button
@@ -114,7 +114,7 @@
         android:layout_marginLeft="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_date"
         app:layout_constraintStart_toEndOf="@+id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/img_line2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextBox" />
 
     <TextView
         android:id="@+id/show_date_textView"
@@ -220,20 +220,20 @@
 
     </HorizontalScrollView>
 
-
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="65dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/big_button"
         android:onClick="uploadPost"
         android:text="업로드"
-        android:background="@drawable/big_button"
         android:textColor="@color/white"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.344"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chipGroupScroll"/>
+        app:layout_constraintTop_toBottomOf="@id/chipGroupScroll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
