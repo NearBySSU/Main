@@ -7,6 +7,8 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,10 @@ import com.example.nearby.main.MyBottomSheetDialogFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainListFragment extends Fragment implements MyBottomSheetDialogFragment.OnTagSelectedListener{
+public class MainListFragment extends Fragment {
     private long initTime = 0L;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -65,6 +65,7 @@ public class MainListFragment extends Fragment implements MyBottomSheetDialogFra
         //현재 위치 띄우기
         setLocationTv();
 
+
         // MainPageActivity의 LiveData 객체를 가져옴
         ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
@@ -86,49 +87,27 @@ public class MainListFragment extends Fragment implements MyBottomSheetDialogFra
             }
         });
 
-//        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                // 3초 이내에 백 버튼을 누르면 앱을 종료합니다.
-//                if (System.currentTimeMillis() - initTime <= 3000) {
-//                    Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.addCategory(Intent.CATEGORY_HOME);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                } else {
-//                    // 3초 이내에 백 버튼을 누르지 않았다면, 토스트 메시지를 보여주고 시간을 재설정합니다.
-//                    Toast.makeText(getActivity(), "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//                    initTime = System.currentTimeMillis();
-//                }
-//            }
-//        });
-
         //필터 버튼의 클릭 리스너
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyBottomSheetDialogFragment bottomSheetDialog = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
-                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();
+                bottomSheetDialogFragment.setChipSelectedListener(selectedChips -> {
+                    // 여기에 선택된 칩들에 대한 처리를 추가하세요.
+                    Log.d("LYB", "MapsFragment에서 선택한 칩들: " + selectedChips.toString());
+                });
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
             }
         });
 
         return binding.getRoot();
     }
 
-    // 선택된 태그 받기
-    @Override
-    public void onTagSelected(String tag) {
-        ((MainPageActivity) getActivity()).filterPostsByTag(tag);
-        postList = ((MainPageActivity) getActivity()).getPostList();
-        PostAdapter postAdapter = ((MainPageActivity) getActivity()).getPostAdapter();
-        postAdapter.setPostList(postList);
-        postAdapter.notifyDataSetChanged();
+    public PostAdapter getPostAdapter() {
+        return postAdapter;
     }
 
-    @Override
-    public void onTagsSelected(List<String> tags) {
 
-    }
 
     @SuppressLint("MissingPermission")
     private void setLocationTv(){
@@ -154,4 +133,22 @@ public class MainListFragment extends Fragment implements MyBottomSheetDialogFra
             }
         });
     }
+
+    //        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                // 3초 이내에 백 버튼을 누르면 앱을 종료합니다.
+//                if (System.currentTimeMillis() - initTime <= 3000) {
+//                    Intent intent = new Intent(Intent.ACTION_MAIN);
+//                    intent.addCategory(Intent.CATEGORY_HOME);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//                } else {
+//                    // 3초 이내에 백 버튼을 누르지 않았다면, 토스트 메시지를 보여주고 시간을 재설정합니다.
+//                    Toast.makeText(getActivity(), "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+//                    initTime = System.currentTimeMillis();
+//                }
+//            }
+//        });
+
 }

@@ -43,7 +43,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.List;
 
 
-public class MapsFragment extends Fragment  implements MyBottomSheetDialogFragment.OnTagSelectedListener {
+public class MapsFragment extends Fragment  {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap mMap;
@@ -286,15 +286,15 @@ public class MapsFragment extends Fragment  implements MyBottomSheetDialogFragme
         this.postId = null;
     }
 
-    @Override
-    public void onTagSelected(String tag) {
-        ((MainPageActivity) getActivity()).filterPostsByTag(tag);
-        postList = ((MainPageActivity) getActivity()).getPostList();
-
-        if (mClusterManager != null) {
-            mClusterManager.clearItems();
-            mClusterManager.addItems(postList);
-            mClusterManager.cluster();
-        }
-    }
+//    @Override
+//    public void onTagSelected(String tag) {
+//        ((MainPageActivity) getActivity()).filterPostsByTag(tag);
+//        postList = ((MainPageActivity) getActivity()).getPostList();
+//
+//        if (mClusterManager != null) {
+//            mClusterManager.clearItems();
+//            mClusterManager.addItems(postList);
+//            mClusterManager.cluster();
+//        }
+//    }
 }

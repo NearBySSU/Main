@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.main.mainpage.Post;
@@ -36,7 +33,7 @@ import java.util.List;
 
 
 
-public class MainPageActivity extends AppCompatActivity implements PostLoader, MyBottomSheetDialogFragment.OnTagSelectedListener {
+public class MainPageActivity extends AppCompatActivity implements PostLoader, MyBottomSheetDialogFragment.OnChipSelectedListener {
     FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
@@ -157,31 +154,40 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader, M
         postList.clear();
         loadNearbyPosts();
     }
-
-    public void filterPostsByTag(String selectedTag) {
-        List<Post> filterList = new ArrayList<>(postList);
-        Iterator<Post> iterator = filterList.iterator();
-
-        while (iterator.hasNext()) {
-            Post post = iterator.next();
-            if (!post.getTags().contains(selectedTag)) {
-                iterator.remove();
-            }
-        }
-
-        postAdapter.setPostList(filterList);
-        postAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onTagSelected(String tag) {
-        // Handle tag selection here
-    }
-
     private PostAdapter postAdapter;
     public PostAdapter getPostAdapter() {
         return postAdapter;
     }
+
+    //이유빈
+
+    @Override
+    public void onChipSelected(List<String> selectedChips) {
+        // 선택한 칩들을 필터링에 사용
+        Log.d("LYB", "MainPageActivity에서 선택한 칩들: " + selectedChips.toString());
+        filterPostsByTag(selectedChips);
+    }
+
+    public void filterPostsByTag(List<String> selectedTags) {
+        List<Post> filteredList = new ArrayList<>(postList);
+        Iterator<Post> iterator = filteredList.iterator();
+
+        while (iterator.hasNext()) {
+            Post post = iterator.next();
+            List<String> postTags = post.getTags();
+            if (!postTags.containsAll(selectedTags)) { // 게시물의 태그가 선택된 모든 태그를 포함하지 않으면 제거
+                iterator.remove();
+            }
+        }
+        PostAdapter postAdapter = mainListFragment.getPostAdapter();
+        if (postAdapter != null) {
+            postAdapter.setPostList(filteredList);
+            postAdapter.notifyDataSetChanged();
+        } else {
+            Log.e("MainPageActivity", "postAdapter is null");
+        }
+    }
+
 
 }
 
