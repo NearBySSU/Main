@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -168,14 +169,14 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader, M
         filterPostsByTag(selectedChips);
     }
 
-    public void filterPostsByTag(List<String> selectedTags) {
+    public void filterPostsByTag(List<String> selectedChips) {
         List<Post> filteredList = new ArrayList<>(postList);
-        Iterator<Post> iterator = filteredList.iterator();
+        Iterator<String> iterator = selectedChips.iterator();
 
         while (iterator.hasNext()) {
-            Post post = iterator.next();
-            List<String> postTags = post.getTags();
-            if (!postTags.containsAll(selectedTags)) { // 게시물의 태그가 선택된 모든 태그를 포함하지 않으면 제거
+            String post = iterator.next();
+            List<String> postTags = Collections.singletonList(post.toString());
+            if (!postTags.containsAll(selectedChips)) { // 게시물의 태그가 선택된 모든 태그를 포함하지 않으면 제거
                 iterator.remove();
             }
         }
