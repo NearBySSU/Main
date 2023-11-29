@@ -286,8 +286,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         Log.d(TAG, "Post added with ID: " + documentReference.getId());
         Toast.makeText(UploadContentsActivity.this, "업로드 성공!", Toast.LENGTH_SHORT).show();
         //MainList로 돌아가기
-        Intent intent = new Intent(this, MainPageActivity.class);
-        startActivity(intent);
+        onBackPressed();
     }
 
     private void onPostUploadFailure(@NonNull Exception e) {
