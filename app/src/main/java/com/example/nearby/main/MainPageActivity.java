@@ -50,6 +50,8 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public MutableLiveData<List<Post>> livePostList = new MutableLiveData<>();
+    public List<String> selectedChips = new ArrayList<>();
+    public List<Post> originalPostList = new ArrayList<>();
 
 
     @Override
@@ -140,6 +142,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
 
                         Post post = new Post(document.getId(), text,bigLocationName,smallLocationName,latitude, longitude, date, uid, imageUrls, likeList,tags);
                         postList.add(post);
+                        originalPostList = postList;
                         livePostList.setValue(postList);
                     }
                 }

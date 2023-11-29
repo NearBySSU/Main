@@ -118,8 +118,6 @@ public class UploadContentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                Intent intent = new Intent(UploadContentsActivity.this, MainPageActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -163,7 +161,6 @@ public class UploadContentsActivity extends AppCompatActivity {
                     Log.e("single choice: ", String.valueOf(data.getData()));
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
-
 
                     adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                     recyclerView.setAdapter(adapter);

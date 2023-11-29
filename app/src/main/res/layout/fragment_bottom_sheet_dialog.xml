@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+            android:id="@+id/chipGroupDate"
             app:chipSpacingHorizontal="20dp"
             app:singleSelection="true"
             android:layout_width="wrap_content"
@@ -114,9 +114,9 @@
         app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup2"
-            app:chipSpacingHorizontal="30dp"
-            app:singleSelection="true"
+            android:id="@+id/chipGroupTag"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -130,14 +130,14 @@
                 android:id="@+id/tagChip01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="Chip 1"/>
+                android:text="맛집"/>
 
 
             <com.google.android.material.chip.Chip
@@ -145,38 +145,38 @@
                 android:id="@+id/tagChip02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="Chip 2"/>
+                android:text="여행"/>
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="Chip 3"/>
+                android:text="일상"/>
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="Chip 4"/>
+                android:text="특별한 추억"/>
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -202,7 +202,7 @@
         app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup3"
+            android:id="@+id/chipGroupDistance"
             app:chipSpacingHorizontal="30dp"
             app:singleSelection="true"
             android:layout_width="wrap_content"
@@ -218,8 +218,8 @@
                 android:id="@+id/areaChip01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
@@ -233,8 +233,8 @@
                 android:id="@+id/areaChip02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
                 app:chipStrokeWidth="2dp"
                 app:chipBackgroundColor="@drawable/chip_background"
@@ -247,8 +247,8 @@
                 android:id="@+id/areaChip03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
@@ -259,8 +259,8 @@
                 android:id="@+id/areaChip04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="20dp"
-                app:chipEndPadding="20dp"
+                app:chipStartPadding="10dp"
+                app:chipEndPadding="10dp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 android:textSize="18sp"
                 android:textColor="@color/white"
