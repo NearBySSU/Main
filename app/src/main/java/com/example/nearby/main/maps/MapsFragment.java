@@ -6,35 +6,26 @@ import static com.example.nearby.Utils.checkLocationPermission;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nearby.databinding.FragmentMapsBinding;
+import com.example.nearby.MyBottomSheetDialogFragment;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
 import com.example.nearby.main.mainpage.Post;
-import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -45,13 +36,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MapsFragment extends Fragment {
@@ -109,6 +100,9 @@ public class MapsFragment extends Fragment {
         postItemAdapter = new PostItemAdapter(getActivity());
         post_item_recyclerView.setAdapter(postItemAdapter);
         btn_filter = view.findViewById(R.id.btn_filter);
+
+        MainPageActivity activity = (MainPageActivity) getActivity();
+        filterPostListAndSaveToLiveData(activity);
 
         //지도 로드를 위해 지도 콜백 호출
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
@@ -293,4 +287,19 @@ public class MapsFragment extends Fragment {
     public void initializePostId() {
         this.postId = null;
     }
+
+    //포스트 필터링 메서드
+    public void filterPostListAndSaveToLiveData(MainPageActivity activity) {
+        // postList 필터링
+        List<Post> postList = new ArrayList<>(activity.originalPostList);
+        if (postList != null) {
+            List<Post> filteredPosts = postList.stream()
+                    .filter(post -> post.getTags().containsAll(activity.selectedChips))
+                    .collect(Collectors.toList());
+
+            // 필터링된 리스트를 LiveData의 값으로 설정
+            activity.livePostList.setValue(filteredPosts);
+        }
+    }
+
 }

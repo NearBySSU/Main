@@ -7,18 +7,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.example.nearby.MyBottomSheetDialogFragment;
+import com.example.nearby.R;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainListFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
@@ -28,6 +36,7 @@ public class MainListFragment extends Fragment {
     private FragmentMainListBinding binding;
     private PostLoader postLoader;
     private List<Post> postList;
+    ImageButton btn_filter;
 
 
     @Override
@@ -51,9 +60,7 @@ public class MainListFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         postAdapter = new PostAdapter(postList);
         binding.recyclerView.setAdapter(postAdapter);
-
-        //포스트 로드
-        postLoader.reloadPostList();
+        btn_filter = binding.btnFilter;
 
         //현재 위치 띄우기
         setLocationTv();
@@ -69,6 +76,15 @@ public class MainListFragment extends Fragment {
             }
         });
 
+        //필터 버튼의 클릭 리스너
+        btn_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBottomSheetDialogFragment bottomSheetDialogFragment = new MyBottomSheetDialogFragment();  // 필터 버튼을 눌렀을 때 MyBottomSheetDialogFragment의 인스턴스를 생성합니다.
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+            }
+        });
+
 
         //스와이프 이벤트 : 포스트 다시 로드
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -78,8 +94,11 @@ public class MainListFragment extends Fragment {
                     @Override
                     public void run() {
                         postLoader.reloadPostList();
+                        // MainPageActivity의 selectedChips 초기화
+                        ((MainPageActivity) getActivity()).selectedChips.clear();
                         binding.swipeRefreshLayout.setRefreshing(false);
                     }
+
                 });
             }
         });
