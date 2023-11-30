@@ -3,6 +3,7 @@ package com.example.nearby.main.friends;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nearby.R;
+import com.example.nearby.auth.LogInActivity;
+import com.example.nearby.auth.SignUpActivity;
 import com.example.nearby.databinding.FragmentFriendsBinding;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,25 +63,28 @@ public class FriendsFragment extends Fragment {
     private FriendsAdapter friendsAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    private Button btnFriendsEdit;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        binding = FragmentFriendsBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         auth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference();
-        findEmailEdit = view.findViewById(R.id.findEmail);
+//        findEmailEdit = view.findViewById(R.id.findEmail);
         followBtn = view.findViewById(R.id.followBtn);
         unfollowBtn = view.findViewById(R.id.unFollowBtn);
         recyclerView = view.findViewById(R.id.recyclerView); // RecyclerView의 id가 'recyclerView'라고 가정했습니다.
-        //
+        // 수정 필요
+
         friendsAdapter = new FriendsAdapter(emails);
         recyclerView.setAdapter(friendsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        btnFriendsEdit = view.findViewById(R.id.btn_friends_edit);
 
         Log.d("ODG", currentUid);
 
@@ -90,6 +96,16 @@ public class FriendsFragment extends Fragment {
         friendsAdapter.setFriendsList(emails);
         loadFriendsList();
         friendsAdapter.notifyDataSetChanged();
+
+        // 편집 버튼 눌러서 액티비티 이동
+        btnFriendsEdit.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Intent moveToFriendEdit = new Intent(getActivity(), FriendEditActivity.class);
+                moveToFriendEdit.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(moveToFriendEdit);
+            }
+        });
+
 
         // 스와이프 이벤트
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
