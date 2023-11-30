@@ -135,7 +135,7 @@ public class MapsFragment extends Fragment {
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
 
             //위치 권한 확인
-            if(!checkLocationPermission(getActivity(),REQUEST_LOCATION_PERMISSION)){
+            if (!checkLocationPermission(getActivity(), REQUEST_LOCATION_PERMISSION)) {
                 return;
             }
 
@@ -215,7 +215,7 @@ public class MapsFragment extends Fragment {
             if (location != null) {
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 LatLng targetLocation = currentLocation;
-                Log.e("location", targetLocation.latitude+" "+targetLocation.longitude+" 1");
+                Log.e("location", targetLocation.latitude + " " + targetLocation.longitude + " 1");
 
                 if (postId != null) {
                     // postId가 있을 경우, postId에 해당하는 post를 찾습니다.
@@ -223,10 +223,10 @@ public class MapsFragment extends Fragment {
                     if (post != null) {
                         // postId에 해당하는 post를 찾았으면 그 위치로 지도의 카메라를 이동합니다.
                         targetLocation = new LatLng(post.getLatitude(), post.getLongitude());
-                        Log.e("location", post.getLatitude()+" "+post.getLongitude()+" 2");
+                        Log.e("location", post.getLatitude() + " " + post.getLongitude() + " 2");
                     }
                 }
-                Log.e("location", targetLocation.latitude+" "+targetLocation.longitude+" 3");
+                Log.e("location", targetLocation.latitude + " " + targetLocation.longitude + " 3");
                 // 선택된 위치로 카메라를 이동합니다.
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 15));
             }

@@ -42,6 +42,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private StorageReference storageRef = storage.getReference();
     ActivityProfileSettingBinding binding;
     private boolean isImageUpdated = false; // 이미지가 업데이트 되었는지 확인하는 변수
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +68,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(nicknameToCheck.isEmpty()){
+                if (nicknameToCheck.isEmpty()) {
                     Toast.makeText(ProfileSettingActivity.this, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Log.d("LYB", "중복 확인 중");
                     db.collection("users")
                             .whereEqualTo("nickname", nicknameToCheck)
@@ -110,7 +111,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     } else {
                                         Log.d("ProfileSettingActivity", "Error checking nickname.", task.getException());
                                     }
-                               }
+                                }
                             });
                 }
 
@@ -121,11 +122,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
         binding.btnCheckFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.tvNicknameIsChecked.getVisibility() == View.VISIBLE) {
+                if (binding.tvNicknameIsChecked.getVisibility() == View.VISIBLE) {
                     Intent intent = new Intent(ProfileSettingActivity.this, MainPageActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Toast.makeText(ProfileSettingActivity.this, "닉네임 중복 확인을 먼저 해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -145,7 +145,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             selectedImageUri = data.getData();
             uploadImage(selectedImageUri);
         }

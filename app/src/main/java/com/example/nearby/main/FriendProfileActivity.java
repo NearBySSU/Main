@@ -79,7 +79,7 @@ public class FriendProfileActivity extends AppCompatActivity {
 
         // recyclerView 등록
         profileAdapter = new ProfileAdapter(this, profileItemList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(profileAdapter);
 
 

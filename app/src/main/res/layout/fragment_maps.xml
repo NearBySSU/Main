@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".main.maps.MapsFragment">
 
     <fragment
@@ -16,22 +16,21 @@
         android:id="@+id/post_item_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="45dp"
+        android:orientation="horizontal"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ImageButton
         android:id="@+id/btn_filter"
         android:layout_width="60dp"
         android:layout_height="30dp"
+        android:layout_margin="20dp"
         android:background="@drawable/round_btn"
         android:backgroundTint="@color/firstColor"
-        android:src="@drawable/ic_filter_lines"
-        android:scaleType="fitCenter"
         android:padding="5dp"
-        android:layout_margin="20dp" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_filter_lines" />
 
 </RelativeLayout>

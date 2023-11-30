@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-public class MainPageActivity extends AppCompatActivity implements PostLoader{
+public class MainPageActivity extends AppCompatActivity implements PostLoader {
     FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
@@ -75,7 +74,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mainListFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.MapNav) {
-                    if(nullPostId==true){
+                    if (nullPostId == true) {
                         mapsFragment.initializePostId();  // postId를 초기화하는 메소드를 호출
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, mapsFragment).commit();
@@ -87,8 +86,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                 } else if (item.getItemId() == R.id.FriendNav) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendsFragment).commit();
                     return true;
-                }
-                else if (item.getItemId() == R.id.ProfileNav) {
+                } else if (item.getItemId() == R.id.ProfileNav) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, profileFragment).commit();
                     return true;
                 }
@@ -102,7 +100,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
 
     private void loadNearbyPosts() {
         //위치 권한 확인
-        if(!checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE)){
+        if (!checkLocationPermission(this, LOCATION_PERMISSION_REQUEST_CODE)) {
             return;
         }
         //현재 위치 가져오기
@@ -140,7 +138,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader{
                         List<String> tags = (List<String>) document.get("tags");
                         String text = document.getString("text");
 
-                        Post post = new Post(document.getId(), text,bigLocationName,smallLocationName,latitude, longitude, date, uid, imageUrls, likeList,tags);
+                        Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags);
                         postList.add(post);
                         originalPostList = postList;
                         livePostList.setValue(postList);

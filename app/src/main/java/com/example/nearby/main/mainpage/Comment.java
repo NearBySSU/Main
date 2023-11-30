@@ -21,10 +21,20 @@ public class Comment {
     public String getCommentText() {
         return this.commentText;
     }
+
     public String getCommenterId() {
         return this.commenterId;
     }
-    public long getTimestamp(){return this.timestamp;}
-    public String getProfilePicUrl(){return  this.profilePicUrl;}
-    public String getNickname(){return nickname;}
+
+    public long getTimestamp() {
+        return this.timestamp;
+    }
+
+    public String getProfilePicUrl() {
+        return this.profilePicUrl;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
 }

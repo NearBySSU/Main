@@ -93,7 +93,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-
     @Override
     public int getItemCount() {
         return mData.size();

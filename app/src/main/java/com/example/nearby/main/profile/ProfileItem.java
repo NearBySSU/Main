@@ -11,15 +11,27 @@ public class ProfileItem {
         this.postId = postId;
     }
 
-    public String getDate() { return date; }
+    public String getDate() {
+        return date;
+    }
 
-    public void setDate(String date) { this.date = date; }
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-    public String getImgUrl() { return imgUrl; }
+    public String getImgUrl() {
+        return imgUrl;
+    }
 
-    public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
-    public String getPostId() { return postId; }
+    public String getPostId() {
+        return postId;
+    }
 
-    public void setPostId(String postId) { this.postId = postId; }
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
 }

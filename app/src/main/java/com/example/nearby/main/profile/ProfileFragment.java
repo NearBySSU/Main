@@ -3,6 +3,7 @@ package com.example.nearby.main.profile;
 import static android.app.Activity.RESULT_OK;
 
 import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
@@ -79,7 +80,6 @@ public class ProfileFragment extends Fragment {
     private ArrayList<ProfileItem> profileItemList = new ArrayList<>();
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,18 +110,18 @@ public class ProfileFragment extends Fragment {
                 if (id == R.id.btn_logout) {
                     // 로그아웃 버튼
                     mAuth.signOut();
-                    Log.d("LYB" ,"LOGOUT");
+                    Log.d("LYB", "LOGOUT");
                     startActivity(new Intent(getActivity(), LogInActivity.class));
                     getActivity().finish();
                     return true;
-                } else if(id == R.id.btn_profile_pic){
+                } else if (id == R.id.btn_profile_pic) {
                     // 프로필 변경 버튼
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
                     return true;
-                }else {
+                } else {
                     return false;
                 }
             }
@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
 
         // recyclerView 등록
         profileAdapter = new ProfileAdapter(getContext(), profileItemList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(profileAdapter);
 
         // 스와이프 이벤트
@@ -320,7 +320,7 @@ public class ProfileFragment extends Fragment {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                        Toast.makeText(getContext(),"프로필 이미지 변경 성공!",Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "프로필 이미지 변경 성공!", Toast.LENGTH_SHORT).show();
 
                                                         // ProgressDialog 닫기
                                                         progressDialog.dismiss();
@@ -330,7 +330,7 @@ public class ProfileFragment extends Fragment {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
                                                         Log.w(TAG, "Error updating document", e);
-                                                        Toast.makeText(getContext(),"프로필 이미지 변경 실패",Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "프로필 이미지 변경 실패", Toast.LENGTH_SHORT).show();
 
                                                         // ProgressDialog 닫기
                                                         progressDialog.dismiss();

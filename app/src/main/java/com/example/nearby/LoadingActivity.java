@@ -18,14 +18,14 @@ public class LoadingActivity extends AppCompatActivity {
         loadingStart();
     }
 
-    private void loadingStart(){
-        Handler handler=new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                Intent intent=new Intent(getApplicationContext(), MainPageActivity.class);
+    private void loadingStart() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                 startActivity(intent);
                 finish();
             }
-        },1000);
+        }, 1000);
     }
 }

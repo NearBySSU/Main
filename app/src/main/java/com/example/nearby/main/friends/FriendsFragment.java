@@ -85,18 +85,18 @@ public class FriendsFragment extends Fragment {
         addFollowingsField();
 
         // FriendsList 로드
-                emails.clear();
-                friendsAdapter.setFriendsList(emails);
-                loadFriendsList();
-                friendsAdapter.notifyDataSetChanged();
+        emails.clear();
+        friendsAdapter.setFriendsList(emails);
+        loadFriendsList();
+        friendsAdapter.notifyDataSetChanged();
 
         // 스와이프 이벤트
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
-                    emails.clear();
-                    friendsAdapter.setFriendsList(emails);
-                    loadFriendsList();
-                    friendsAdapter.notifyDataSetChanged();
+                emails.clear();
+                friendsAdapter.setFriendsList(emails);
+                loadFriendsList();
+                friendsAdapter.notifyDataSetChanged();
 
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -126,7 +126,7 @@ public class FriendsFragment extends Fragment {
                                             String findUid = document.getId();
 
                                             // 자신 추가가 아니라면
-                                            if ( !findUid.equals(currentUid) ) {
+                                            if (!findUid.equals(currentUid)) {
                                                 DocumentReference docRef = db.collection("users").document(currentUid);
 
                                                 // 이미 followings db에 존재하는지 검사
@@ -169,8 +169,7 @@ public class FriendsFragment extends Fragment {
         });
 
 
-
-    // 언팔로우 버튼
+        // 언팔로우 버튼
         unfollowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +193,7 @@ public class FriendsFragment extends Fragment {
                                             String findUid = document.getId();
 
                                             // 자신 삭제가 아니라면
-                                            if ( !findUid.equals(currentUid) ) {
+                                            if (!findUid.equals(currentUid)) {
                                                 DocumentReference docRef = db.collection("users").document(currentUid);
 
                                                 // 이미 followings db에 존재하는지 검사

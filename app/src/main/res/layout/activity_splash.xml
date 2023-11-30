@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-<TextView
-    android:id="@+id/tv_splash"
-    android:layout_width="204dp"
-    android:layout_height="84dp"
-    tools:text="@string/app_name"
-    android:autoSizeTextType="uniform"
-    android:textStyle="bold"
-    android:fontFamily="@font/poppins_bold"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/tv_splash"
+        android:layout_width="204dp"
+        android:layout_height="84dp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/poppins_bold"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/app_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

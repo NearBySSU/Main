@@ -31,14 +31,14 @@ public class SplashActivity extends AppCompatActivity {
         loadingStart();
     }
 
-    private void loadingStart(){
-        Handler handler=new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                Intent intent=new Intent(getApplicationContext(), LogInActivity.class);
+    private void loadingStart() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                 startActivity(intent);
                 finish();
             }
-        },2000);
+        }, 2000);
     }
 }

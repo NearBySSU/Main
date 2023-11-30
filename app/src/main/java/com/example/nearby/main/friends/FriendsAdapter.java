@@ -35,6 +35,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         String email = emails.get(position);
         holder.emailTextView.setText(email);
     }
+
     public int getItemCount() {
         return emails.size();
     }

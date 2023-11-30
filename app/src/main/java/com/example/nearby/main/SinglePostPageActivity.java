@@ -61,7 +61,6 @@ public class SinglePostPageActivity extends AppCompatActivity {
     private List<String> tags = new ArrayList<>();
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySinglePostPageBinding.inflate(getLayoutInflater());
@@ -216,8 +215,7 @@ public class SinglePostPageActivity extends AppCompatActivity {
 
                             registerUserData();
                         }
-                    }
-                    else {
+                    } else {
                         Log.d("SinglePost", "get failed with ", task.getException());
                     }
                 });

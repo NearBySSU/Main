@@ -5,13 +5,16 @@ import android.graphics.Shader;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.text.style.UpdateAppearance;
+
 import androidx.annotation.ColorInt;
 
 public class LinearGradientSpan extends CharacterStyle implements UpdateAppearance {
     private String containingText;
     private String textToStyle;
-    @ColorInt private int startColorInt;
-    @ColorInt private int endColorInt;
+    @ColorInt
+    private int startColorInt;
+    @ColorInt
+    private int endColorInt;
 
     public LinearGradientSpan(String containingText, String textToStyle, int startColorInt, int endColorInt) {
         this.containingText = containingText;
