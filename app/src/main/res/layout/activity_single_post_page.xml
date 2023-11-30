@@ -35,19 +35,19 @@
             app:layout_constraintBottom_toBottomOf="@id/img_profile"
             app:layout_constraintStart_toEndOf="@id/img_profile" />
 
-        <ImageButton
-            android:id="@+id/btn_map"
-            android:backgroundTint="@color/black"
-            android:background="@drawable/round_btn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:scaleType="fitCenter"
-            android:padding="5dp"
-            android:src="@drawable/ic_map_btn"
-            android:layout_margin="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_nick_name"
-            app:layout_constraintBottom_toBottomOf="@id/tv_nick_name"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_map"-->
+<!--            android:backgroundTint="@color/black"-->
+<!--            android:background="@drawable/round_btn"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:padding="5dp"-->
+<!--            android:src="@drawable/ic_map_btn"-->
+<!--            android:layout_margin="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_nick_name"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_nick_name"/>-->
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -56,7 +56,7 @@
             android:layout_height="330dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_map"/>
+            app:layout_constraintTop_toBottomOf="@+id/img_profile"/>
 
         <TextView
             android:id="@+id/tv_post_date"

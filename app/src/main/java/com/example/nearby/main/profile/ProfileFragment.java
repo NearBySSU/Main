@@ -197,7 +197,6 @@ public class ProfileFragment extends Fragment {
                             postIds = new ArrayList<>(); // "postIds" 필드가 없을 경우 빈 리스트로 초기화
                         }
                         for (String postId : postIds) {
-                            currentPostId = postId;
                             db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -212,11 +211,14 @@ public class ProfileFragment extends Fragment {
                                         currentImageUrl = imageUrls.get(0);
                                     }
 
+                                    currentPostId = postId;
                                     // date
                                     String dates = (String) documentSnapshot.get("date");
 
                                     currentDate = dates;
 
+                                    Log.d("ProfileListCheck", currentPostId);
+                                    Log.d("ProfileListCheck", currentImageUrl);
 
 
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
