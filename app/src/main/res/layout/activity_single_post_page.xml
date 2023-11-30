@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/transparent"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_single_post_app_bar" />
+
         <ImageView
             android:id="@+id/img_profile"
             android:layout_width="43dp"
