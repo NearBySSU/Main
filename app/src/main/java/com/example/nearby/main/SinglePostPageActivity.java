@@ -110,27 +110,27 @@ public class SinglePostPageActivity extends AppCompatActivity {
             checkLikeStatus(postId, uid, binding.icEmptyHeart);
         });
 
-        binding.btnMap.setOnClickListener(v -> {
-            // MapsFragment의 인스턴스를 가져옵니다.
-            MapsFragment mapsFragment = MapsFragment.getInstance();
-
-            // 포스트 아이디를 설정합니다.
-            mapsFragment.setPostId(postId);
-
-            // 화면을 MapsFragment로 전환합니다.
-            ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containers, mapsFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-            ((MainPageActivity) v.getContext()).nullPostId = false;
-
-            BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
-            bottomNavigationView.setSelectedItemId(R.id.MapNav);
-
-            ((MainPageActivity) v.getContext()).nullPostId = true;
-
-        });
+//        binding.btnMap.setOnClickListener(v -> {
+//            // MapsFragment의 인스턴스를 가져옵니다.
+//            MapsFragment mapsFragment = MapsFragment.getInstance();
+//
+//            // 포스트 아이디를 설정합니다.
+//            mapsFragment.setPostId(postId);
+//
+//            // 화면을 MapsFragment로 전환합니다.
+//            ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.containers, mapsFragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//
+//            ((MainPageActivity) v.getContext()).nullPostId = false;
+//
+//            BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
+//            bottomNavigationView.setSelectedItemId(R.id.MapNav);
+//
+//            ((MainPageActivity) v.getContext()).nullPostId = true;
+//
+//        });
     }
 
 //    private void getPostData(String postId) {
