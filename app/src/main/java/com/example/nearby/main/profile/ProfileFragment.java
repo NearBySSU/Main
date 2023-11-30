@@ -26,8 +26,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.nearby.R;
 import com.example.nearby.auth.LogInActivity;
 import com.example.nearby.main.mainpage.Post;
@@ -66,6 +69,10 @@ public class ProfileFragment extends Fragment {
     private String currentImageUrl;
     private String currentDate;
     private static final String TAG = "ProfileFragment";
+    private TextView friendNum;
+    private TextView postNum;
+    private TextView nickNameField;
+    private ImageView profileImageView;
 
     private Toolbar toolbar;
 
@@ -89,6 +96,10 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         recyclerView = rootView.findViewById(R.id.recyclerView);
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
+        friendNum = rootView.findViewById(R.id.tv_friend_num);
+        postNum = rootView.findViewById(R.id.tv_post_num);
+        profileImageView = rootView.findViewById(R.id.img_profile);
+        nickNameField = rootView.findViewById(R.id.tv_profile_name);
 
 
         // 상단 바 눌렀을 때의 버튼 처리
@@ -192,10 +203,36 @@ public class ProfileFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        String nickname = (String) document.get("nickname");
+                        List<String> followings = (List<String>) document.get("followings");
+                        int numOfFollowings, numOfPosts;
+                        if (followings == null) {
+                            followings = new ArrayList<>(); // "followings" 필드가 없을 경우 빈 리스트로 초기화
+                            numOfFollowings = 0;
+                        } else {
+                            numOfFollowings = followings.size();
+                        }
+                        String profilePicUrl = (String) document.get("profilePicUrl");
+
                         List<String> postIds = (List<String>) document.get("postIds");
                         if (postIds == null) {
                             postIds = new ArrayList<>(); // "postIds" 필드가 없을 경우 빈 리스트로 초기화
+                            numOfPosts = 0;
+                        } else {
+                            numOfPosts = postIds.size();
                         }
+
+                        friendNum.setText(String.valueOf(numOfFollowings));
+                        postNum.setText(String.valueOf(numOfPosts));
+                        nickNameField.setText(nickname);
+
+                        Glide.with(profileImageView.getContext())
+                                .load(profilePicUrl)
+                                .circleCrop()
+                                .error(R.drawable.stock_profile)
+                                .into(profileImageView);
+
+
                         for (String postId : postIds) {
                             db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
