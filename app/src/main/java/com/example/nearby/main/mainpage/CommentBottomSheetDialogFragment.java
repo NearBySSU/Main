@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -73,7 +74,9 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +110,7 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
             }
         });
         loadComments(); // 댓글 목록 로드
+
         return view;
     }
 
@@ -140,11 +144,6 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                         // 에러 처리
                     }
                 });
-    }
-
-    public static void hideKeyboard(Context context, View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 

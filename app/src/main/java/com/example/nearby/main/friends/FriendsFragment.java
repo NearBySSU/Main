@@ -74,6 +74,7 @@ public class FriendsFragment extends Fragment {
         followBtn = view.findViewById(R.id.followBtn);
         unfollowBtn = view.findViewById(R.id.unFollowBtn);
         recyclerView = view.findViewById(R.id.recyclerView); // RecyclerView의 id가 'recyclerView'라고 가정했습니다.
+        //
         friendsAdapter = new FriendsAdapter(emails);
         recyclerView.setAdapter(friendsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
