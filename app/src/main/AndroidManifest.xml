@@ -51,6 +51,9 @@
         <activity
             android:name=".main.SinglePostPageActivity"
             android:exported="false" />
+        <activity
+            android:name=".main.FriendProfileActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
