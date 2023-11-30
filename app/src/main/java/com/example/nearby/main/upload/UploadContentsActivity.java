@@ -91,7 +91,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         chipGroup.setSingleSelection(false);
 
         //위치권한 확인
-        checkLocationPermission(this,LOCATION_PERMISSION_REQUEST_CODE);
+        checkLocationPermission(this, LOCATION_PERMISSION_REQUEST_CODE);
 
         //업로드 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +104,9 @@ public class UploadContentsActivity extends AppCompatActivity {
                         checkedTags.add(chip.getText().toString());
                     }
                 }
-                if (!checkedTags.isEmpty()&&!uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("") ){
+                if (!checkedTags.isEmpty() && !uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("")) {
                     uploadPost();
-                }
-                else{
+                } else {
                     Toast.makeText(UploadContentsActivity.this, "항목을 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -140,7 +139,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(UploadContentsActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedDate = year+"년" + (month+1) + "월" + dayOfMonth + "일" ;
+                selectedDate = year + "년" + (month + 1) + "월" + dayOfMonth + "일";
                 binding.showDateTextView.setText("Selected date: " + selectedDate);
             }
         }, year, month, day);
@@ -152,12 +151,11 @@ public class UploadContentsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 2222){
-            if(data == null){   // 어떤 이미지도 선택하지 않은 경우
+        if (requestCode == 2222) {
+            if (data == null) {   // 어떤 이미지도 선택하지 않은 경우
                 Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
-            }
-            else{   // 이미지를 하나라도 선택한 경우
-                if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
+            } else {   // 이미지를 하나라도 선택한 경우
+                if (data.getClipData() == null) {     // 이미지를 하나만 선택한 경우
                     Log.e("single choice: ", String.valueOf(data.getData()));
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
@@ -165,18 +163,16 @@ public class UploadContentsActivity extends AppCompatActivity {
                     adapter = new MultiImageAdapter(uriList, UploadContentsActivity.this);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
-                }
-                else{      // 이미지를 여러장 선택한 경우
+                } else {      // 이미지를 여러장 선택한 경우
                     ClipData clipData = data.getClipData();
                     Log.e("clipData", String.valueOf(clipData.getItemCount()));
 
-                    if(clipData.getItemCount() > 10){   // 선택한 이미지가 11장 이상인 경우
+                    if (clipData.getItemCount() > 10) {   // 선택한 이미지가 11장 이상인 경우
                         Toast.makeText(getApplicationContext(), "사진은 10장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
-                    }
-                    else{   // 선택한 이미지가 1장 이상 10장 이하인 경우
+                    } else {   // 선택한 이미지가 1장 이상 10장 이하인 경우
                         Log.e(TAG, "multiple choice");
 
-                        for (int i = 0; i < clipData.getItemCount(); i++){
+                        for (int i = 0; i < clipData.getItemCount(); i++) {
                             Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
                             try {
                                 uriList.add(imageUri);  //uri를 list에 담는다.
@@ -199,6 +195,7 @@ public class UploadContentsActivity extends AppCompatActivity {
             }
         }
     }
+
     /*------------------------------------------------------------------------------포스트 업로드 함수-------------------------------------------------------------------------------------*/
     private void uploadPost() {
         Toast.makeText(UploadContentsActivity.this, "이미지 업로드 중 ...", Toast.LENGTH_SHORT).show();
@@ -241,8 +238,8 @@ public class UploadContentsActivity extends AppCompatActivity {
                     if (location != null) {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
-                        locationNames = getLocationName(this,location);
-                        Log.e("llll", locationNames[0]+" "+locationNames[1]);
+                        locationNames = getLocationName(this, location);
+                        Log.e("llll", locationNames[0] + " " + locationNames[1]);
 
                         Map<String, Object> post = createPostMap(urls, latitude, longitude);
 
@@ -261,13 +258,13 @@ public class UploadContentsActivity extends AppCompatActivity {
         Map<String, Object> post = new HashMap<>();
         post.put("text", binding.mainText.getText().toString());
         post.put("imageUrls", urls);
-        post.put("bigLocationName",locationNames[0]);
-        post.put("smallLocationName",locationNames[1]);
+        post.put("bigLocationName", locationNames[0]);
+        post.put("smallLocationName", locationNames[1]);
         post.put("date", selectedDate);
         post.put("latitude", latitude);
         post.put("longitude", longitude);
         post.put("uid", uid);
-        post.put("tags",checkedTags);
+        post.put("tags", checkedTags);
         return post;
     }
 
@@ -300,7 +297,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     }
 
     private void requestLocationPermission() {
-        ActivityCompat.requestPermissions(UploadContentsActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        ActivityCompat.requestPermissions(UploadContentsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     private void onImageUploadFailure(@NonNull Exception e) {

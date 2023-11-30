@@ -4,31 +4,31 @@
     <item
         android:id="@+id/MainListNav"
         android:enabled="true"
-        android:title=""
         android:icon="@drawable/ic_home"
+        android:title=""
         app:showAsAction="always" />
     <item
         android:id="@+id/MapNav"
         android:enabled="true"
-        android:title=""
         android:icon="@drawable/ic_map"
+        android:title=""
         app:showAsAction="always" />
     <item
         android:id="@+id/Upload"
         android:enabled="true"
-        android:title=""
         android:icon="@drawable/ic_upload"
+        android:title=""
         app:showAsAction="always" />
     <item
         android:id="@+id/FriendNav"
         android:enabled="true"
-        android:title=""
         android:icon="@drawable/ic_friends"
+        android:title=""
         app:showAsAction="always" />
     <item
         android:id="@+id/ProfileNav"
         android:enabled="true"
-        android:title=""
         android:icon="@drawable/ic_profile"
+        android:title=""
         app:showAsAction="always" />
 </menu>

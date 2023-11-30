@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:cardBackgroundColor="#FFFFFF">
 
     <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/date"
-        android:text="기간별로 보기"
-        android:textSize="16sp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:text="기간별로 보기"
+        android:textSize="16sp" />
 
     <HorizontalScrollView
+        android:id="@+id/chipGroupScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chipGroupScroll"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,68 +27,68 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupDate"
-            app:chipSpacingHorizontal="20dp"
-            app:singleSelection="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:theme="@style/AppTheme"
+            app:chipSpacingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+            app:layout_constraintTop_toBottomOf="@+id/show_date_textView"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/dateChip01"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 1"
                 android:textColor="@color/white"
-                android:text="Chip 1"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
+                app:chipStrokeColor="@color/secondColor"
+                app:chipStrokeWidth="2dp" />
 
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/dateChip02"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
+                android:text="Chip 2"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
                 app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:text="Chip 2"/>
+                app:chipStrokeWidth="2dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/dateChip03"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 3"
                 android:textColor="@color/white"
-                android:text="Chip 3"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/dateChip04"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 4"
                 android:textColor="@color/white"
-                android:text="Chip 4"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -105,9 +104,9 @@
         android:textSize="16sp" />
 
     <HorizontalScrollView
+        android:id="@+id/chipGroupScroll2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chipGroupScroll2"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,68 +114,68 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupTag"
-            app:chipSpacingHorizontal="20dp"
-            app:singleSelection="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:theme="@style/AppTheme"
+            app:chipSpacingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+            app:layout_constraintTop_toBottomOf="@+id/show_date_textView"
+            app:singleSelection="false">
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip01"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="맛집"
                 android:textColor="@color/white"
-                android:text="맛집"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
+                app:chipStrokeColor="@color/secondColor"
+                app:chipStrokeWidth="2dp" />
 
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip02"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
+                android:text="여행"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
                 app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:text="여행"/>
+                app:chipStrokeWidth="2dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip03"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="일상"
                 android:textColor="@color/white"
-                android:text="일상"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/tagChip04"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="특별한 추억"
                 android:textColor="@color/white"
-                android:text="특별한 추억"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -192,89 +191,83 @@
         android:textSize="16sp" />
 
     <HorizontalScrollView
+        android:id="@+id/chipGroupScroll3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chipGroupScroll3"
-        android:scrollbars="none"
         android:layout_marginBottom="20dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupDistance"
-            app:chipSpacingHorizontal="30dp"
-            app:singleSelection="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:theme="@style/AppTheme"
+            app:chipSpacingHorizontal="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_date_textView">
+            app:layout_constraintTop_toBottomOf="@+id/show_date_textView"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/areaChip01"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 1"
                 android:textColor="@color/white"
-                android:text="Chip 1"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
+                app:chipStrokeColor="@color/secondColor"
+                app:chipStrokeWidth="2dp" />
 
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/areaChip02"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
+                android:text="Chip 2"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
                 app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp"
                 app:chipStrokeColor="@color/secondColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:text="Chip 2"/>
+                app:chipStrokeWidth="2dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/areaChip03"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 3"
                 android:textColor="@color/white"
-                android:text="Chip 3"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
             <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/areaChip04"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="18sp"
+                android:text="Chip 4"
                 android:textColor="@color/white"
-                android:text="Chip 4"/>
+                android:textSize="18sp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipEndPadding="10dp"
+                app:chipStartPadding="10dp" />
 
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
-
-
-
-
-
-
 
 
 </LinearLayout>

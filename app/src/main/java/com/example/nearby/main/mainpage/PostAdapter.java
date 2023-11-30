@@ -74,14 +74,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             String profilePicUrl = document.getString("profilePicUrl");
 
                             // 프로필 이미지 로드 (Glide 라이브러리 사용)
-                                Glide.with(holder.images.getContext())
-                                        .load(profilePicUrl)
-                                        .circleCrop()
-                                        .error(R.drawable.stock_profile)
-                                        .into(holder.profile);
+                            Glide.with(holder.images.getContext())
+                                    .load(profilePicUrl)
+                                    .circleCrop()
+                                    .error(R.drawable.stock_profile)
+                                    .into(holder.profile);
                         }
-                    }
-                    else {
+                    } else {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 });
@@ -92,15 +91,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        if(document != null){
+                        if (document != null) {
                             String nickname = document.getString("nickname");
                             holder.nickName.setText(nickname);
-                        }
-                        else{
+                        } else {
                             Log.d(TAG, "failed to get nickname ", task.getException());
                         }
-                    }
-                    else{
+                    } else {
                         Log.d(TAG, "failed to get nickname ", task.getException());
                     }
                 });

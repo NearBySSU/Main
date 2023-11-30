@@ -1,6 +1,8 @@
 package com.example.nearby.main.mainpage;
+
 import static com.example.nearby.Utils.checkLocationPermission;
 import static com.example.nearby.Utils.getLocationName;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -115,7 +117,7 @@ public class MainListFragment extends Fragment {
         //tv에 이름을 set
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                String[] locationNames = getLocationName(getActivity(),location);
+                String[] locationNames = getLocationName(getActivity(), location);
                 if (locationNames != null) {
                     binding.tvLocationTitle.setText(locationNames[0]);
                     binding.tvLocationCity.setText(locationNames[1]);

@@ -47,8 +47,12 @@ public class PostItem {
         this.profilePicUrl = profilePicUrl;
     }
 
-    public String getPostId() { return postId; }
+    public String getPostId() {
+        return postId;
+    }
 
-    public void setPostId(String postId) { this.postId = postId; }
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
 }
 

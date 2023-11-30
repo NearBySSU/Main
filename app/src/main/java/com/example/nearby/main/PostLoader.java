@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface PostLoader {
     List<Post> getPostList();
+
     void reloadPostList();
 }

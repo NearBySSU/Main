@@ -1,240 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
     tools:context=".main.upload.UploadContentsActivity">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="20dp">
-
-    <TextView
-        android:id="@+id/tv_upload_title"
-        android:layout_width="134dp"
-        android:layout_height="36dp"
-        android:autoSizeTextType="uniform"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/poppins_bold"
-        android:textColor="@color/black"
-        android:text="게시물 업로드"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_cancel"
-        android:layout_margin="20dp"
-        android:scaleType="fitXY"
-        android:padding="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_upload_title"/>
-
-
-    <LinearLayout
-        android:id="@+id/editTextBox"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_upload_title"
+            android:layout_width="134dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="30dp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/poppins_bold"
+            android:text="게시물 업로드"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="20dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
+
+
+        <LinearLayout
+            android:id="@+id/editTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerView">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/greyLine" />
+
             <EditText
                 android:id="@+id/mainText"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
-                android:fontFamily="@font/poppins_light"
-                android:hint="텍스트 입력..."
-                android:scrollbars="none"
-                android:textSize="16sp"
-                android:gravity="top|start"
-                android:paddingStart="10dp"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp"
-                android:maxLines="7"
                 android:background="@color/transparent"
-                android:inputType="textMultiLine"
-                android:scrollHorizontally="false" />
+                android:fontFamily="@font/poppins_light"
+                android:gravity="top|start"
+                android:hint="텍스트 입력..."
+                android:lines="10"
+                android:maxLines="10"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:textSize="16sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/greyLine" />
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_date"
-        android:text="날짜"
-        android:textColor="@color/black"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextBox"/>
-
-
-    <Button
-        android:id="@+id/pick_date_button"
-        android:layout_width="80dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/chip_rec"
-        android:fontFamily="@font/poppins_bold"
-        android:onClick="pickDate"
-        android:text="선택"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_date"
-        app:layout_constraintStart_toEndOf="@+id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/editTextBox" />
-
-    <TextView
-        android:id="@+id/show_date_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text=""
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
-
-    <TextView
-        android:id="@+id/tv_chip_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="태그"
-        android:textStyle="bold"
-        android:fontFamily="@font/poppins_bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/show_date_textView"/>
-
-
-    <HorizontalScrollView
-        android:id="@+id/chipGroupScroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chip_title">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
-            app:chipSpacingHorizontal="20dp"
-            app:singleSelection="true"
-            android:layout_marginLeft="20dp"
+        <TextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:theme="@style/AppTheme"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="날짜"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBox" />
+
+
+        <Button
+            android:id="@+id/pick_date_button"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/chip_rec"
+            android:fontFamily="@font/poppins_bold"
+            android:onClick="pickDate"
+            android:text="선택"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+            app:layout_constraintStart_toEndOf="@+id/tv_date"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBox" />
+
+        <TextView
+            android:id="@+id/show_date_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+
+        <TextView
+            android:id="@+id/tv_chip_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="태그"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/show_date_textView" />
+
+
+        <HorizontalScrollView
+            android:id="@+id/chipGroupScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_chip_title">
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:id="@+id/chip01"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/thirdColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="일상"/>
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/AppTheme"
+                app:chipSpacingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_chip_title"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip01"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="일상"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:chipBackgroundColor="@drawable/chip_background"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp"
+                    app:chipStrokeColor="@color/thirdColor"
+                    app:chipStrokeWidth="2dp" />
 
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:id="@+id/chip02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipStrokeColor="@color/thirdColor"
-                app:chipStrokeWidth="2dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="맛집"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip02"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="맛집"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:chipBackgroundColor="@drawable/chip_background"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp"
+                    app:chipStrokeColor="@color/thirdColor"
+                    app:chipStrokeWidth="2dp" />
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:id="@+id/chip03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="여행"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip03"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="여행"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:chipBackgroundColor="@drawable/chip_background"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:id="@+id/chip04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipStartPadding="10dp"
-                app:chipEndPadding="10dp"
-                app:chipBackgroundColor="@drawable/chip_background"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="직접입력"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip04"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="직접입력"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:chipBackgroundColor="@drawable/chip_background"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
 
-        </com.google.android.material.chip.ChipGroup>
+            </com.google.android.material.chip.ChipGroup>
 
-    </HorizontalScrollView>
+        </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/upload_button"
-        android:layout_width="350dp"
-        android:layout_height="65dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/big_button"
-        android:onClick="uploadPost"
-        android:text="업로드"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.344"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chipGroupScroll" />
+        <Button
+            android:id="@+id/upload_button"
+            android:layout_width="350dp"
+            android:layout_height="65dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/big_button"
+            android:onClick="uploadPost"
+            android:text="업로드"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.344"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chipGroupScroll" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

@@ -110,7 +110,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                                     } else {
                                         Log.d("ProfileSettingActivity", "Error checking nickname.", task.getException());
                                     }
-                               }
+                                }
                             });
                 }
 
@@ -148,7 +148,12 @@ public class ProfileSettingActivity extends AppCompatActivity {
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             selectedImageUri = data.getData();
             uploadImage(selectedImageUri);
+            displaySelectedImage(selectedImageUri); // 선택한 이미지를 화면에 표시
         }
+    }
+    private void displaySelectedImage(Uri imageUri) {
+        Glide.with(this).load(imageUri).circleCrop().into(binding.imgProfile);
+        isImageUpdated = true;
     }
 
     private void uploadImage(Uri imageUri) {

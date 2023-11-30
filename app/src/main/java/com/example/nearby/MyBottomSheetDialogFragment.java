@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.lifecycle.Observer;
+
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.mainpage.Post;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
     ChipGroup chipGroup;
     List<Post> filteredPosts;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_sheet_dialog, container, false);
@@ -72,7 +76,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
     }
 
     //
-    public  void filterPostListAndSaveToLiveData(MainPageActivity activity) {
+    public void filterPostListAndSaveToLiveData(MainPageActivity activity) {
         // postList 필터링
         List<Post> postList = new ArrayList<>(activity.originalPostList);
         if (postList != null) {

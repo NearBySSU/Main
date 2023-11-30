@@ -20,7 +20,7 @@ public class Post implements ClusterItem {
     List<String> tags;
 
 
-    public Post(String postId, String text,String bigLocationName, String smallLocationName, double latitude, double longitude, String date, String userId, List<String> images,List<String> likes,List<String> tags) {
+    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, String date, String userId, List<String> images, List<String> likes, List<String> tags) {
         this.postId = postId;
         this.text = text;
         this.bigLocationName = bigLocationName;
@@ -35,20 +35,21 @@ public class Post implements ClusterItem {
     }
 
     // getters and setters
-    public String getPostId(){
+    public String getPostId() {
         return postId;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
+
     public String getBigLocationName() {
         return bigLocationName;
     }
+
     public String getSmallLocationName() {
         return smallLocationName;
     }
-
 
 
     // 추가: 날짜 getter
@@ -63,10 +64,14 @@ public class Post implements ClusterItem {
     public List<String> getImages() {
         return images;
     }
+
     public List<String> getLikes() {
         return likes;
     }
-    public List<String> getTags(){ return tags;}
+
+    public List<String> getTags() {
+        return tags;
+    }
 
 
     public double getLatitude() {
@@ -86,7 +91,7 @@ public class Post implements ClusterItem {
     @Override
     public String getTitle() {
         if (text.length() > 30) {
-            return text.substring(0, 30)+"...";
+            return text.substring(0, 30) + "...";
         } else {
             return text;
         }

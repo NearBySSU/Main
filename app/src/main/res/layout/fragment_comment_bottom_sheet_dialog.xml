@@ -1,43 +1,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/tv_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="댓글"
-        android:textSize="24sp"
-        android:textColor="@color/black"
+        android:layout_marginTop="25sp"
         android:fontFamily="@font/poppins_bold"
         android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="댓글"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        android:layout_marginTop="25sp"
-        android:id="@+id/tv_comment"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_above="@id/commentLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/commentLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment"
-        app:layout_constraintBottom_toTopOf="@id/commentLayout"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment" />
 
 
     <LinearLayout
         android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"
         android:orientation="horizontal"
-        android:layout_margin="20dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <EditText
             android:id="@+id/etComment"
@@ -45,22 +45,22 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_light"
             android:background="@drawable/comment_back"
-            android:hint="댓글달기"/>
+            android:fontFamily="@font/poppins_light"
+            android:hint="댓글달기"
+            android:paddingStart="15dp"
+            android:textSize="12sp" />
 
         <ImageButton
             android:id="@+id/btnSubmit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="5dp"
             android:layout_marginTop="20dp"
+            android:background="@color/transparent"
+            android:padding="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/btn_comment_submit"
-            android:background="@color/transparent"
-            android:text="제출"/>
+            android:text="제출" />
     </LinearLayout>
 
 

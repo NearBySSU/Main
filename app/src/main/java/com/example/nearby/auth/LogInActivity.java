@@ -32,6 +32,7 @@ public class LogInActivity extends AppCompatActivity {
     private EditText passwordEdit;
     private ActivityLogInBinding binding;
     FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,17 +62,17 @@ public class LogInActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 String email = binding.emailText.getText().toString().trim();
-                 String pwd = binding.passwordText.getText().toString().trim();
+                String email = binding.emailText.getText().toString().trim();
+                String pwd = binding.passwordText.getText().toString().trim();
 
                 // 입력값 검증
-                if(email.isEmpty() || pwd.isEmpty()){
+                if (email.isEmpty() || pwd.isEmpty()) {
                     Toast.makeText(LogInActivity.this, "이메일 또는 비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // 이메일 형식 검증
-                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     Toast.makeText(LogInActivity.this, "올바른 이메일 형식을 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -94,7 +95,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
         //가입하기로 이동
-        binding.signUpButton.setOnClickListener(new View.OnClickListener(){
+        binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
