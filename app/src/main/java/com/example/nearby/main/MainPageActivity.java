@@ -84,11 +84,6 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
 
                         // Get new FCM registration token
                         String token = task.getResult();
-
-                        // Log and toast
-                        System.out.println(token);
-                        Toast.makeText(MainPageActivity.this, "ypur device token is : " + token
-                                , Toast.LENGTH_SHORT).show();
                     }
                 });
 
