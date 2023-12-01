@@ -251,7 +251,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .addOnFailureListener(e -> {
                     // 에러 처리
                 });
-
     }
 
     private void loadLikes(String postId, String userId, ImageButton likeButton) {
