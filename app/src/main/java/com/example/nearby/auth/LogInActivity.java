@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,16 +22,23 @@ import com.example.nearby.R;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.databinding.ActivityLogInBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LogInActivity extends AppCompatActivity {
     private Button loginBtn;
     private EditText EmailEdit;
     private EditText passwordEdit;
     private ActivityLogInBinding binding;
+    private FirebaseFirestore db;
+
+    String TAG = "login";
     FirebaseAuth mAuth;
 
     @Override
@@ -39,6 +47,7 @@ public class LogInActivity extends AppCompatActivity {
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         loginBtn = binding.logInButton;
         EmailEdit = binding.emailText;
@@ -83,6 +92,7 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {//성공했을때
+                                    updateFcmToken();
                                     Intent intent = new Intent(LogInActivity.this, MainPageActivity.class);
                                     startActivity(intent);
                                 } else {//실패했을때
@@ -115,4 +125,40 @@ public class LogInActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         return super.dispatchTouchEvent(ev);
     }
+
+    //토큰을 업데이트 하는 함수
+    private void updateFcmToken() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String fcmToken = task.getResult();
+
+                        db.collection("users")
+                                .document(user.getUid())
+                                .update("fcmToken", fcmToken)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "FCM token updated for ID: " + user.getUid());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error updating FCM token", e);
+                                    }
+                                });
+                    }
+                });
+    }
+
 }

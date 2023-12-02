@@ -66,5 +66,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.android.material:material:1.10.0")
+    implementation("com.google.firebase:firebase-messaging:23.3.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-core:21.1.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
 }
+

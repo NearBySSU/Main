@@ -1,16 +1,24 @@
 package com.example.nearby.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -29,6 +37,8 @@ import com.example.nearby.main.mainpage.PostAdapter;
 import com.example.nearby.main.mainpage.TagsAdapter;
 import com.example.nearby.main.maps.MapsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +87,11 @@ public class SinglePostPageActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(binding.imgPostRecyclerView); // SnapHelper를 RecyclerView에 연결
 
         Log.d("singlepage", postId);
+
+
+        // tool bar 세팅
+        setToolBar();
+
 
         // 스와이프 이벤트
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -187,6 +202,10 @@ public class SinglePostPageActivity extends AppCompatActivity {
                         imageUrls = document.contains("imageUrls") ? (List<String>) document.get("imageUrls") : new ArrayList<>();
                         likeList = document.contains("likes") ? (List<String>) document.get("likes") : new ArrayList<>();
                         tags = document.contains("tags") ? (List<String>) document.get("tags") : new ArrayList<>();
+
+                        if ( !postUid.equals(uid) ) {
+                            binding.topAppBar.setVisibility(View.GONE);
+                        }
 
                         registerPostData();
 
@@ -330,4 +349,80 @@ public class SinglePostPageActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void setToolBar() {
+        binding.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.post_delete_btn) {
+                    Log.d("postDelete", "메롱");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SinglePostPageActivity.this);
+
+                    builder.setTitle("게시물 삭제").setMessage("정말 삭제 하시겠어요?");
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            deletePost(postId);
+                            finish();
+                            Toast.makeText(getApplicationContext(), "삭제 되었어요.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
+    private void deletePost(String postId) {
+        // users 안의 postIds 필드 안의 postId 삭제
+        db.collection("users").document(uid).update("postIds", FieldValue.arrayRemove(postId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("PostDelete", "삭제됐음");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("PostDelete", "삭제안됨 오류뜸");
+                    }
+                });
+
+        // posts 안의 post 문서 삭제
+        db.collection("posts").document(postId).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("PostDelete", "삭제됐음");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("PostDelete", "삭제안됨 오류뜸");
+                    }
+                });
+    }
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu);
+//        inflater.inflate(R.menu.menu_single_post_app_bar, menu);
+//    }
 }

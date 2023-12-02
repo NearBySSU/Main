@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,24 +91,40 @@ public class SignUpActivity extends AppCompatActivity {
     //회원가입 성공시 유저 정보(이메일,uid)를 데이터베이스(users)에 저장하는 함수
     private void addUserInfoToFirestore(String email) {
         FirebaseUser user = mAuth.getCurrentUser();
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("email", email);
-        userMap.put("uid", user.getUid());  // 사용자 ID를 추가
-        userMap.put("nickname", user.getUid());  // 사용자 nickname을 ID로 설정
 
-        db.collection("users")
-                .document(user.getUid())
-                .set(userMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "User profile created for ID: " + user.getUid());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding user profile", e);
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String fcmToken = task.getResult();
+
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("email", email);
+                        userMap.put("uid", user.getUid());  // 사용자 ID를 추가
+                        userMap.put("nickname", user.getUid());  // 사용자 nickname을 ID로 설정
+                        userMap.put("fcmToken", fcmToken);  // FCM 토큰을 추가
+
+                        db.collection("users")
+                                .document(user.getUid())
+                                .set(userMap)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "User profile created for ID: " + user.getUid());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding user profile", e);
+                                    }
+                                });
                     }
                 });
     }
