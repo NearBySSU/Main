@@ -26,14 +26,18 @@ import com.example.nearby.R;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.maps.MapsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
@@ -41,7 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private static final String TAG = "PostAdapter";
     FirebaseAuth auth;
 
-    //생성자
+    //PostAdapter의 생성자
     public PostAdapter(List<Post> postList) {
         this.postList = postList != null ? postList : new ArrayList<>();
         db = FirebaseFirestore.getInstance();
@@ -57,7 +61,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Post post = postList.get(position); //포스트 한개의 객체 얻기
-        holder.date.setText(post.getDate()); //날짜 설정
+
+        // 날짜 설정
+        Timestamp timestamp = post.getDate();
+        if (timestamp != null) {
+            Date date = timestamp.toDate(); // Date 형식으로 변환
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA); // 원하는 형식으로 날짜를 포맷
+            String dateString = sdf.format(date);
+            holder.date.setText(dateString);
+        }
         holder.mainText.setText(post.getText()); //메인 텍스트 설정
         holder.bigLocationName.setText(post.bigLocationName);
         holder.smallLocationName.setText(post.smallLocationName);

@@ -21,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //로고 그라데이션을 위한 코드
         String text = "NearBy";
         int purple = ContextCompat.getColor(this, R.color.firstColor);
         int teal = ContextCompat.getColor(this, R.color.lastColor);
@@ -28,9 +29,11 @@ public class SplashActivity extends AppCompatActivity {
         spannable.setSpan(new LinearGradientSpan(text, text, purple, teal), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvSplash.setText(spannable);
 
+        //로딩 스타트
         loadingStart();
     }
 
+    //mainpageactivity로 이동하는 함수
     private void loadingStart() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -39,6 +42,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 2000);
+        }, 1000);
     }
 }
