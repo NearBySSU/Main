@@ -41,21 +41,25 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class SinglePostPageActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private String profileImageUrl;
     private String nickName;
-    private String date;
+    private Timestamp date;
     private String bigLocation;
     private String smallLocation;
     private String text;
@@ -193,7 +197,8 @@ public class SinglePostPageActivity extends AppCompatActivity {
 
                         // 인스턴스 초기화
                         postUid = document.contains("uid") ? document.getString("uid") : ""; // nickname, profileimage 설정예정
-                        date = document.contains("date") ? document.getString("date") : "";
+                        Timestamp defaultTimestamp = new Timestamp(new Date(90, 0, 1));
+                        date = document.contains("date") ? document.getTimestamp("date") : defaultTimestamp;
                         bigLocation = document.contains("bigLocationName") ? document.getString("bigLocationName") : "";
                         smallLocation = document.contains("smallLocationName") ? document.getString("smallLocationName") : "";
                         text = document.contains("text") ? document.getString("text") : "";
@@ -241,7 +246,12 @@ public class SinglePostPageActivity extends AppCompatActivity {
     }
 
     private void registerPostData() {
-        binding.tvPostDate.setText(date);
+        if (date != null) {
+            Date dateObject = date.toDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
+            String dateString = sdf.format(dateObject);
+            binding.tvPostDate.setText(dateString);
+        }
         binding.tvBigLocationName.setText(bigLocation);
         binding.tvSmallLocationName.setText(smallLocation);
         binding.tvPostMainText.setText(text);

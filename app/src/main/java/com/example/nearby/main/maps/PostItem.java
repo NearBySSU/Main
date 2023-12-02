@@ -5,17 +5,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+
 import java.util.List;
 
 public class PostItem {
 
     private String title;
-    private String date; // 날짜를 저장할 필드를 추가
+    private Timestamp date; // 날짜를 저장할 필드를 추가
     private String profilePicUrl; // 프로필 사진 URL을 저장할 필드를 추가
     private String postId;
 
     // 생성자
-    public PostItem(String title, String date, String profilePicUrl, String postId) {
+    public PostItem(String title, Timestamp date, String profilePicUrl, String postId) {
         this.title = title;
         this.date = date;
         this.profilePicUrl = profilePicUrl;
@@ -31,11 +33,11 @@ public class PostItem {
         this.title = title;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -1,6 +1,7 @@
 package com.example.nearby.main.mainpage;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.Timestamp;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class Post implements ClusterItem {
     String text;
     double latitude;
     double longitude;
-    String date;
+    Timestamp date;
     String userId;
     String bigLocationName;
     String smallLocationName;
@@ -20,7 +21,7 @@ public class Post implements ClusterItem {
     List<String> tags;
 
 
-    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, String date, String userId, List<String> images, List<String> likes, List<String> tags) {
+    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, Timestamp date, String userId, List<String> images, List<String> likes, List<String> tags) {
         this.postId = postId;
         this.text = text;
         this.bigLocationName = bigLocationName;
@@ -53,7 +54,7 @@ public class Post implements ClusterItem {
 
 
     // 추가: 날짜 getter
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 

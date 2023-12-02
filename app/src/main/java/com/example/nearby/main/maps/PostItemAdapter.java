@@ -16,9 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
 import com.example.nearby.main.SinglePostPageActivity;
+import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
 
@@ -43,7 +47,14 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PostItem postItem = postItemList.get(position);
         holder.title.setText(postItem.getTitle());
-        holder.date.setText(postItem.getDate());
+        Timestamp timestamp = postItem.getDate();
+        if (timestamp != null) {
+            Date date = timestamp.toDate(); // Date 형식으로 변환
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA); // 원하는 형식으로 날짜를 포맷
+            String dateString = sdf.format(date);
+            holder.date.setText(dateString);
+        }
+
         holder.postId = postItem.getPostId();
 
         holder.seeItBtn.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -73,6 +74,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
 
+
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -90,7 +92,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "My Channel";
             String description = "Channel for My App";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -161,7 +163,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
 
                         //나머지 정보들 로드
                         String uid = document.getString("uid");
-                        String date = document.getString("date");
+                        Timestamp date = document.getTimestamp("date");
                         String bigLocationName = document.getString("bigLocationName");
                         String smallLocationName = document.getString("smallLocationName");
                         List<String> imageUrls = (List<String>) document.get("imageUrls");

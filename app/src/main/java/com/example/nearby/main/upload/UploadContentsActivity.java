@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -48,6 +49,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -72,7 +74,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     ActivityUploadContentsBinding binding;
     String[] locationNames;
     Uri imageUri;
-    String selectedDate;
+    Timestamp selectedDate;
     String uid;
 
     @Override
@@ -130,6 +132,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     }
 
     /*------------------------------------------------------------------------------날짜 선택 함수-------------------------------------------------------------------------------------*/
+    // 날짜 선택 함수
     public void pickDate() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -139,12 +142,19 @@ public class UploadContentsActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(UploadContentsActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedDate = year + "년" + (month + 1) + "월" + dayOfMonth + "일";
-                binding.showDateTextView.setText("Selected date: " + selectedDate);
+                calendar.set(year, month, dayOfMonth); // 선택된 날짜로 calendar 설정
+                selectedDate = new Timestamp(calendar.getTime()); // 선택된 날짜를 Timestamp 형식으로 저장
+
+                // 선택된 날짜를 문자열로 변환
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+                String selectedDateString = sdf.format(selectedDate.toDate());
+
+                binding.showDateTextView.setText(selectedDateString);
             }
         }, year, month, day);
         datePickerDialog.show();
     }
+
 
     /*------------------------------------------------------------------------------이미지를 갤러리에서 가져오고 썸네일을 만드는 함수-------------------------------------------------------------------------------------*/
     @Override
@@ -239,7 +249,10 @@ public class UploadContentsActivity extends AppCompatActivity {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
                         locationNames = getLocationName(this, location);
-                        Log.e("llll", locationNames[0] + " " + locationNames[1]);
+                        if (locationNames == null) {
+                            // getLocationName이 null을 반환하는 경우에 대한 처리
+                            locationNames = new String[]{"이세상 어딘가", ""};
+                        }
 
                         Map<String, Object> post = createPostMap(urls, latitude, longitude);
 
