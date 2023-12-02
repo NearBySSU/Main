@@ -7,19 +7,18 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nearby.main.mainpage.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
+public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder> {
+    // 객체를 연결할 어댑터
     private ArrayList<String> emails;
     private FirebaseFirestore db;
     FirebaseAuth auth;
 
-    public FriendsAdapter(ArrayList<String> emails) {
+    public FriendsListAdapter(ArrayList<String> emails) {
         this.emails = emails;
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -53,6 +52,5 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             emailTextView = (TextView) itemView.findViewById(android.R.id.text1);
         }
     }
-
 
 }

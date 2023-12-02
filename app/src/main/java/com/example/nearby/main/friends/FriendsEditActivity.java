@@ -6,7 +6,8 @@ import android.os.Bundle;
 
 import com.example.nearby.R;
 
-public class FriendEditActivity extends AppCompatActivity {
+public class FriendsEditActivity extends AppCompatActivity {
+    // 친구 편집할 수 있는 액티비티
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

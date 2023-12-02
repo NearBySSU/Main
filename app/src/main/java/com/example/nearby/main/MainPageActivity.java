@@ -10,20 +10,17 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.nearby.R;
+import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.upload.UploadContentsActivity;
-import com.example.nearby.databinding.ActivityMainPageBinding;
-import com.example.nearby.main.friends.FriendsFragment;
+import com.example.nearby.main.friends.FriendsListFragment;
 import com.example.nearby.main.mainpage.MainListFragment;
 import com.example.nearby.main.maps.MapsFragment;
 import com.example.nearby.main.profile.ProfileFragment;
@@ -41,7 +38,7 @@ import java.util.List;
 
 
 public class MainPageActivity extends AppCompatActivity implements PostLoader {
-    FriendsFragment friendsFragment;
+    FriendsListFragment friendsListFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
@@ -63,7 +60,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        friendsFragment = new FriendsFragment();
+        friendsListFragment = new FriendsListFragment();
         mainListFragment = new MainListFragment();
         mapsFragment = new MapsFragment();
         profileFragment = new ProfileFragment();
@@ -115,7 +112,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
                     startActivity(intent);
                     return true;
                 } else if (item.getItemId() == R.id.FriendNav) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendsFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendsListFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.ProfileNav) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, profileFragment).commit();

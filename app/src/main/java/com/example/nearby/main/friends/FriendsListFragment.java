@@ -2,7 +2,6 @@ package com.example.nearby.main.friends;
 
 import static android.content.ContentValues.TAG;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,10 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nearby.R;
-import com.example.nearby.auth.LogInActivity;
-import com.example.nearby.auth.SignUpActivity;
 import com.example.nearby.databinding.FragmentFriendsBinding;
-import com.example.nearby.databinding.FragmentMainListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,12 +34,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsFragment extends Fragment {
+public class FriendsListFragment extends Fragment {
+    // 친구 리스트 프래그먼트
     private FragmentFriendsBinding binding;
     private EditText findEmailEdit;
     private Button followBtn;
@@ -60,7 +56,7 @@ public class FriendsFragment extends Fragment {
     ArrayList<String> emails = new ArrayList<>(); // 검색된 이메일들을 담을 예정입니다.
 
     private RecyclerView recyclerView;
-    private FriendsAdapter friendsAdapter;
+    private FriendsListAdapter friendsListAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private Button btnFriendsEdit;
@@ -73,14 +69,14 @@ public class FriendsFragment extends Fragment {
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         auth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference();
-//        findEmailEdit = view.findViewById(R.id.findEmail);
+       findEmailEdit = view.findViewById(R.id.findEmail);
         followBtn = view.findViewById(R.id.followBtn);
         unfollowBtn = view.findViewById(R.id.unFollowBtn);
         recyclerView = view.findViewById(R.id.recyclerView); // RecyclerView의 id가 'recyclerView'라고 가정했습니다.
         // 수정 필요
 
-        friendsAdapter = new FriendsAdapter(emails);
-        recyclerView.setAdapter(friendsAdapter);
+        friendsListAdapter = new FriendsListAdapter(emails);
+        recyclerView.setAdapter(friendsListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
@@ -93,14 +89,14 @@ public class FriendsFragment extends Fragment {
 
         // FriendsList 로드
         emails.clear();
-        friendsAdapter.setFriendsList(emails);
+        friendsListAdapter.setFriendsList(emails);
         loadFriendsList();
-        friendsAdapter.notifyDataSetChanged();
+        friendsListAdapter.notifyDataSetChanged();
 
         // 편집 버튼 눌러서 액티비티 이동
         btnFriendsEdit.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Intent moveToFriendEdit = new Intent(getActivity(), FriendEditActivity.class);
+                Intent moveToFriendEdit = new Intent(getActivity(), FriendsEditActivity.class);
                 moveToFriendEdit.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(moveToFriendEdit);
             }
@@ -111,9 +107,9 @@ public class FriendsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
                 emails.clear();
-                friendsAdapter.setFriendsList(emails);
+                friendsListAdapter.setFriendsList(emails);
                 loadFriendsList();
-                friendsAdapter.notifyDataSetChanged();
+                friendsListAdapter.notifyDataSetChanged();
 
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -124,7 +120,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 inputEmail = findEmailEdit.getText().toString();
-                Log.d("ODG", inputEmail);
+                Log.d("LYB", inputEmail);
 
                 db.collection("users")
                         .whereEqualTo("email", inputEmail)
@@ -347,7 +343,7 @@ public class FriendsFragment extends Fragment {
                                     String email = document.getString("email"); // email 필드의 이름이 'email'이라고 가정했습니다.
                                     emails.add(email);
                                     Log.d("ODG", email);
-                                    friendsAdapter.notifyDataSetChanged();
+                                    friendsListAdapter.notifyDataSetChanged();
                                 } else {
                                     Log.d(TAG, "No such document");
                                 }
