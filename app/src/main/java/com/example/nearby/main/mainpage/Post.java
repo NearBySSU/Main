@@ -19,9 +19,11 @@ public class Post implements ClusterItem {
     List<String> images;
     List<String> likes;
     List<String> tags;
+    private float distance;
+    private int monthsAgo;
 
 
-    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, Timestamp date, String userId, List<String> images, List<String> likes, List<String> tags) {
+    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, Timestamp date, String userId, List<String> images, List<String> likes, List<String> tags,float distance, int monthsAgo) {
         this.postId = postId;
         this.text = text;
         this.bigLocationName = bigLocationName;
@@ -33,6 +35,8 @@ public class Post implements ClusterItem {
         this.images = images;
         this.likes = likes;
         this.tags = tags;
+        this.distance = distance;
+        this.monthsAgo = monthsAgo;
     }
 
     // getters and setters
@@ -81,6 +85,14 @@ public class Post implements ClusterItem {
 
     public double getLongitude() {
         return longitude;
+    }
+    // Getter and Setter
+    public float getDistance() {
+        return distance;
+    }
+
+    public int getMonthsAgo() {
+        return monthsAgo;
     }
 
     //cluster methods
