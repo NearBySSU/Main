@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.nearby.R;
 import com.example.nearby.main.SinglePostPageActivity;
+import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
     public class ProfileViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private String date;
+        private Timestamp date;
         private String postId;
 
         public ProfileViewHolder(View view) {

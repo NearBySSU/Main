@@ -1,21 +1,23 @@
 package com.example.nearby.main.profile;
 
+import com.google.firebase.Timestamp;
+
 public class ProfileItem {
-    private String date;
+    private Timestamp date;
     private String imgUrl;
     private String postId;
 
-    public ProfileItem(String date, String imgUrl, String postId) {
+    public ProfileItem(Timestamp date, String imgUrl, String postId) {
         this.date = date;
         this.imgUrl = imgUrl;
         this.postId = postId;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -21,6 +21,7 @@ import com.example.nearby.main.profile.ProfileItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,7 +40,7 @@ public class FriendProfileActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private String currentPostId;
     private String currentImageUrl;
-    private String currentDate;
+    private Timestamp currentDate;
     private TextView friendNum;
     private TextView postNum;
     private TextView nickNameField;
@@ -158,7 +159,7 @@ public class FriendProfileActivity extends AppCompatActivity {
 
                                     currentPostId = postId;
                                     // date
-                                    String dates = (String) documentSnapshot.get("date");
+                                    Timestamp dates = (Timestamp) documentSnapshot.get("date");
 
                                     currentDate = dates;
 
