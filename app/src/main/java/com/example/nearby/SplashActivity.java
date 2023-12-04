@@ -58,12 +58,11 @@ public class SplashActivity extends AppCompatActivity {
         if (!permission.checkPermission()){
             //권한 요청
             permission.requestPermission();
+            Toast.makeText(this, "Nearby 이용을 위해 위치 권한,알림 권한을 허용해 주세요", Toast.LENGTH_LONG).show();
         }
         else{
             loadingStart();
         }
-        Toast.makeText(this, "Neatby 이용을 위해 위치 권한,알림 권한을 허용해 주세요", Toast.LENGTH_LONG).show();
-        finishAffinity();
     }
 
     // Request Permission에 대한 결과 값 받아와
