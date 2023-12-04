@@ -1,5 +1,8 @@
 package com.example.nearby;
 
+import static com.example.nearby.Utils.checkLocationPermission;
+import static com.example.nearby.Utils.checkNotifiPermission;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -29,11 +32,15 @@ public class SplashActivity extends AppCompatActivity {
         spannable.setSpan(new LinearGradientSpan(text, text, purple, teal), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvSplash.setText(spannable);
 
+        // 권한 확인 및 요청
+        if (!checkLocationPermission(this, 1000) || !checkNotifiPermission(this, 2000)) {
+            return;
+        }
+
         //로딩 스타트
         loadingStart();
     }
 
-    //mainpageactivity로 이동하는 함수
     private void loadingStart() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -43,5 +50,20 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, 1000);
+    }
+
+    // 권한이 승인되었는지 확인 후 로딩 시작
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1000) {
+            if (checkLocationPermission(this, 1000)) {
+                loadingStart();
+            }
+        } else if (requestCode == 2000) {
+            if (checkNotifiPermission(this, 2000)) {
+                loadingStart();
+            }
+        }
     }
 }

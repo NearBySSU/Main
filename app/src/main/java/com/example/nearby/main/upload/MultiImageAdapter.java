@@ -82,7 +82,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ImageViewHolder) {
             Uri image_uri = mData.get(position);
-            if (image_uri != null) { // null 체크를 추가했습니다.
+            if (image_uri != null) {
                 Glide.with(mActivity)
                         .load(image_uri)
                         .into(((ImageViewHolder) holder).image);
@@ -91,7 +91,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             // 이미지 추가 버튼에 대한 동작을 설정합니다.
         }
     }
-
 
     @Override
     public int getItemCount() {
