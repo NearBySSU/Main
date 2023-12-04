@@ -7,7 +7,7 @@
     tools:context=".main.friends.FriendsEditActivity">
 
     <EditText
-        android:id="@+id/et_friend_search"
+        android:id="@+id/findEmail"
         android:layout_width="260dp"
         android:layout_height="45dp"
         android:layout_marginStart="35dp"
@@ -23,7 +23,7 @@
 
 
     <Button
-        android:id="@+id/btn_friends_edit"
+        android:id="@+id/followBtn"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginTop="25dp"
@@ -45,9 +45,10 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/ic_line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_friends_edit"/>
+        app:layout_constraintTop_toBottomOf="@id/followBtn"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_friends_edit_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_friends_list"

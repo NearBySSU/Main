@@ -67,7 +67,7 @@
 
 
     <Button
-        android:id="@+id/btn_friends_edit"
+        android:id="@+id/unFollowBtn"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_margin="35dp"

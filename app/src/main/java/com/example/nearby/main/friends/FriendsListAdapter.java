@@ -3,54 +3,104 @@ package com.example.nearby.main.friends;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.nearby.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder> {
-    // 객체를 연결할 어댑터
-    private ArrayList<String> emails;
+    public interface OnDeleteButtonClickListener {
+        void onDeleteButtonClick(int position);
+    }
+
+    private OnDeleteButtonClickListener onDeleteButtonClickListener;    private List<Friend> friendsList;
     private FirebaseFirestore db;
     FirebaseAuth auth;
+    private boolean showDeleteButton;
 
-    public FriendsListAdapter(ArrayList<String> emails) {
-        this.emails = emails;
+    public FriendsListAdapter(List<Friend> friendsList, boolean b){
+        if (friendsList == null) {
+            this.friendsList = new ArrayList<>();
+        } else {
+            this.friendsList = friendsList;
+        }
+        this.showDeleteButton = b;
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         notifyDataSetChanged();
     }
 
     public FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_friends_list, parent, false);
         return new FriendsViewHolder(view);
     }
 
     public void onBindViewHolder(FriendsViewHolder holder, int position) {
-        String email = emails.get(position);
-        holder.emailTextView.setText(email);
+        Friend friend = friendsList.get(position);
+        Glide.with(holder.profileUrl.getContext())
+                .load(friend.getProfileUrl())
+                .circleCrop()
+                .into(holder.profileUrl);
+        holder.friendName.setText(friend.getFriendName());
+        holder.newPost.setText(friend.getNewPost());
+        holder.postAdd.setText(friend.getPostAdd());
+        holder.postCount.setText(friend.getPostCount());
+
+        if(showDeleteButton){
+            holder.btnDelete.setVisibility(View.VISIBLE);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onDeleteButtonClickListener != null) {
+                        onDeleteButtonClickListener.onDeleteButtonClick(position);
+                    }
+                }
+            });
+        } else{
+            holder.btnDelete.setVisibility(View.GONE);
+        }
+    }
+
+    public void setOnDeleteButtonClickListener(OnDeleteButtonClickListener listener) {
+        this.onDeleteButtonClickListener = listener;
     }
 
     public int getItemCount() {
-        return emails.size();
-    }
-
-    public void setFriendsList(ArrayList<String> emails) {
-        this.emails = emails;
-        notifyDataSetChanged();
+        return friendsList.size();
     }
 
     static class FriendsViewHolder extends RecyclerView.ViewHolder {
-        TextView emailTextView;
+        ImageView profileUrl;
+        TextView friendName;
+        TextView newPost;
+        TextView postAdd;
+        TextView postCount;
+        Button btnDelete;
 
-        public FriendsViewHolder(View itemView) {
+        public FriendsViewHolder(View itemView){
             super(itemView);
-            emailTextView = (TextView) itemView.findViewById(android.R.id.text1);
+            profileUrl = itemView.findViewById(R.id.iv_friend_profile);
+            friendName = itemView.findViewById(R.id.tv_friend_name);
+            newPost = itemView.findViewById(R.id.tv_friend_new_post);
+            postAdd = itemView.findViewById(R.id.tv_friend_new_post_add);
+            postCount = itemView.findViewById(R.id.tv_new_post_count);
+            btnDelete = itemView.findViewById(R.id.unFollowBtn);
         }
+
     }
 
 }
