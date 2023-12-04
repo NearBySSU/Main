@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.main.FriendProfileActivity;
 import com.example.nearby.main.SinglePostPageActivity;
 import com.google.firebase.Timestamp;
 
@@ -56,6 +57,8 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         }
 
         holder.postId = postItem.getPostId();
+        holder.uid = postItem.getUid();
+
 
         holder.seeItBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +76,16 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
                 .circleCrop()
                 .error(R.drawable.stock_profile)
                 .into(holder.profilePic);
+
+        holder.profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FriendProfileActivity.class);
+                intent.putExtra("inputUid", holder.uid);
+                context.startActivity(intent);
+//                Log.d("singlepage", holder.postId);
+            }
+        });
 
 
     }
@@ -100,6 +113,7 @@ public class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHo
         private TextView date;
         private ImageView profilePic;
         private String postId;
+        private String uid;
         private Button seeItBtn;
 
         public ViewHolder(@NonNull View itemView) {
