@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsEditActivity extends AppCompatActivity {
-    // 친구 편집할 수 있는 액티비티
-    // 여기서는 버튼 보이게 해야 함
 
     private FriendsListAdapter friendsListAdapter;
 
@@ -61,19 +59,16 @@ public class FriendsEditActivity extends AppCompatActivity {
         }
         friendsListAdapter = new FriendsListAdapter(friendsList, true);
 
-        // Create an adapter with the list of friends and show the delete button
+        // showDeleteButton을 true로 설정
         friendsListAdapter = new FriendsListAdapter(friendsList, true);
 
         // 어댑터랑 리사이클러뷰 연결하기
         binding.rvFriendsEditList.setAdapter(friendsListAdapter);
         binding.rvFriendsEditList.setLayoutManager(new LinearLayoutManager(this));
 
-        // friends 리스트 불러오기
         loadFriendsList();
         swipeRefresh();
-
         clickFollowBtn();
-//        clickDelteBtn();
 
     }
 
@@ -182,8 +177,6 @@ public class FriendsEditActivity extends AppCompatActivity {
                                                 if (document.exists()) {
                                                     String profileUrl = document.getString("profilePicUrl");
                                                     String friendName = document.getString("nickname");
-//                                                    String newPost = document.getString("newPost");
-//                                                    String postAdd = document.getString("postAdd");
 //                                                    String postCount = document.getString("postCount");
                                                     Friend friend = new Friend(profileUrl, friendName, userID);
                                                     friendsList.add(friend);
@@ -206,35 +199,6 @@ public class FriendsEditActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void clickDelteBtn() {
-//        friendsListAdapter.setOnDeleteButtonClickListener(new FriendsListAdapter.OnDeleteButtonClickListener() {
-//            @Override
-//            public void onDeleteButtonClick(int position) {
-//                String friendId = friendsList.get(position).getFriendId();
-//
-//                // Firestore에서 해당 친구를 바로 삭제합니다.
-//                db.collection("users").document(friendId)
-//                        .update("followings", FieldValue.arrayRemove(currentUid))
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                // Firestore에서 성공적으로 삭제했다면, 로컬 리스트에서도 삭제합니다.
-//                                friendsList.remove(position);
-//                                friendsListAdapter.notifyItemRemoved(position);
-//                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 성공했습니다.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                // 삭제에 실패했을 때 에러 메시지를 보여줍니다.
-//                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//            }
-//        });
-//    }
 
     private void swipeRefresh() {
         // 스와이프 이벤트

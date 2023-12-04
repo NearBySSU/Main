@@ -38,7 +38,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     private List<Friend> friendsList;
     private FirebaseFirestore db;
     FirebaseAuth auth;
-    private boolean showDeleteButton;
+    public boolean showDeleteButton;
     private String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
@@ -67,8 +67,6 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 .circleCrop()
                 .into(holder.profileUrl);
         holder.friendName.setText(friend.getFriendName());
-//        holder.newPost.setText(friend.getNewPost());
-//        holder.postAdd.setText(friend.getPostAdd());
 //        holder.postCount.setText(friend.getPostCount());
 
         if (showDeleteButton) {
@@ -85,7 +83,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
                                         if (task.getResult().isEmpty()) {
-                                            // 일치하는 이메일이(이 아니라 uid가) 없는 경우
+                                            // 일치하는 uid가 없는 경우
                                             Log.d("LYB", "No matching uid found.");
                                         } else {
                                             // 일치하는 이메일이 있는 경우

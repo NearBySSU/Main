@@ -39,8 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsListFragment extends Fragment {
-    // 친구 리스트 프래그먼트
-    // 이 친구 리스트에서는 삭제 버튼이 안 보이게 하면 될 듯
 
     private FirebaseAuth auth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,7 +63,6 @@ public class FriendsListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView); // RecyclerView의 id가 'recyclerView'라고 가정했습니다.
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
-        // 수정 필요
         recyclerView.setAdapter(friendsListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -76,14 +73,15 @@ public class FriendsListFragment extends Fragment {
         // DB에서 users 문서에 followings 필드 체크 후 추가해줌
         addFollowingsField();
 
-        // FriendsList 로드
         emails.clear();
-//        friendsListAdapter.setFriendsList(emails);
-
-        // 이유빈이 추가함
         friendsList = new ArrayList<>();
 
+        // showDeleteButton을 false로 설정
         friendsListAdapter = new FriendsListAdapter(friendsList, false);
+
+        recyclerView.setAdapter(friendsListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         moveToFriendEditBtn();
         swipeRefresh();
@@ -109,7 +107,6 @@ public class FriendsListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
                 friendsList.clear();
-                //               friendsListAdapter.setFriendsList(emails);
                 loadFriendsList();
                 friendsListAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
@@ -200,6 +197,5 @@ public class FriendsListFragment extends Fragment {
                 }
             }
         });
-        // List 채우기
     }
 }
