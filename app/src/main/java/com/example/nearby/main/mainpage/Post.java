@@ -1,6 +1,7 @@
 package com.example.nearby.main.mainpage;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.Timestamp;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class Post implements ClusterItem {
     String text;
     double latitude;
     double longitude;
-    String date;
+    Timestamp date;
     String userId;
     String bigLocationName;
     String smallLocationName;
@@ -18,9 +19,11 @@ public class Post implements ClusterItem {
     List<String> images;
     List<String> likes;
     List<String> tags;
+    private float distance;
+    private int monthsAgo;
 
 
-    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, String date, String userId, List<String> images, List<String> likes, List<String> tags) {
+    public Post(String postId, String text, String bigLocationName, String smallLocationName, double latitude, double longitude, Timestamp date, String userId, List<String> images, List<String> likes, List<String> tags,float distance, int monthsAgo) {
         this.postId = postId;
         this.text = text;
         this.bigLocationName = bigLocationName;
@@ -32,6 +35,8 @@ public class Post implements ClusterItem {
         this.images = images;
         this.likes = likes;
         this.tags = tags;
+        this.distance = distance;
+        this.monthsAgo = monthsAgo;
     }
 
     // getters and setters
@@ -53,7 +58,7 @@ public class Post implements ClusterItem {
 
 
     // 추가: 날짜 getter
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
@@ -80,6 +85,14 @@ public class Post implements ClusterItem {
 
     public double getLongitude() {
         return longitude;
+    }
+    // Getter and Setter
+    public float getDistance() {
+        return distance;
+    }
+
+    public int getMonthsAgo() {
+        return monthsAgo;
     }
 
     //cluster methods

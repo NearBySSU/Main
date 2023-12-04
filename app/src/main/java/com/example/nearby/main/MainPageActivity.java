@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -29,16 +30,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainPageActivity extends AppCompatActivity implements PostLoader {
     FriendsListFragment friendsListFragment;
+    public int selectedDistance;
+    public int selectedDate;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
@@ -52,7 +57,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     ActivityMainPageBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public MutableLiveData<List<Post>> livePostList = new MutableLiveData<>();
-    public List<String> selectedChips = new ArrayList<>();
+    public List<String> selectedTags = new ArrayList<>();
     public List<Post> originalPostList = new ArrayList<>();
 
 
@@ -69,6 +74,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
 
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
+
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -87,7 +93,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "My Channel";
             String description = "Channel for My App";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -152,25 +158,36 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
 
                     //거리 재기
                     float distanceInMeters = currentLocation.distanceTo(postLocation);
+                    int distanceCategory;
 
-                    //거리 비교해서 list에 넣기
-                    if (distanceInMeters < pivot_meter) {
-
-                        //나머지 정보들 로드
-                        String uid = document.getString("uid");
-                        String date = document.getString("date");
-                        String bigLocationName = document.getString("bigLocationName");
-                        String smallLocationName = document.getString("smallLocationName");
-                        List<String> imageUrls = (List<String>) document.get("imageUrls");
-                        List<String> likeList = (List<String>) document.get("likes");
-                        List<String> tags = (List<String>) document.get("tags");
-                        String text = document.getString("text");
-
-                        Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags);
-                        postList.add(post);
-                        originalPostList = postList;
-                        livePostList.setValue(postList);
+                    if (distanceInMeters <= 1000) {
+                        distanceCategory = 1; // 1km 이하면 "가까이"로 분류
+                    } else if (distanceInMeters <= 3000) {
+                        distanceCategory = 3; // 3km 이하면 "적당히"로 분류
+                    } else if (distanceInMeters <= 5000) {
+                        distanceCategory = 5; // 5km 이하면 "멀리"로 분류
+                    } else {
+                        continue; //5km 이상이면 로드하지 않음
                     }
+                    //나머지 정보들 로드
+                    String uid = document.getString("uid");
+                    Timestamp date = document.getTimestamp("date");
+                    String bigLocationName = document.getString("bigLocationName");
+                    String smallLocationName = document.getString("smallLocationName");
+                    List<String> imageUrls = (List<String>) document.get("imageUrls");
+                    List<String> likeList = (List<String>) document.get("likes");
+                    List<String> tags = (List<String>) document.get("tags");
+                    String text = document.getString("text");
+
+                    //날짜 계산 (현재 시간과 게시물의 시간 차이를 월로 변환)
+                    long diffInMilli = System.currentTimeMillis() - date.toDate().getTime();
+                    long diffInMonth = TimeUnit.MILLISECONDS.toDays(diffInMilli) / 30;
+                    Log.e("loadpost", "getPosts: " + diffInMonth);
+
+                    Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags, distanceCategory, (int) diffInMonth);
+                    postList.add(post);
+                    originalPostList = postList;
+                    livePostList.setValue(postList);
                 }
             }
         });

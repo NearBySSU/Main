@@ -57,12 +57,10 @@ public class FriendsEditActivity extends AppCompatActivity {
         binding = ActivityFriendEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        friendsViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
 
         if (friendsList == null) {
             friendsList = new ArrayList<>();
         }
-        friendsListAdapter = new FriendsListAdapter(friendsList, true);
 
         // showDeleteButton을 true로 설정
         friendsListAdapter = new FriendsListAdapter(friendsList, true);
@@ -73,7 +71,7 @@ public class FriendsEditActivity extends AppCompatActivity {
         clickFollowBtn();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         // 어댑터랑 리사이클러뷰 연결하기
         binding.rvFriendsEditList.setAdapter(friendsListAdapter);
         binding.rvFriendsEditList.setLayoutManager(new LinearLayoutManager(this));

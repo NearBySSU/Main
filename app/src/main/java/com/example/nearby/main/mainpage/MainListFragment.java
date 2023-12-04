@@ -19,16 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nearby.MyBottomSheetDialogFragment;
-import com.example.nearby.R;
 import com.example.nearby.databinding.FragmentMainListBinding;
 import com.example.nearby.main.MainPageActivity;
 import com.example.nearby.main.PostLoader;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainListFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
@@ -97,7 +94,7 @@ public class MainListFragment extends Fragment {
                     public void run() {
                         postLoader.reloadPostList();
                         // MainPageActivity의 selectedChips 초기화
-                        ((MainPageActivity) getActivity()).selectedChips.clear();
+                        ((MainPageActivity) getActivity()).selectedTags.clear();
                         binding.swipeRefreshLayout.setRefreshing(false);
                     }
 

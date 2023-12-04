@@ -294,7 +294,7 @@ public class MapsFragment extends Fragment {
         List<Post> postList = new ArrayList<>(activity.originalPostList);
         if (postList != null) {
             List<Post> filteredPosts = postList.stream()
-                    .filter(post -> post.getTags().containsAll(activity.selectedChips))
+                    .filter(post -> post.getTags().containsAll(activity.selectedTags))
                     .collect(Collectors.toList());
 
             // 필터링된 리스트를 LiveData의 값으로 설정

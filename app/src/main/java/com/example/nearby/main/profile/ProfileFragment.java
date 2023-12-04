@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -49,6 +50,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +70,7 @@ public class ProfileFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private String currentPostId;
     private String currentImageUrl;
-    private String currentDate;
+    private Timestamp currentDate;
     private static final String TAG = "ProfileFragment";
     private TextView friendNum;
     private TextView postNum;
@@ -250,12 +252,9 @@ public class ProfileFragment extends Fragment {
 
                                     currentPostId = postId;
                                     // date
-                                    String dates = (String) documentSnapshot.get("date");
+                                    Timestamp dates = (Timestamp) documentSnapshot.get("date");
 
                                     currentDate = dates;
-
-                                    Log.d("ProfileListCheck", currentPostId);
-                                    Log.d("ProfileListCheck", currentImageUrl);
 
 
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);

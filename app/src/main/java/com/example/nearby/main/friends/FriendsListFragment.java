@@ -89,7 +89,7 @@ public class FriendsListFragment extends Fragment {
         return view;
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         recyclerView.setAdapter(friendsListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -159,36 +159,40 @@ public class FriendsListFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        followings = (ArrayList<String>) document.get("followings");
-                        // 이제 'followings' 배열 리스트를 원하는대로 사용할 수 있습니다.
+                        Object followingsObj = document.get("followings");
+                        if (followingsObj instanceof ArrayList) {
+                            followings = (ArrayList<String>) followingsObj;
 
-                        friendsList.clear(); // friendsList는 List<Friend> 타입의 멤버 변수입니다.
-                        for (String userID : followings) {
-                            Log.d("LYB", "배열에 들어옴");
-                            db.collection("users").document(userID)
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("LYB", "task가 성공함");
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-                                                    Log.d("LYB", "문서가 존재함");
-                                                    String profileUrl = document.getString("profilePicUrl");
-                                                    String friendName = document.getString("nickname");
-//                                                    String postCount = document.getString("postCount");
-                                                    Friend friend = new Friend(profileUrl, friendName, userID);
-                                                    friendsList.add(friend);
-                                                    friendsListAdapter.notifyDataSetChanged();
+                            friendsList.clear(); // friendsList는 List<Friend> 타입의 멤버 변수입니다.
+                            for (String userID : followings) {
+                                Log.d("LYB", "배열에 들어옴");
+                                db.collection("users").document(userID)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("LYB", "task가 성공함");
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        Log.d("LYB", "문서가 존재함");
+                                                        String profileUrl = document.getString("profilePicUrl");
+                                                        String friendName = document.getString("nickname");
+                                                        // String postCount = document.getString("postCount");
+                                                        Friend friend = new Friend(profileUrl, friendName, userID);
+                                                        friendsList.add(friend);
+                                                        friendsListAdapter.notifyDataSetChanged();
+                                                    } else {
+                                                        Log.d("LYB", "No such document");
+                                                    }
                                                 } else {
-                                                    Log.d("LYB", "No such document");
+                                                    Log.d("LYB", "get failed with ", task.getException());
                                                 }
-                                            } else {
-                                                Log.d("LYB", "get failed with ", task.getException());
                                             }
-                                        }
-                                    });
+                                        });
+                            }
+                        } else {
+                            Log.d("LYB", "'followings' 필드가 없거나 데이터 타입이 ArrayList<String>이 아닙니다.");
                         }
                     } else {
                         Log.d("LYB", "해당 문서를 찾을 수 없습니다.");
@@ -199,4 +203,5 @@ public class FriendsListFragment extends Fragment {
             }
         });
     }
+
 }
