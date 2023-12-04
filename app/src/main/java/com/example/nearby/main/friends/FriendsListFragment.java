@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.databinding.FragmentFriendsBinding;
+import com.example.nearby.main.FriendProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -86,6 +87,8 @@ public class FriendsListFragment extends Fragment {
         swipeRefresh();
         loadFriendsList();
         friendsListAdapter.notifyDataSetChanged();
+
+        moveToFriendProfile();
         return view;
     }
 
@@ -203,5 +206,17 @@ public class FriendsListFragment extends Fragment {
             }
         });
     }
-
+    private void moveToFriendProfile(){
+        // 아이템 클릭 리스너 설정
+        friendsListAdapter.setOnItemClickListener(new FriendsListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Friend friend) {
+                // Friend 아이템 클릭 시 해당 Friend의 프로필로 이동
+                Intent intent = new Intent(getActivity(), FriendProfileActivity.class);
+                intent.putExtra("inputUid", friend.getFriendId());  // Friend의 사용자 ID를 전달
+                Log.d("LYB", "버튼 클릭이요~");
+                startActivity(intent);
+            }
+        });
+    }
 }
