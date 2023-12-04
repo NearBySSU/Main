@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.widget.Toast;
 
 import com.example.nearby.LinearGradientSpan;
 import com.example.nearby.R;
@@ -61,6 +62,8 @@ public class SplashActivity extends AppCompatActivity {
         else{
             loadingStart();
         }
+        Toast.makeText(this, "Neatby 이용을 위해 위치 권한,알림 권한을 허용해 주세요", Toast.LENGTH_LONG).show();
+        finishAffinity();
     }
 
     // Request Permission에 대한 결과 값 받아와
