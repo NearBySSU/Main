@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -79,16 +81,17 @@ public class FriendsListFragment extends Fragment {
         // showDeleteButton을 false로 설정
         friendsListAdapter = new FriendsListAdapter(friendsList, false);
 
-        recyclerView.setAdapter(friendsListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
+        initAdapter();
         moveToFriendEditBtn();
         swipeRefresh();
-
         loadFriendsList();
         friendsListAdapter.notifyDataSetChanged();
         return view;
+    }
+
+    private void initAdapter(){
+        recyclerView.setAdapter(friendsListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void moveToFriendEditBtn() {
@@ -174,8 +177,6 @@ public class FriendsListFragment extends Fragment {
                                                     Log.d("LYB", "문서가 존재함");
                                                     String profileUrl = document.getString("profilePicUrl");
                                                     String friendName = document.getString("nickname");
-//                                                    String newPost = document.getString("newPost");
-//                                                    String postAdd = document.getString("postAdd");
 //                                                    String postCount = document.getString("postCount");
                                                     Friend friend = new Friend(profileUrl, friendName, userID);
                                                     friendsList.add(friend);

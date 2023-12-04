@@ -1,9 +1,13 @@
 package com.example.nearby.main.friends;
 
+import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -17,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.nearby.R;
 import com.example.nearby.databinding.ActivityFriendEditBinding;
+import com.example.nearby.main.MainPageActivity;
+import com.example.nearby.main.mainpage.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,13 +41,11 @@ import java.util.List;
 public class FriendsEditActivity extends AppCompatActivity {
 
     private FriendsListAdapter friendsListAdapter;
-
     private List<Friend> friendsList;
     private ActivityFriendEditBinding binding;
     private String inputEmail;
     private String currentUid;
     private SwipeRefreshLayout swipeRefreshLayout;
-
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> followings; // 팔로잉 사용자의 userID들을 담습니다.
@@ -53,6 +57,7 @@ public class FriendsEditActivity extends AppCompatActivity {
         binding = ActivityFriendEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        friendsViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
 
         if (friendsList == null) {
             friendsList = new ArrayList<>();
@@ -62,14 +67,16 @@ public class FriendsEditActivity extends AppCompatActivity {
         // showDeleteButton을 true로 설정
         friendsListAdapter = new FriendsListAdapter(friendsList, true);
 
-        // 어댑터랑 리사이클러뷰 연결하기
-        binding.rvFriendsEditList.setAdapter(friendsListAdapter);
-        binding.rvFriendsEditList.setLayoutManager(new LinearLayoutManager(this));
-
+        initAdapter();
         loadFriendsList();
         swipeRefresh();
         clickFollowBtn();
+    }
 
+    private void initAdapter(){
+        // 어댑터랑 리사이클러뷰 연결하기
+        binding.rvFriendsEditList.setAdapter(friendsListAdapter);
+        binding.rvFriendsEditList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void clickFollowBtn() {
