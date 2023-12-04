@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
 import com.example.nearby.auth.LogInActivity;
+import com.example.nearby.auth.ProfileSettingActivity;
 import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.maps.PostItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -117,11 +118,8 @@ public class ProfileFragment extends Fragment {
                     getActivity().finish();
                     return true;
                 } else if (id == R.id.btn_profile_pic) {
-                    // 프로필 변경 버튼
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                    // 프로필 편집 버튼
+                     startActivity(new Intent(getActivity(),  ProfileSettingActivity.class));
                     return true;
                 } else {
                     return false;

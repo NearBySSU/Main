@@ -66,24 +66,18 @@ public class FriendProfileActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.img_profile);
         nickNameField = findViewById(R.id.tv_profile_name);
 
+        clickFollowBtn();
+        swipeRefresh();
+        initAdapter();
 
-        // follow 버튼 클릭 이벤트
+        // profile img list 로드 하기
+        profileItemList.clear();
+        profileAdapter.notifyDataSetChanged();
 
-        followBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 여기에 클릭 시 실행할 코드를 작성합니다. 유빈아 잘해봐
-                Toast.makeText(getApplicationContext(), "TextView가 클릭되었습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        // recyclerView 등록
-        profileAdapter = new ProfileAdapter(this, profileItemList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setAdapter(profileAdapter);
-
-
+        addProfileList(inputUid);
+        profileAdapter.setProfileItemList(profileItemList);
+    }
+    private void swipeRefresh(){
         // 스와이프 이벤트
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
@@ -93,16 +87,26 @@ public class FriendProfileActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-
-        // profile img list 로드 하기
-        profileItemList.clear();
-        profileAdapter.notifyDataSetChanged();
-
-        addProfileList(inputUid);
-        profileAdapter.setProfileItemList(profileItemList);
     }
 
+    private void clickFollowBtn(){
+        // follow 버튼 클릭 이벤트
+
+        followBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 여기에 클릭 시 실행할 코드를 작성합니다. 유빈아 잘해봐
+                Toast.makeText(getApplicationContext(), "TextView가 클릭되었습니다.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    private void initAdapter(){
+        // recyclerView 등록
+        profileAdapter = new ProfileAdapter(this, profileItemList);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(profileAdapter);
+    }
 
     private void addProfileList(String inputUid) {
         db = FirebaseFirestore.getInstance();
@@ -184,5 +188,4 @@ public class FriendProfileActivity extends AppCompatActivity {
             }
         });
     }
-
 }

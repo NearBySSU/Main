@@ -2,12 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/btn_profile_pic"
-        android:title="프로필 변경"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/btn_nickname_pic"
-        android:title="닉네임 변경"
+        android:title="프로필 편집"
         app:showAsAction="never" />
 
     <item

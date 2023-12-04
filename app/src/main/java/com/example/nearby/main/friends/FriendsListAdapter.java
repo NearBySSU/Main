@@ -33,6 +33,16 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     public interface OnDeleteButtonClickListener {
         void onDeleteButtonClick(int position);
     }
+    // 아이템 클릭을 처리하는 리스너
+    public interface OnItemClickListener {
+        void onItemClick(Friend friend);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     private OnDeleteButtonClickListener onDeleteButtonClickListener;
     private List<Friend> friendsList;
@@ -68,6 +78,16 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 .into(holder.profileUrl);
         holder.friendName.setText(friend.getFriendName());
 //        holder.postCount.setText(friend.getPostCount());
+
+        // 아이템 클릭 이벤트 처리
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(friend);
+                }
+            }
+        });
 
         if (showDeleteButton) {
             holder.btnDelete.setVisibility(View.VISIBLE);
