@@ -45,6 +45,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -112,6 +113,12 @@ public class ProfileFragment extends Fragment {
                 int id = item.getItemId();
                 if (id == R.id.btn_logout) {
                     // 로그아웃 버튼
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(uid);
+                    userRef.update("fcmToken", FieldValue.delete())
+                            .addOnSuccessListener(aVoid -> Log.d("FCM", "FCM Token deleted for user: " + uid))
+                            .addOnFailureListener(e -> Log.w("FCM", "Error deleting FCM Token for user: " + uid, e));
+
                     mAuth.signOut();
                     Log.d("LYB", "LOGOUT");
                     startActivity(new Intent(getActivity(), LogInActivity.class));
@@ -126,6 +133,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
 
 
         // recyclerView 등록
