@@ -15,13 +15,15 @@ public class PostItem {
     private Timestamp date; // 날짜를 저장할 필드를 추가
     private String profilePicUrl; // 프로필 사진 URL을 저장할 필드를 추가
     private String postId;
+    private String uid;
 
     // 생성자
-    public PostItem(String title, Timestamp date, String profilePicUrl, String postId) {
+    public PostItem(String title, Timestamp date, String profilePicUrl, String postId, String uid) {
         this.title = title;
         this.date = date;
         this.profilePicUrl = profilePicUrl;
         this.postId = postId;
+        this.uid = uid;
     }
 
     // Getter and Setter
@@ -56,5 +58,9 @@ public class PostItem {
     public void setPostId(String postId) {
         this.postId = postId;
     }
+
+    public String getUid() { return uid; }
+
+    public void setUid(String uid) { this.uid = uid; }
 }
 

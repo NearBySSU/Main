@@ -204,7 +204,7 @@ public class MapsFragment extends Fragment {
     //userid로 db에서 프로필 사진을 가져오는 메서드
     private void loadProfilePicAndAddItem(Post post) {
         getProfilePicUrl(post.getUserId(), profilePicUrl -> {
-            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl, post.getPostId()));
+            postItemAdapter.addItem(new PostItem(post.getTitle(), post.getDate(), profilePicUrl, post.getPostId(), post.getUserId()));
         });
     }
 
