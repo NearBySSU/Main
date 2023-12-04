@@ -257,8 +257,6 @@ public class ProfileFragment extends Fragment {
                                     currentDate = dates;
 
 
-
-
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
                                     profileItemList.add(profileItem);
                                     profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신

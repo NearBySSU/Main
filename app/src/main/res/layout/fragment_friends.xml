@@ -5,12 +5,12 @@
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.friends.FriendsFragment">
+    tools:context=".main.friends.FriendsListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".main.friends.FriendsFragment">
+        tools:context=".main.friends.FriendsListFragment">
 
 
         <Button
@@ -48,48 +48,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/findEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-
-            android:hint="이메일을 입력하세요."
-            android:inputType="textEmailAddress"
-            app:layout_constraintTop_toBottomOf="@+id/tv_friends_title" />
-
-        <Button
-            android:id="@+id/followBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="follow"
-            app:layout_constraintTop_toBottomOf="@id/findEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="69dp" />
-
-        <Button
-            android:id="@+id/unFollowBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="unfollow"
-            app:layout_constraintStart_toEndOf="@id/followBtn"
-            app:layout_constraintTop_toBottomOf="@id/findEmail"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="69dp" />
+<!--        <Button-->
+<!--            android:id="@+id/unFollowBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="unfollow"-->
+<!--            app:layout_constraintStart_toEndOf="@id/followBtn"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/findEmail"-->
+<!--            tools:layout_editor_absoluteX="14dp"-->
+<!--            tools:layout_editor_absoluteY="69dp" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            tools:listitem="@layout/item_friends_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/followBtn" />
+            app:layout_constraintTop_toBottomOf="@id/iv_friend_line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

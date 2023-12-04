@@ -71,8 +71,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                     }
                 }
             }
-        }
-        else {
+        } else {
             Chip defaultChip = chipGroupDistance.findViewById(R.id.areaChip03); //  복원할게 없는 경우 "멀리"에 해당하는 Chip 선택
             defaultChip.setChecked(true);
         }
@@ -105,8 +104,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                     }
                 }
             }
-        }
-        else {
+        } else {
             Chip defaultChip = chipGroupDate.findViewById(R.id.dateChip01); // 복원할게 없는 경우 "전체"에 해당하는 Chip 선택
             defaultChip.setChecked(true);
         }
@@ -115,7 +113,8 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         // MainPageActivity의 LiveData 객체를 가져옴
         ((MainPageActivity) getActivity()).livePostList.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
-            public void onChanged(List<Post> posts) {}
+            public void onChanged(List<Post> posts) {
+            }
         });
         return view;
     }

@@ -208,7 +208,7 @@ public class SinglePostPageActivity extends AppCompatActivity {
                         likeList = document.contains("likes") ? (List<String>) document.get("likes") : new ArrayList<>();
                         tags = document.contains("tags") ? (List<String>) document.get("tags") : new ArrayList<>();
 
-                        if ( !postUid.equals(uid) ) {
+                        if (!postUid.equals(uid)) {
                             binding.topAppBar.setVisibility(View.GONE);
                         }
 
@@ -371,20 +371,18 @@ public class SinglePostPageActivity extends AppCompatActivity {
 
                     builder.setTitle("게시물 삭제").setMessage("정말 삭제 하시겠어요?");
 
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
+                        public void onClick(DialogInterface dialog, int id) {
                             deletePost(postId);
                             finish();
                             Toast.makeText(getApplicationContext(), "삭제 되었어요.", Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
+                        public void onClick(DialogInterface dialog, int id) {
                             Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
                         }
                     });

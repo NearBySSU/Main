@@ -18,10 +18,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.nearby.R;
+import com.example.nearby.databinding.ActivityMainPageBinding;
 import com.example.nearby.main.mainpage.Post;
 import com.example.nearby.main.upload.UploadContentsActivity;
-import com.example.nearby.databinding.ActivityMainPageBinding;
-import com.example.nearby.main.friends.FriendsFragment;
+import com.example.nearby.main.friends.FriendsListFragment;
 import com.example.nearby.main.mainpage.MainListFragment;
 import com.example.nearby.main.maps.MapsFragment;
 import com.example.nearby.main.profile.ProfileFragment;
@@ -41,9 +41,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class MainPageActivity extends AppCompatActivity implements PostLoader {
+    FriendsListFragment friendsListFragment;
     public int selectedDistance;
     public int selectedDate;
-    FriendsFragment friendsFragment;
     MainListFragment mainListFragment;
     MapsFragment mapsFragment;
     ProfileFragment profileFragment;
@@ -65,7 +65,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        friendsFragment = new FriendsFragment();
+        friendsListFragment = new FriendsListFragment();
         mainListFragment = new MainListFragment();
         mapsFragment = new MapsFragment();
         profileFragment = new ProfileFragment();
@@ -118,7 +118,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
                     startActivity(intent);
                     return true;
                 } else if (item.getItemId() == R.id.FriendNav) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendsFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendsListFragment).commit();
                     return true;
                 } else if (item.getItemId() == R.id.ProfileNav) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, profileFragment).commit();
@@ -164,30 +164,30 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
                         distanceCategory = 1; // 1km 이하면 "가까이"로 분류
                     } else if (distanceInMeters <= 3000) {
                         distanceCategory = 3; // 3km 이하면 "적당히"로 분류
-                    } else if(distanceInMeters <=5000){
+                    } else if (distanceInMeters <= 5000) {
                         distanceCategory = 5; // 5km 이하면 "멀리"로 분류
-                    } else{
+                    } else {
                         continue; //5km 이상이면 로드하지 않음
                     }
-                        //나머지 정보들 로드
-                        String uid = document.getString("uid");
-                        Timestamp date = document.getTimestamp("date");
-                        String bigLocationName = document.getString("bigLocationName");
-                        String smallLocationName = document.getString("smallLocationName");
-                        List<String> imageUrls = (List<String>) document.get("imageUrls");
-                        List<String> likeList = (List<String>) document.get("likes");
-                        List<String> tags = (List<String>) document.get("tags");
-                        String text = document.getString("text");
+                    //나머지 정보들 로드
+                    String uid = document.getString("uid");
+                    Timestamp date = document.getTimestamp("date");
+                    String bigLocationName = document.getString("bigLocationName");
+                    String smallLocationName = document.getString("smallLocationName");
+                    List<String> imageUrls = (List<String>) document.get("imageUrls");
+                    List<String> likeList = (List<String>) document.get("likes");
+                    List<String> tags = (List<String>) document.get("tags");
+                    String text = document.getString("text");
 
-                        //날짜 계산 (현재 시간과 게시물의 시간 차이를 월로 변환)
-                        long diffInMilli = System.currentTimeMillis() - date.toDate().getTime();
-                        long diffInMonth = TimeUnit.MILLISECONDS.toDays(diffInMilli) / 30;
-                        Log.e("loadpost", "getPosts: "+ diffInMonth );
+                    //날짜 계산 (현재 시간과 게시물의 시간 차이를 월로 변환)
+                    long diffInMilli = System.currentTimeMillis() - date.toDate().getTime();
+                    long diffInMonth = TimeUnit.MILLISECONDS.toDays(diffInMilli) / 30;
+                    Log.e("loadpost", "getPosts: " + diffInMonth);
 
-                        Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags,distanceCategory,(int) diffInMonth);
-                        postList.add(post);
-                        originalPostList = postList;
-                        livePostList.setValue(postList);
+                    Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags, distanceCategory, (int) diffInMonth);
+                    postList.add(post);
+                    originalPostList = postList;
+                    livePostList.setValue(postList);
                 }
             }
         });

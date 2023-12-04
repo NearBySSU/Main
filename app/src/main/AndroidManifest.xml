@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nearby"
         tools:targetApi="31">
+        <activity
+            android:name=".main.friends.FriendsEditActivity"
+            android:exported="false" />
 
         <service android:name=".MyFirebaseMessagingService"
             android:exported="true">
@@ -29,6 +32,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBElV1skkLoxFgCE4F2BwlXMKyywqih_fg" />
+
         <activity
             android:name=".auth.ProfileSettingActivity"
             android:exported="false" />
@@ -50,7 +54,7 @@
         <activity
             android:name=".main.upload.UploadContentsActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".main.MainPageActivity"
             android:exported="false" />

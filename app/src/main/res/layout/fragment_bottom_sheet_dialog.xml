@@ -246,13 +246,13 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="멀리"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:chipBackgroundColor="@drawable/chip_background"
                 app:chipEndPadding="10dp"
-                app:chipStartPadding="10dp"
-                android:checked="true"/>
+                app:chipStartPadding="10dp" />
 
         </com.google.android.material.chip.ChipGroup>
 
