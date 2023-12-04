@@ -58,7 +58,7 @@ public class FriendProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         uid = auth.getUid();
-        followBtn = findViewById(R.id.tv_follow);
+        followBtn = findViewById(R.id.tv_have_to_follow);
         recyclerView = findViewById(R.id.recyclerView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         friendNum = findViewById(R.id.tv_friend_num);
@@ -96,7 +96,6 @@ public class FriendProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 여기에 클릭 시 실행할 코드를 작성합니다. 유빈아 잘해봐
-                Toast.makeText(getApplicationContext(), "TextView가 클릭되었습니다.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -170,7 +169,6 @@ public class FriendProfileActivity extends AppCompatActivity {
                                     Log.d("ProfileListCheck", currentPostId);
                                     Log.d("ProfileListCheck", currentImageUrl);
 
-
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
                                     profileItemList.add(profileItem);
                                     profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
@@ -179,11 +177,7 @@ public class FriendProfileActivity extends AppCompatActivity {
 
                             });
                         }
-                    } else {
-                        Log.d(TAG, "No such document");
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });

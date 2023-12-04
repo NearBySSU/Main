@@ -33,6 +33,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     public interface OnDeleteButtonClickListener {
         void onDeleteButtonClick(int position);
     }
+
     // 아이템 클릭을 처리하는 리스너
     public interface OnItemClickListener {
         void onItemClick(Friend friend);

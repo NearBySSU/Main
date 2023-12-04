@@ -50,7 +50,6 @@ public class FriendsEditActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> followings; // 팔로잉 사용자의 userID들을 담습니다.
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
