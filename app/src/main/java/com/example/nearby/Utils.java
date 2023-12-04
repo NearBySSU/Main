@@ -18,44 +18,7 @@ import java.util.Locale;
 
 public class Utils {
     //위치 권한 확인 함수
-    public static boolean checkLocationPermission(Activity activity, int requestCode) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(activity, "위치 권환 획득 실패! 앱 설정에서 위치 권환을 허용해 주세요", Toast.LENGTH_LONG).show();
-            requestLocationPermission(activity, requestCode);
-            return false;
-        }
-        return true;
-    }
 
-    //위치 권한 요청 함수
-    public static void requestLocationPermission(Activity activity, int requestCode) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            activity.requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    requestCode);
-        }
-    }
-
-    //알림 권한 요청 함수
-    public static boolean checkNotifiPermission(Activity activity, int requestCode) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(activity, "알림 권환 획득 실패! 앱 설정에서 위치 권환을 허용해 주세요", Toast.LENGTH_LONG).show();
-            requestNotifiPermission(activity, requestCode);
-            return false;
-        }
-        return true;
-    }
-
-    //알림 권한 요청 함수
-    public static void requestNotifiPermission(Activity activity, int requestCode) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            activity.requestPermissions(
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    requestCode);
-        }
-    }
 
     //지역의 이름을 구하는 함수
     public static String[] getLocationName(Context context, Location location) {

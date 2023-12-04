@@ -1,6 +1,5 @@
 package com.example.nearby.main.mainpage;
 
-import static com.example.nearby.Utils.checkLocationPermission;
 import static com.example.nearby.Utils.getLocationName;
 
 import android.annotation.SuppressLint;
@@ -107,10 +106,7 @@ public class MainListFragment extends Fragment {
     //현재위치의 이름을 set하는 함수
     @SuppressLint("MissingPermission")
     private void setLocationTv() {
-        //권한 체크
-        if (!checkLocationPermission(getActivity(), REQUEST_LOCATION_PERMISSION)) {
-            return;
-        }
+
         //tv에 이름을 set
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {

@@ -1,6 +1,5 @@
 package com.example.nearby.main.upload;
 
-import static com.example.nearby.Utils.checkLocationPermission;
 import static com.example.nearby.Utils.getLocationName;
 
 import androidx.annotation.NonNull;
@@ -92,8 +91,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         chipGroup.setSingleSelection(false);
 
-        //위치권한 확인
-        checkLocationPermission(this, LOCATION_PERMISSION_REQUEST_CODE);
+
 
         //업로드 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
