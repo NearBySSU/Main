@@ -150,6 +150,7 @@ public class FriendsListFragment extends Fragment {
 
 
     private void loadFriendsList() {
+        Log.d("LYB", "로드가 됐음");
         // db에서 user -> followings 가져오기
         DocumentReference userRef = db.collection("users").document(currentUid);
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -160,6 +161,37 @@ public class FriendsListFragment extends Fragment {
                     if (document.exists()) {
                         followings = (ArrayList<String>) document.get("followings");
                         // 이제 'followings' 배열 리스트를 원하는대로 사용할 수 있습니다.
+
+                        friendsList.clear(); // friendsList는 List<Friend> 타입의 멤버 변수입니다.
+                        for (String userID : followings) {
+                            Log.d("LYB", "배열에 들어옴");
+                            db.collection("users").document(userID)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("LYB", "task가 성공함");
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+                                                    Log.d("LYB", "문서가 존재함");
+                                                    String profileUrl = document.getString("profilePicUrl");
+                                                    String friendName = document.getString("nickname");
+//                                                    String newPost = document.getString("newPost");
+//                                                    String postAdd = document.getString("postAdd");
+//                                                    String postCount = document.getString("postCount");
+                                                    Friend friend = new Friend(profileUrl, friendName, userID);
+                                                    friendsList.add(friend);
+                                                    friendsListAdapter.notifyDataSetChanged();
+                                                } else {
+                                                    Log.d("LYB", "No such document");
+                                                }
+                                            } else {
+                                                Log.d("LYB", "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
+                        }
                     } else {
                         Log.d("LYB", "해당 문서를 찾을 수 없습니다.");
                     }
@@ -168,40 +200,6 @@ public class FriendsListFragment extends Fragment {
                 }
             }
         });
-
-        Log.d("LYB", "로드가 됐음");
-
         // List 채우기
-
-        friendsList.clear(); // friendsList는 List<Friend> 타입의 멤버 변수입니다.
-        for (String userID : followings) {
-            Log.d("LYB", "배열에 들어옴");
-            db.collection("users").document(userID)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    String profileUrl = document.getString("profileUrl");
-                                    String friendName = document.getString("friendName");
-                                    String newPost = document.getString("newPost");
-                                    String postAdd = document.getString("postAdd");
-                                    String postCount = document.getString("postCount");
-                                    Friend friend = new Friend(profileUrl, friendName, newPost, postAdd, postCount, userID);
-                                    friendsList.add(friend);
-                                    friendsListAdapter.notifyDataSetChanged();
-                                } else {
-                                    Log.d("LYB", "No such document");
-                                }
-                            } else {
-                                Log.d("LYB", "get failed with ", task.getException());
-                            }
-                        }
-                    });
-            Log.d("LYB", "여기까지 왔나..?");
-
-        }
     }
 }

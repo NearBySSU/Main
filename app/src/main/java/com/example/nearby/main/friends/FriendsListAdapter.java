@@ -67,9 +67,9 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 .circleCrop()
                 .into(holder.profileUrl);
         holder.friendName.setText(friend.getFriendName());
-        holder.newPost.setText(friend.getNewPost());
-        holder.postAdd.setText(friend.getPostAdd());
-        holder.postCount.setText(friend.getPostCount());
+//        holder.newPost.setText(friend.getNewPost());
+//        holder.postAdd.setText(friend.getPostAdd());
+//        holder.postCount.setText(friend.getPostCount());
 
         if (showDeleteButton) {
             holder.btnDelete.setVisibility(View.VISIBLE);
