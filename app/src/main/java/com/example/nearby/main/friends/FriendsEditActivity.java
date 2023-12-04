@@ -5,10 +5,14 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.nearby.R;
@@ -38,6 +42,8 @@ public class FriendsEditActivity extends AppCompatActivity {
     private ActivityFriendEditBinding binding;
     private String inputEmail;
     private String currentUid;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> followings; // 팔로잉 사용자의 userID들을 담습니다.
@@ -64,9 +70,10 @@ public class FriendsEditActivity extends AppCompatActivity {
 
         // friends 리스트 불러오기
         loadFriendsList();
+        swipeRefresh();
 
         clickFollowBtn();
-        clickDelteBtn();
+//        clickDelteBtn();
 
     }
 
@@ -143,8 +150,8 @@ public class FriendsEditActivity extends AppCompatActivity {
 
         DocumentReference userRef = db.collection("users").document(currentUid);
         userRef.update("followings", FieldValue.arrayUnion(inputUid))
-                .addOnSuccessListener(aVoid -> Log.d("ODG", "InputId added to user followings document"))
-                .addOnFailureListener(e -> Log.w("ODG", "Error adding userID to user followings document", e));
+                .addOnSuccessListener(aVoid -> Log.d("LYB", "InputId added to user followings document"))
+                .addOnFailureListener(e -> Log.w("LYB", "Error adding userID to user followings document", e));
 
         Log.d("LYB", "Following added with ID: " + inputUid);
         Toast.makeText(FriendsEditActivity.this, "팔로잉 성공!", Toast.LENGTH_SHORT).show();
@@ -160,11 +167,11 @@ public class FriendsEditActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         followings = (ArrayList<String>) document.get("followings");
-                        // 이제 'followings' 배열 리스트를 원하는대로 사용할 수 있습니다.
 
                         // List 채우기
                         friendsList.clear();
                         for (String userID : followings) {
+                            Log.d("LYB", "배열에 들어옴");
                             db.collection("users").document(userID)
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -200,32 +207,56 @@ public class FriendsEditActivity extends AppCompatActivity {
         });
     }
 
-    private void clickDelteBtn(){
-        friendsListAdapter.setOnDeleteButtonClickListener(new FriendsListAdapter.OnDeleteButtonClickListener() {
-            @Override
-            public void onDeleteButtonClick(int position) {
-                String friendId = friendsList.get(position).getFriendId();
+//    private void clickDelteBtn() {
+//        friendsListAdapter.setOnDeleteButtonClickListener(new FriendsListAdapter.OnDeleteButtonClickListener() {
+//            @Override
+//            public void onDeleteButtonClick(int position) {
+//                String friendId = friendsList.get(position).getFriendId();
+//
+//                // Firestore에서 해당 친구를 바로 삭제합니다.
+//                db.collection("users").document(friendId)
+//                        .update("followings", FieldValue.arrayRemove(currentUid))
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                // Firestore에서 성공적으로 삭제했다면, 로컬 리스트에서도 삭제합니다.
+//                                friendsList.remove(position);
+//                                friendsListAdapter.notifyItemRemoved(position);
+//                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 성공했습니다.", Toast.LENGTH_SHORT).show();
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                // 삭제에 실패했을 때 에러 메시지를 보여줍니다.
+//                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//            }
+//        });
+//    }
 
-                // Firestore에서 해당 친구를 바로 삭제합니다.
-                db.collection("users").document(friendId)
-                        .update("followings", FieldValue.arrayRemove(currentUid))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Firestore에서 성공적으로 삭제했다면, 로컬 리스트에서도 삭제합니다.
-                                friendsList.remove(position);
-                                friendsListAdapter.notifyItemRemoved(position);
-                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // 삭제에 실패했을 때 에러 메시지를 보여줍니다.
-                                Toast.makeText(FriendsEditActivity.this, "친구 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+    private void swipeRefresh() {
+        // 스와이프 이벤트
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public void onRefresh() {
+                friendsList.clear();
+                loadFriendsList();
+                friendsListAdapter.notifyDataSetChanged();
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
+    }
+
 }
