@@ -3,6 +3,7 @@ package com.example.nearby.main.mainpage;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,9 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.main.FriendProfileActivity;
 import com.example.nearby.main.MainPageActivity;
+import com.example.nearby.main.SinglePostPageActivity;
 import com.example.nearby.main.maps.MapsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
@@ -40,13 +43,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+    private Context context;
     private List<Post> postList;
     private FirebaseFirestore db;
     private static final String TAG = "PostAdapter";
     FirebaseAuth auth;
 
     //PostAdapter의 생성자
-    public PostAdapter(List<Post> postList) {
+    public PostAdapter(List<Post> postList, Context context) {
+        this.context = context;
         this.postList = postList != null ? postList : new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -74,7 +79,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.bigLocationName.setText(post.bigLocationName);
         holder.smallLocationName.setText(post.smallLocationName);
         String postUid = post.getUserId(); //포스트 주인의 아이디
+        holder.uid = postUid;
         Log.d(TAG, postUid);
+
+        holder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FriendProfileActivity.class);
+                intent.putExtra("inputUid", holder.uid);
+                context.startActivity(intent);
+//                Log.d("singlepage", holder.postId);
+            }
+        });
 
         //post의 uid로 부터 프로필 사진 가져오기
         db.collection("users").document(postUid)
@@ -154,18 +170,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView profile;
-        TextView nickName;
-        ImageButton btnMap;
-        TextView date;
-        TextView mainText;
-        ImageButton commentButton;
-        ImageButton likeButton;
-        RecyclerView images;
-        RecyclerView tagsRecyclerView;
-        TextView bigLocationName;
-        TextView smallLocationName;
-
+        private ImageView profile;
+        private TextView nickName;
+        private ImageButton btnMap;
+        private TextView date;
+        private TextView mainText;
+        private ImageButton commentButton;
+        private ImageButton likeButton;
+        private RecyclerView images;
+        private RecyclerView tagsRecyclerView;
+        private TextView bigLocationName;
+        private TextView smallLocationName;
+        private String uid;
         public ViewHolder(View view) {
             super(view);
             profile = view.findViewById(R.id.img_profile);
