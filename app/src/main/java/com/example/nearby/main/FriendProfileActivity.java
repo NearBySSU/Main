@@ -16,14 +16,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
+import com.example.nearby.databinding.ActivityFriendProfileBinding;
 import com.example.nearby.main.profile.ProfileAdapter;
 import com.example.nearby.main.profile.ProfileItem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -34,10 +37,8 @@ public class FriendProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String uid;
     private String inputUid;
-    private TextView followBtn;
     private RecyclerView recyclerView;
     private ProfileAdapter profileAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private String currentPostId;
     private String currentImageUrl;
     private Timestamp currentDate;
@@ -47,10 +48,14 @@ public class FriendProfileActivity extends AppCompatActivity {
     private ImageView profileImageView;
     private ArrayList<ProfileItem> profileItemList = new ArrayList<>();
     private static final String TAG = "FriendProfileActivity";
+    private ActivityFriendProfileBinding binding;
+    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_profile);
+        binding = ActivityFriendProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         inputUid = intent.getStringExtra("inputUid");
@@ -58,15 +63,15 @@ public class FriendProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         uid = auth.getUid();
-        followBtn = findViewById(R.id.tv_have_to_follow);
         recyclerView = findViewById(R.id.recyclerView);
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         friendNum = findViewById(R.id.tv_friend_num);
         postNum = findViewById(R.id.tv_post_num);
         profileImageView = findViewById(R.id.img_profile);
         nickNameField = findViewById(R.id.tv_profile_name);
 
+        checkFollowing();
         clickFollowBtn();
+        clickUnFollowBtn();
         swipeRefresh();
         initAdapter();
 
@@ -77,30 +82,98 @@ public class FriendProfileActivity extends AppCompatActivity {
         addProfileList(inputUid);
         profileAdapter.setProfileItemList(profileItemList);
     }
-    private void swipeRefresh(){
+
+    private void checkFollowing() {
+        db.collection("users").document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        List<String> followings = (List<String>) document.get("followings");
+                        if (followings == null) {
+                            followings = new ArrayList<>(); // "followings" 필드가 없을 경우 빈 리스트로 초기화
+                        }
+                        // 'followings' 리스트에 해당 사용자가 있는지 확인
+                        if (followings.contains(inputUid)) {
+                            // 팔로우 중인 경우
+                            binding.tvHaveToFollow.setVisibility(View.INVISIBLE);
+                            binding.tvAlreadyFollowing.setVisibility(View.VISIBLE);
+                        } else {
+                            // 팔로우 중이 아닌 경우
+                            binding.tvHaveToFollow.setVisibility(View.VISIBLE);
+                            binding.tvAlreadyFollowing.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void swipeRefresh() {
         // 스와이프 이벤트
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
                 profileItemList.clear();
                 profileAdapter.setProfileItemList(profileItemList);
                 addProfileList(inputUid);
-                swipeRefreshLayout.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
-    private void clickFollowBtn(){
-        // follow 버튼 클릭 이벤트
-
-        followBtn.setOnClickListener(new View.OnClickListener() {
+    private void clickFollowBtn() {
+        binding.tvHaveToFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 여기에 클릭 시 실행할 코드를 작성합니다. 유빈아 잘해봐
+                // 'followings' 필드에 친구를 추가합니다.
+                db.collection("users").document(currentUserId)
+                        .update("followings", FieldValue.arrayUnion(inputUid))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                Toast.makeText(FriendProfileActivity.this, "팔로우 성공", Toast.LENGTH_SHORT).show();
+                                checkFollowing();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
+            }
+        });
 
+    }
+
+    private void clickUnFollowBtn() {
+        binding.tvAlreadyFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("users").document(currentUserId)
+                        .update("followings", FieldValue.arrayRemove(inputUid))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                Toast.makeText(FriendProfileActivity.this, "팔로우 취소", Toast.LENGTH_SHORT).show();
+                                checkFollowing();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
             }
         });
     }
-    private void initAdapter(){
+
+    private void initAdapter() {
         // recyclerView 등록
         profileAdapter = new ProfileAdapter(this, profileItemList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
