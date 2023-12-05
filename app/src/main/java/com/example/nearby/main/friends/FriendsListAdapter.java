@@ -31,6 +31,7 @@ import java.util.List;
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder> {
 
     private Context context;  // Context 변수 추가
+
     public interface OnDeleteButtonClickListener {
         void onDeleteButtonClick(int position);
     }
@@ -99,20 +100,15 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    // 커스텀 다이얼로그 레이아웃 인플레이션
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View dialogView = inflater.inflate(R.layout.follower_delete, null);
 
-                    // 다이얼로그 생성
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setView(dialogView);
 
-                    // 다이얼로그 보여주기
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
-
-                    // 다이얼로그 내부의 버튼 클릭 리스너 설정
                     Button btnCancel = dialogView.findViewById(R.id.btn_dialog_cancel);
                     Button btnConfirm = dialogView.findViewById(R.id.btn_dialog_confirm);
 
@@ -159,9 +155,6 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                                                                             if (followings.contains(findUid)) {
                                                                                 Log.d("LYB", "입력값이 배열에 존재합니다. 고로 삭제합니다.");
                                                                                 onFollowingRemoved(findUid);
-                                                                            } else {
-                                                                                Log.d("LYB", "입력값이 배열에 존재하지 않아요.");
-                                                                                Log.d("LYB", document.getId() + " => " + document.getData());
                                                                             }
                                                                         }
                                                                     }
@@ -176,11 +169,6 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                             dialog.dismiss();
                         }
                     });
-
-
-                    //
-
-
                 }
             });
         } else {
