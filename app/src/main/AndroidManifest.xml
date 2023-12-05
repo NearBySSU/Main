@@ -54,6 +54,7 @@
         <activity
             android:name=".main.upload.UploadContentsActivity"
             android:exported="false"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".main.MainPageActivity"
