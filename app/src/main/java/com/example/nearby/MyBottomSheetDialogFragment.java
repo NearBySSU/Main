@@ -1,10 +1,13 @@
 package com.example.nearby;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.lifecycle.Observer;
 
@@ -31,6 +34,41 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         chipGroupDistance = view.findViewById(R.id.chipGroupDistance);
         chipGroupDate = view.findViewById(R.id.chipGroupDate);
         MainPageActivity activity = (MainPageActivity) getActivity();
+
+        Chip inputChip = view.findViewById(R.id.tagChip04);
+
+        inputChip.setOnClickListener(v -> {
+            // 사용자에게 입력을 받기 위한 다이얼로그를 생성합니다.
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("직접입력");
+
+            // 사용자가 입력할 수 있는 EditText를 설정합니다.
+            final EditText input = new EditText(getContext());
+            builder.setView(input);
+
+            // 확인 버튼을 눌렀을 때의 동작을 설정합니다.
+            builder.setPositiveButton("확인", (dialog, which) -> {
+                String text = input.getText().toString();
+
+                // 새 칩을 생성합니다.
+                Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
+                newChip.setText(text);
+                newChip.setTextSize(16);
+                newChip.setChipEndPadding(10);
+                newChip.setChipStartPadding(10);
+                newChip.setCheckable(true);
+
+                // ChipGroup에 새 칩을 추가합니다.
+                chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+            });
+
+            // 취소 버튼을 눌렀을 때의 동작을 설정합니다.
+            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+
+            builder.show();
+        });
+
+
 
         // 복원할 태그가 있는 경우 Chip 상태 업데이트
         for (int i = 0; i < chipGroupTag.getChildCount(); i++) {
