@@ -56,7 +56,7 @@ public class MainListFragment extends Fragment {
         View rootView = binding.getRoot();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        postAdapter = new PostAdapter(postList);
+        postAdapter = new PostAdapter(postList, getContext());
         binding.recyclerView.setAdapter(postAdapter);
         btn_filter = binding.btnFilter;
 
