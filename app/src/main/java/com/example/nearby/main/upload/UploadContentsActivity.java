@@ -6,23 +6,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -90,6 +96,41 @@ public class UploadContentsActivity extends AppCompatActivity {
         recyclerView = binding.recyclerView;
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         chipGroup.setSingleSelection(false);
+
+        // '직접입력' 칩을 찾습니다.
+        Chip inputChip = findViewById(R.id.chip04);
+
+        inputChip.setOnClickListener(view -> {
+            // 사용자에게 입력을 받기 위한 다이얼로그를 생성합니다.
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("직접입력");
+
+            // 사용자가 입력할 수 있는 EditText를 설정합니다.
+            final EditText input = new EditText(this);
+            builder.setView(input);
+
+            // 확인 버튼을 눌렀을 때의 동작을 설정합니다.
+            builder.setPositiveButton("확인", (dialog, which) -> {
+                String text = input.getText().toString();
+
+                // 새 칩을 생성합니다.
+                Chip newChip = new Chip(new ContextThemeWrapper(this, R.style.AppTheme));
+
+                newChip.setText(text);
+                newChip.setTextSize(16);
+                newChip.setChipEndPadding(10);
+                newChip.setChipStartPadding(10);
+                newChip.setCheckable(true);
+                // ChipGroup을 찾아서 새 칩을 추가합니다.
+                chipGroup.addView(newChip, chipGroup.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+            });
+
+            // 취소 버튼을 눌렀을 때의 동작을 설정합니다.
+            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+
+            builder.show();
+        });
+
 
 
 

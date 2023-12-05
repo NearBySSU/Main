@@ -28,8 +28,9 @@
             android:id="@+id/post_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/poppins_bold"
+            android:layout_marginStart="10dp"
+            android:lineSpacingExtra="-2sp"
+            android:fontFamily="@font/poppins_medium"
             android:text="date"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -40,7 +41,7 @@
             android:id="@+id/post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:fontFamily="@font/poppins_regular"
             android:lineSpacingExtra="-2sp"
             android:maxLines="2"
@@ -52,13 +53,14 @@
 
         <Button
             android:id="@+id/see_it_btn"
-            android:layout_width="72dp"
+            android:layout_width="80dp"
             android:layout_height="36dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button_blue"
-            android:text="see it"
+            android:text="보기"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/profile_pic" />
 

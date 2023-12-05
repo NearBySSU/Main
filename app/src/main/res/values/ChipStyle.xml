@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/secondColor</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/firstColor</item>
+        <item name="colorOnPrimary">@color/white</item> <!-- 선택된 상태의 글자 색상 -->
+    </style>
+</resources>
