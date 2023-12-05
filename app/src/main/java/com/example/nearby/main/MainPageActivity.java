@@ -58,6 +58,8 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     public MutableLiveData<List<Post>> livePostList = new MutableLiveData<>();
     public List<String> selectedTags = new ArrayList<>();
     public List<Post> originalPostList = new ArrayList<>();
+    public List<String> manuallyAddedTags = new ArrayList<>();
+
 
 
     @Override
@@ -200,6 +202,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     @Override
     public void reloadPostList() {
         postList.clear();
+        manuallyAddedTags.clear();
         loadNearbyPosts();
     }
 
