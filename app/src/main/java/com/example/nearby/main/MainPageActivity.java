@@ -1,6 +1,5 @@
 package com.example.nearby.main;
 
-import static com.example.nearby.Utils.checkLocationPermission;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -132,11 +131,9 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         loadNearbyPosts();
     }
 
+    @SuppressLint("MissingPermission")
     private void loadNearbyPosts() {
-        //위치 권한 확인
-        if (!checkLocationPermission(this, LOCATION_PERMISSION_REQUEST_CODE)) {
-            return;
-        }
+
         //현재 위치 가져오기
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {

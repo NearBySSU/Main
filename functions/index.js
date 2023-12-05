@@ -7,7 +7,7 @@ admin.initializeApp();
 const db = admin.firestore();
 const messaging = admin.messaging();
 
-exports.sendLikeNotification = functions.firestore.document("/posts/{postid}").onWrite(async (change, context) => {
+exports.sendLikeNotification = functions.region("asia-northeast3").firestore.document("/posts/{postid}").onWrite(async (change, context) => {
   const beforeLikes = change.before.data().likes;
   const afterLikes = change.after.data().likes;
 
@@ -15,6 +15,11 @@ exports.sendLikeNotification = functions.firestore.document("/posts/{postid}").o
     if (afterLikes.length > beforeLikes.length) {
       const postOwnerUid = change.after.data().uid;
       const newLikeUserId = afterLikes.find((id) => !beforeLikes.includes(id));
+
+      // 자신의 게시물일 경우 리턴
+      if (newLikeUserId === postOwnerUid) {
+        return;
+      }
 
       // 좋아요를 누른 사용자의 닉네임을 가져옵니다.
       const newLikeUserSnapshot = await db.collection("users").doc(newLikeUserId).get();
@@ -43,13 +48,18 @@ exports.sendLikeNotification = functions.firestore.document("/posts/{postid}").o
   }
 });
 
-exports.sendCommentNotification = functions.firestore.document("/posts/{postid}/comments/{commentid}").onCreate(async (snapshot, context) => {
+exports.sendCommentNotification = functions.region("asia-northeast3").firestore.document("/posts/{postid}/comments/{commentid}").onCreate(async (snapshot, context) => {
   const newCommentUserId = snapshot.data().commenterId;
   const postId = context.params.postid;
 
   // 게시글 작성자의 uid를 가져옵니다.
   const postSnapshot = await db.collection("posts").doc(postId).get();
   const postOwnerUid = postSnapshot.data().uid;
+
+  // 댓글 작성자와 포스트 주인이 같으면 리턴
+  if (newCommentUserId === postOwnerUid) {
+    return;
+  }
 
   // 댓글을 남긴 사용자의 닉네임을 가져옵니다.
   const newCommentUserSnapshot = await db.collection("users").doc(newCommentUserId).get();
@@ -76,7 +86,7 @@ exports.sendCommentNotification = functions.firestore.document("/posts/{postid}/
       });
 });
 
-exports.sendFollowNotification = functions.firestore.document("/users/{userid}").onWrite(async (change, context) => {
+exports.sendFollowNotification = functions.region("asia-northeast3").firestore.document("/users/{userid}").onWrite(async (change, context) => {
   const beforeFollowings = change.before.data().followings;
   const afterFollowings = change.after.data().followings;
 

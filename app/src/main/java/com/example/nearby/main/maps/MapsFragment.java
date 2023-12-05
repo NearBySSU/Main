@@ -2,7 +2,6 @@ package com.example.nearby.main.maps;
 
 import static androidx.fragment.app.FragmentManager.TAG;
 
-import static com.example.nearby.Utils.checkLocationPermission;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -145,9 +144,7 @@ public class MapsFragment extends Fragment {
             mClusterManager.setRenderer(new CustomRenderer<>(getActivity(), mMap, mClusterManager));
 
             //위치 권한 확인
-            if (!checkLocationPermission(getActivity(), REQUEST_LOCATION_PERMISSION)) {
-                return;
-            }
+
 
             //현재 내 위치 추적 활성화
             mMap.setMyLocationEnabled(true);

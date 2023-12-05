@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.nearby.main.MainPageActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -58,14 +59,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // 현재 사용자의 UID 가져오기
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        // 사용자의 FCM 토큰을 업데이트하는 문서 참조 생성
-        DocumentReference userRef = db.collection("users").document(uid);
+        // 사용자가 로그인한 상태일 때만 토큰을 업데이트합니다.
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
 
-        // FCM 토큰 업데이트
-        userRef.update("fcmToken", token)
-                .addOnSuccessListener(aVoid -> Log.d("FCM", "FCM Token updated for user: " + uid))
-                .addOnFailureListener(e -> Log.w("FCM", "Error updating FCM Token for user: " + uid, e));
+            // 사용자의 FCM 토큰을 업데이트하는 문서 참조 생성
+            DocumentReference userRef = db.collection("users").document(uid);
+
+            // FCM 토큰 업데이트
+            userRef.update("fcmToken", token)
+                    .addOnSuccessListener(aVoid -> Log.d("FCM", "FCM Token updated for user: " + uid))
+                    .addOnFailureListener(e -> Log.w("FCM", "Error updating FCM Token for user: " + uid, e));
+        }
     }
 }
