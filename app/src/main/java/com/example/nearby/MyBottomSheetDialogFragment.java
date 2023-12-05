@@ -26,6 +26,9 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
     ChipGroup chipGroupDistance;
     ChipGroup chipGroupDate;
     List<Post> filteredPosts;
+    List<String> manuallyAddedTags = new ArrayList<>();
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +39,18 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         MainPageActivity activity = (MainPageActivity) getActivity();
 
         Chip inputChip = view.findViewById(R.id.tagChip04);
+
+        // 복원할 추가 태그가 있는 경우 Chip 상태 업데이트
+        for (String tag : activity.manuallyAddedTags) {
+            Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
+            newChip.setText(tag);
+            newChip.setTextSize(16);
+            newChip.setChipEndPadding(10);
+            newChip.setChipStartPadding(10);
+            newChip.setCheckable(true);
+
+            chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+        }
 
         inputChip.setOnClickListener(v -> {
             // 사용자에게 입력을 받기 위한 다이얼로그를 생성합니다.
@@ -50,16 +65,29 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
             builder.setPositiveButton("확인", (dialog, which) -> {
                 String text = input.getText().toString();
 
-                // 새 칩을 생성합니다.
-                Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
-                newChip.setText(text);
-                newChip.setTextSize(16);
-                newChip.setChipEndPadding(10);
-                newChip.setChipStartPadding(10);
-                newChip.setCheckable(true);
+                // 중복을 체크하여 새로운 태그인 경우에만 추가합니다.
+                if (!manuallyAddedTags.contains(text)) {
+                    // 새 칩을 생성합니다.
+                    Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
+                    newChip.setText(text);
+                    newChip.setTextSize(16);
+                    newChip.setChipEndPadding(10);
+                    newChip.setChipStartPadding(10);
+                    newChip.setCheckable(true);
 
-                // ChipGroup에 새 칩을 추가합니다.
-                chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+                    // 추가한 태그를 리스트에 저장
+                    manuallyAddedTags.add(text);
+
+                    // ChipGroup에 새 칩을 추가합니다.
+                    chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+                } else {
+                    // 이미 추가된 태그인 경우 사용자에게 알림을 표시합니다.
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setTitle("중복된 태그");
+                    alertDialog.setMessage("이미 추가된 태그입니다.");
+                    alertDialog.setPositiveButton("확인", (dialog1, which1) -> dialog1.dismiss());
+                    alertDialog.show();
+                }
             });
 
             // 취소 버튼을 눌렀을 때의 동작을 설정합니다.
@@ -67,6 +95,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
             builder.show();
         });
+
 
 
 
@@ -164,6 +193,11 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
         MainPageActivity activity = (MainPageActivity) getActivity();
         saveSelectedChipsToActivity(activity);
+
+
+        // 추가된 태그들을 저장
+        activity.manuallyAddedTags.addAll(manuallyAddedTags);
+
         filterPostListAndSaveToLiveData(activity);
     }
 
