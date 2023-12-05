@@ -62,7 +62,7 @@ public class FriendsEditActivity extends AppCompatActivity {
         }
 
         // showDeleteButton을 true로 설정
-        friendsListAdapter = new FriendsListAdapter(friendsList, true);
+        friendsListAdapter = new FriendsListAdapter(friendsList, true, this);
 
         initAdapter();
         loadFriendsList();

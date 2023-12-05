@@ -80,7 +80,7 @@ public class FriendsListFragment extends Fragment {
         friendsList = new ArrayList<>();
 
         // showDeleteButton을 false로 설정
-        friendsListAdapter = new FriendsListAdapter(friendsList, false);
+        friendsListAdapter = new FriendsListAdapter(friendsList, false, getActivity());
 
         initAdapter();
         moveToFriendEditBtn();
