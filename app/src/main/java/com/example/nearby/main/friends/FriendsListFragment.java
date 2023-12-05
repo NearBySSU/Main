@@ -80,15 +80,15 @@ public class FriendsListFragment extends Fragment {
         friendsList = new ArrayList<>();
 
         // showDeleteButton을 false로 설정
-        friendsListAdapter = new FriendsListAdapter(friendsList, false);
+        friendsListAdapter = new FriendsListAdapter(friendsList, false, getActivity());
 
         initAdapter();
         moveToFriendEditBtn();
         swipeRefresh();
         loadFriendsList();
-        friendsListAdapter.notifyDataSetChanged();
-
         moveToFriendProfile();
+
+        friendsListAdapter.notifyDataSetChanged();
         return view;
     }
 
@@ -206,7 +206,8 @@ public class FriendsListFragment extends Fragment {
             }
         });
     }
-    private void moveToFriendProfile(){
+
+    private void moveToFriendProfile() {
         // 아이템 클릭 리스너 설정
         friendsListAdapter.setOnItemClickListener(new FriendsListAdapter.OnItemClickListener() {
             @Override
@@ -214,7 +215,6 @@ public class FriendsListFragment extends Fragment {
                 // Friend 아이템 클릭 시 해당 Friend의 프로필로 이동
                 Intent intent = new Intent(getActivity(), FriendProfileActivity.class);
                 intent.putExtra("inputUid", friend.getFriendId());  // Friend의 사용자 ID를 전달
-                Log.d("LYB", "버튼 클릭이요~");
                 startActivity(intent);
             }
         });

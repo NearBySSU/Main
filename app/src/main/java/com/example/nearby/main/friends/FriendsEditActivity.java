@@ -50,7 +50,6 @@ public class FriendsEditActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> followings; // 팔로잉 사용자의 userID들을 담습니다.
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,7 @@ public class FriendsEditActivity extends AppCompatActivity {
         }
 
         // showDeleteButton을 true로 설정
-        friendsListAdapter = new FriendsListAdapter(friendsList, true);
+        friendsListAdapter = new FriendsListAdapter(friendsList, true, this);
 
         initAdapter();
         loadFriendsList();

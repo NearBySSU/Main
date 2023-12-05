@@ -1,5 +1,7 @@
 package com.example.nearby.main.friends;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.nearby.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,9 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder> {
+
+    private Context context;  // Context 변수 추가
     public interface OnDeleteButtonClickListener {
         void onDeleteButtonClick(int position);
     }
+
     // 아이템 클릭을 처리하는 리스너
     public interface OnItemClickListener {
         void onItemClick(Friend friend);
@@ -52,7 +54,8 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     private String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-    public FriendsListAdapter(List<Friend> friendsList, boolean b) {
+    public FriendsListAdapter(List<Friend> friendsList, boolean b, Context context) {
+        this.context = context;
         if (friendsList == null) {
             this.friendsList = new ArrayList<>();
         } else {
@@ -95,56 +98,89 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
 
                 @Override
                 public void onClick(View v) {
-                    db.collection("users")
-                            .whereEqualTo("uid", friend.getFriendId())
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        if (task.getResult().isEmpty()) {
-                                            // 일치하는 uid가 없는 경우
-                                            Log.d("LYB", "No matching uid found.");
-                                        } else {
-                                            // 일치하는 이메일이 있는 경우
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                String findUid = document.getId();
 
-                                                // 자신 삭제가 아니라면
-                                                if (!findUid.equals(currentUid)) {
-                                                    DocumentReference docRef = db.collection("users").document(currentUid);
+                    // 커스텀 다이얼로그 레이아웃 인플레이션
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View dialogView = inflater.inflate(R.layout.follower_delete, null);
 
-                                                    // 이미 followings db에 존재하는지 검사
-                                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                DocumentSnapshot document = task.getResult();
-                                                                if (document.exists()) {
-                                                                    List<String> followings = (List<String>) document.get("followings");
-                                                                    if (followings.contains(findUid)) {
-                                                                        Log.d("LYB", "입력값이 배열에 존재합니다. 고로 삭제합니다.");
-                                                                        onFollowingRemoved(findUid);
-                                                                    } else {
-                                                                        Log.d("LYB", "입력값이 배열에 존재하지 않아요.");
-                                                                        Log.d("LYB", document.getId() + " => " + document.getData());
+                    // 다이얼로그 생성
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setView(dialogView);
+
+                    // 다이얼로그 보여주기
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
+                    // 다이얼로그 내부의 버튼 클릭 리스너 설정
+                    Button btnCancel = dialogView.findViewById(R.id.btn_dialog_cancel);
+                    Button btnConfirm = dialogView.findViewById(R.id.btn_dialog_confirm);
+
+                    // '아니오' 버튼 클릭 시 다이얼로그 닫기
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    // '예' 버튼 클릭 시 취소 처리 진행
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            db.collection("users")
+                                    .whereEqualTo("uid", friend.getFriendId())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                if (task.getResult().isEmpty()) {
+                                                    // 일치하는 uid가 없는 경우
+                                                    Log.d("LYB", "No matching uid found.");
+                                                } else {
+                                                    // 일치하는 이메일이 있는 경우
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        String findUid = document.getId();
+
+                                                        // 자신 삭제가 아니라면
+                                                        if (!findUid.equals(currentUid)) {
+                                                            DocumentReference docRef = db.collection("users").document(currentUid);
+
+                                                            // 이미 followings db에 존재하는지 검사
+                                                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        DocumentSnapshot document = task.getResult();
+                                                                        if (document.exists()) {
+                                                                            List<String> followings = (List<String>) document.get("followings");
+                                                                            if (followings.contains(findUid)) {
+                                                                                Log.d("LYB", "입력값이 배열에 존재합니다. 고로 삭제합니다.");
+                                                                                onFollowingRemoved(findUid);
+                                                                            } else {
+                                                                                Log.d("LYB", "입력값이 배열에 존재하지 않아요.");
+                                                                                Log.d("LYB", document.getId() + " => " + document.getData());
+                                                                            }
+                                                                        }
                                                                     }
-                                                                } else {
-                                                                    Log.d("LYB", "No such document");
                                                                 }
-                                                            } else {
-                                                                Log.d("LYB", "get failed with ", task.getException());
-                                                            }
+                                                            });
                                                         }
-                                                    });
+                                                    }
                                                 }
                                             }
                                         }
-                                    } else {
-                                        Log.d("ODG", "Error getting documents: ", task.getException());
-                                    }
-                                }
-                            });
+                                    });
+                            dialog.dismiss();
+                        }
+                    });
+
+
+                    //
+
+
                 }
             });
         } else {
