@@ -126,15 +126,24 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                             String commenterId = document.getString("commenterId");
                             long timestamp = document.getLong("timestamp"); // 시간 정보를 long 타입으로 가져옴
 
-                            // 댓글 작성자의 프로필 사진을 가져오기 위해 댓글 작성자의 정보를 가져옴
-                            db.collection("users").document(commenterId).get()
+                            Comment comment = new Comment(commentText, commenterId, null, timestamp, null);
+                            commentList.add(comment);
+                        }
+                        // 댓글 가져오기가 완료된 후 한 번에 RecyclerView에 데이터를 설정합니다.
+                        commentAdapter = new CommentAdapter(commentList);
+                        recyclerView.setAdapter(commentAdapter);
+
+                        // 각 댓글의 프로필 사진 및 닉네임을 가져옵니다.
+                        for (int i = 0; i < commentList.size(); i++) {
+                            Comment comment = commentList.get(i);
+                            final int index = i;
+                            db.collection("users").document(comment.getCommenterId()).get()
                                     .addOnSuccessListener(userDocument -> {
                                         String profilePicUrl = userDocument.getString("profilePicUrl"); // 프로필 사진 URL 가져옴
                                         String nickname = userDocument.getString("nickname");
-                                        Comment comment = new Comment(commentText, commenterId, profilePicUrl, timestamp, nickname);
-                                        commentList.add(comment);
-                                        commentAdapter = new CommentAdapter(commentList);
-                                        recyclerView.setAdapter(commentAdapter);
+                                        commentList.get(index).setProfilePicUrl(profilePicUrl);
+                                        commentList.get(index).setNickname(nickname);
+                                        commentAdapter.notifyItemChanged(index);
                                     })
                                     .addOnFailureListener(e -> {
                                         // 에러 처리
@@ -145,6 +154,5 @@ public class CommentBottomSheetDialogFragment extends BottomSheetDialogFragment 
                     }
                 });
     }
-
 
 }

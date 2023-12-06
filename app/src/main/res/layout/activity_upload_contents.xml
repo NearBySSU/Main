@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
+    android:theme="@style/MaterialNearby"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -19,10 +20,10 @@
 
         <TextView
             android:id="@+id/tv_upload_title"
-            android:layout_width="134dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginTop="30dp"
-            android:autoSizeTextType="uniform"
+            android:textSize="26sp"
             android:fontFamily="@font/poppins_bold"
             android:text="게시물 업로드"
             android:textColor="@color/black"
@@ -100,19 +101,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextBox" />
 
-
         <Button
             android:id="@+id/pick_date_button"
-            android:layout_width="80dp"
-            android:layout_height="32dp"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/secondColor"
-            android:background="@drawable/chip_rec"
+            android:theme="@style/MaterialNearby"
             android:fontFamily="@font/poppins_bold"
+            android:background="@drawable/small_button"
             android:onClick="pickDate"
             android:text="선택"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date"
             app:layout_constraintStart_toEndOf="@+id/tv_date"
@@ -130,6 +130,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
         <TextView
+            android:id="@+id/tv_access_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="공개 범위"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/show_date_textView" />
+
+        <TextView
             android:id="@+id/tv_chip_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,10 +150,71 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_bold"
             android:text="태그"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/show_date_textView" />
+            app:layout_constraintTop_toBottomOf="@id/accessGroupScroll" />
+
+
+
+        <HorizontalScrollView
+            android:id="@+id/accessGroupScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_access_title">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/accessChipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                app:chipSpacingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_chip_title"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/publicChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="모두"
+                    android:checked="true"
+                    android:textSize="16sp"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/friendChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="친구만"
+                    android:textSize="16sp"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/privateChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="비공개"
+                    android:textSize="16sp"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
 
         <HorizontalScrollView
@@ -154,7 +228,6 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme"
@@ -215,15 +288,17 @@
         <Button
             android:id="@+id/upload_button"
             android:layout_width="350dp"
-            android:layout_height="65dp"
+            android:layout_height="60dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/big_button"
             android:onClick="uploadPost"
+            android:background="@drawable/small_button"
             android:text="업로드"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_bold"
+            android:theme="@style/MaterialNearby"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chipGroupScroll" />
 

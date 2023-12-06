@@ -68,6 +68,7 @@ public class UploadContentsActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     ArrayList<String> checkedTags = new ArrayList<>();    // 체크된 Chip들의 ID를 저장할 ArrayList 생성
+    String accessChip = "모두";
 
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
@@ -95,7 +96,10 @@ public class UploadContentsActivity extends AppCompatActivity {
         uid = user.getUid();
         recyclerView = binding.recyclerView;
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        ChipGroup accesschipGroup = findViewById(R.id.accessChipGroup);
         chipGroup.setSingleSelection(false);
+
+
 
         // '직접입력' 칩을 찾습니다.
         Chip inputChip = findViewById(R.id.chip04);
@@ -138,6 +142,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //체크된 태그들을 배열에 담기
                 for (int i = 0; i < chipGroup.getChildCount(); i++) {
                     Chip chip = (Chip) chipGroup.getChildAt(i);
@@ -145,6 +150,17 @@ public class UploadContentsActivity extends AppCompatActivity {
                         checkedTags.add(chip.getText().toString());
                     }
                 }
+
+                //체크된 엑세스 태그들을 배열에 담기
+                for (int i = 0; i < accesschipGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) accesschipGroup.getChildAt(i);
+                    if (chip.isChecked()) {
+                        accessChip = chip.getText().toString();
+                    }
+                }
+
+
+
                 if (!checkedTags.isEmpty() && !uriList.isEmpty() && !binding.mainText.getText().toString().trim().isEmpty() && !binding.showDateTextView.getText().equals("")) {
                     uploadPost();
                 } else {
@@ -317,6 +333,7 @@ public class UploadContentsActivity extends AppCompatActivity {
         post.put("longitude", longitude);
         post.put("uid", uid);
         post.put("tags", checkedTags);
+        post.put("access", accessChip);
         return post;
     }
 

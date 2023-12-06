@@ -37,4 +37,6 @@ public class Comment {
     public String getNickname() {
         return nickname;
     }
+    public void setProfilePicUrl(String profilePicUrl){this.profilePicUrl = profilePicUrl;}
+    public void setNickname(String nickname){this.nickname = nickname;}
 }
