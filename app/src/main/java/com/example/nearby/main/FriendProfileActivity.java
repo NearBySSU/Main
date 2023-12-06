@@ -158,7 +158,6 @@ public class FriendProfileActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
                                 Toast.makeText(FriendProfileActivity.this, "팔로우 취소", Toast.LENGTH_SHORT).show();
                                 checkFollowing();
                             }
@@ -238,9 +237,6 @@ public class FriendProfileActivity extends AppCompatActivity {
                                     Timestamp dates = (Timestamp) documentSnapshot.get("date");
 
                                     currentDate = dates;
-
-                                    Log.d("ProfileListCheck", currentPostId);
-                                    Log.d("ProfileListCheck", currentImageUrl);
 
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
                                     profileItemList.add(profileItem);
