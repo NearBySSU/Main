@@ -84,31 +84,35 @@ public class FriendProfileActivity extends AppCompatActivity {
     }
 
     private void checkFollowing() {
-        db.collection("users").document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        List<String> followings = (List<String>) document.get("followings");
-                        if (followings == null) {
-                            followings = new ArrayList<>(); // "followings" 필드가 없을 경우 빈 리스트로 초기화
-                        }
-                        // 'followings' 리스트에 해당 사용자가 있는지 확인
-                        if (followings.contains(inputUid)) {
-                            // 팔로우 중인 경우
-                            binding.tvHaveToFollow.setVisibility(View.INVISIBLE);
-                            binding.tvAlreadyFollowing.setVisibility(View.VISIBLE);
-                        } else {
-                            // 팔로우 중이 아닌 경우
-                            binding.tvHaveToFollow.setVisibility(View.VISIBLE);
-                            binding.tvAlreadyFollowing.setVisibility(View.INVISIBLE);
+        if ( inputUid.equals(uid) ) {
+            binding.tvHaveToFollow.setVisibility(View.INVISIBLE);
+            binding.tvAlreadyFollowing.setVisibility(View.INVISIBLE);
+        } else {
+            db.collection("users").document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            List<String> followings = (List<String>) document.get("followings");
+                            if (followings == null) {
+                                followings = new ArrayList<>(); // "followings" 필드가 없을 경우 빈 리스트로 초기화
+                            }
+                            // 'followings' 리스트에 해당 사용자가 있는지 확인
+                            if (followings.contains(inputUid)) {
+                                // 팔로우 중인 경우
+                                binding.tvHaveToFollow.setVisibility(View.INVISIBLE);
+                                binding.tvAlreadyFollowing.setVisibility(View.VISIBLE);
+                            } else {
+                                // 팔로우 중이 아닌 경우
+                                binding.tvHaveToFollow.setVisibility(View.VISIBLE);
+                                binding.tvAlreadyFollowing.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                 }
-            }
-        });
-
+            });
+        }
     }
 
     private void swipeRefresh() {
