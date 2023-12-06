@@ -239,9 +239,6 @@ public class FriendProfileActivity extends AppCompatActivity {
 
                                     currentDate = dates;
 
-                                    Log.d("ProfileListCheck", currentPostId);
-                                    Log.d("ProfileListCheck", currentImageUrl);
-
                                     ProfileItem profileItem = new ProfileItem(currentDate, currentImageUrl, currentPostId);
                                     profileItemList.add(profileItem);
                                     profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신

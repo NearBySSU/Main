@@ -4,14 +4,10 @@
 
     <style name="Theme.Nearby" parent="Base.Theme.Nearby" />
 
-    <style name="RoundedAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/rounded_dialog</item>
+    <style name="MaterialNearby" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/secondColor</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/firstColor</item>
+
     </style>
-
-    <style name="EditTextWithoutUnderline" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-
-
 </resources>

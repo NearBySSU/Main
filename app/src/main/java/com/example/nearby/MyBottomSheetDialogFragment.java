@@ -71,8 +71,8 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
                     Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
                     newChip.setText(text);
                     newChip.setTextSize(16);
-                    newChip.setChipEndPadding(10);
-                    newChip.setChipStartPadding(10);
+                    newChip.setChipEndPadding(20);
+                    newChip.setChipStartPadding(20);
                     newChip.setCheckable(true);
 
                     // 추가한 태그를 리스트에 저장
