@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -59,6 +60,8 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     public List<String> selectedTags = new ArrayList<>();
     public List<Post> originalPostList = new ArrayList<>();
     public List<String> manuallyAddedTags = new ArrayList<>();
+    List<String> following = new ArrayList<>();
+    public String myUid;
 
 
 
@@ -72,6 +75,7 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         profileFragment = new ProfileFragment();
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         getSupportFragmentManager().beginTransaction().add(R.id.containers, new MainListFragment()).commit();
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigationView);
@@ -100,6 +104,8 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+
+
 
 
         navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -135,7 +141,6 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
 
     @SuppressLint("MissingPermission")
     private void loadNearbyPosts() {
-
         //현재 위치 가져오기
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
@@ -145,49 +150,84 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
     }
 
     public void getPosts(Location currentLocation) {
-        db.collection("posts").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
+        Log.e("hi", "uid: " + myUid);
 
-                    double latitude = document.getDouble("latitude");
-                    double longitude = document.getDouble("longitude");
-                    Location postLocation = new Location("");
-                    postLocation.setLatitude(latitude);
-                    postLocation.setLongitude(longitude);
+        db.collection("users").document(myUid).get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()) {
+                following = (List<String>) documentSnapshot.get("followings");
+                Log.e("hi", "following: " + following);
 
-                    //거리 재기
-                    float distanceInMeters = currentLocation.distanceTo(postLocation);
-                    int distanceCategory;
+                db.collection("posts").get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            double latitude = document.getDouble("latitude");
+                            double longitude = document.getDouble("longitude");
+                            Location postLocation = new Location("");
+                            postLocation.setLatitude(latitude);
+                            postLocation.setLongitude(longitude);
+                            String access = document.getString("access");
 
-                    if (distanceInMeters <= 1000) {
-                        distanceCategory = 1; // 1km 이하면 "가까이"로 분류
-                    } else if (distanceInMeters <= 3000) {
-                        distanceCategory = 3; // 3km 이하면 "적당히"로 분류
-                    } else if (distanceInMeters <= 5000) {
-                        distanceCategory = 5; // 5km 이하면 "멀리"로 분류
-                    } else {
-                        continue; //5km 이상이면 로드하지 않음
+                            //거리 재기
+                            float distanceInMeters = currentLocation.distanceTo(postLocation);
+                            int distanceCategory;
+
+                            if (distanceInMeters <= 1000) {
+                                distanceCategory = 1; // 1km 이하면 "가까이"로 분류
+                            } else if (distanceInMeters <= 3000) {
+                                distanceCategory = 3; // 3km 이하면 "적당히"로 분류
+                            } else if (distanceInMeters <= 5000) {
+                                distanceCategory = 5; // 5km 이하면 "멀리"로 분류
+                            } else {
+                                continue; //5km 이상이면 로드하지 않음
+                            }
+                            //나머지 정보들 로드
+                            String uid = document.getString("uid");
+                            Timestamp date = document.getTimestamp("date");
+                            String bigLocationName = document.getString("bigLocationName");
+                            String smallLocationName = document.getString("smallLocationName");
+                            List<String> imageUrls = (List<String>) document.get("imageUrls");
+                            List<String> likeList = (List<String>) document.get("likes");
+                            List<String> tags = (List<String>) document.get("tags");
+                            String text = document.getString("text");
+
+                            if(following == null){
+                                if(access.equals("친구만")){
+                                    Log.e("poso ", "1");
+                                    continue;
+                                }
+                                else if(access.equals("비공개")){
+                                    if(!uid.equals(myUid)){
+                                        Log.e("poso", "2");
+                                        continue;
+                                    }
+                                }
+                            }
+                            else{
+                                if(access.equals("친구만")){
+                                    if(!following.contains(uid) && !uid.equals(myUid)){
+                                        Log.e("poso", "3");
+                                        continue;
+                                    }
+                                }
+                                else if(access.equals("비공개")){
+                                    if(!uid.equals(myUid)){
+                                        Log.e("poso", "4");
+                                        continue;
+                                    }
+                                }
+                            }
+                            //날짜 계산 (현재 시간과 게시물의 시간 차이를 월로 변환)
+                            long diffInMilli = System.currentTimeMillis() - date.toDate().getTime();
+                            long diffInMonth = TimeUnit.MILLISECONDS.toDays(diffInMilli) / 30;
+                            Log.e("loadpost", "getPosts: " + diffInMonth);
+
+                            Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags, distanceCategory, (int) diffInMonth);
+                            postList.add(post);
+                            originalPostList = postList;
+                            livePostList.setValue(postList);
+                        }
                     }
-                    //나머지 정보들 로드
-                    String uid = document.getString("uid");
-                    Timestamp date = document.getTimestamp("date");
-                    String bigLocationName = document.getString("bigLocationName");
-                    String smallLocationName = document.getString("smallLocationName");
-                    List<String> imageUrls = (List<String>) document.get("imageUrls");
-                    List<String> likeList = (List<String>) document.get("likes");
-                    List<String> tags = (List<String>) document.get("tags");
-                    String text = document.getString("text");
-
-                    //날짜 계산 (현재 시간과 게시물의 시간 차이를 월로 변환)
-                    long diffInMilli = System.currentTimeMillis() - date.toDate().getTime();
-                    long diffInMonth = TimeUnit.MILLISECONDS.toDays(diffInMilli) / 30;
-                    Log.e("loadpost", "getPosts: " + diffInMonth);
-
-                    Post post = new Post(document.getId(), text, bigLocationName, smallLocationName, latitude, longitude, date, uid, imageUrls, likeList, tags, distanceCategory, (int) diffInMonth);
-                    postList.add(post);
-                    originalPostList = postList;
-                    livePostList.setValue(postList);
-                }
+                });
             }
         });
     }
