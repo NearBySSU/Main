@@ -181,8 +181,9 @@ public class FriendsEditActivity extends AppCompatActivity {
                                                 if (document.exists()) {
                                                     String profileUrl = document.getString("profilePicUrl");
                                                     String friendName = document.getString("nickname");
-//                                                    String postCount = document.getString("postCount");
-                                                    Friend friend = new Friend(profileUrl, friendName, userID);
+                                                    ArrayList<String> postIds = (ArrayList<String>) document.get("postIds");
+                                                    int postCount = postIds.size();
+                                                    Friend friend = new Friend(profileUrl, friendName, userID, postCount);
                                                     friendsList.add(friend);
                                                     friendsListAdapter.notifyDataSetChanged();
                                                 } else {

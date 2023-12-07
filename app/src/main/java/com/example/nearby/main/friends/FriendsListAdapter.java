@@ -81,7 +81,8 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 .circleCrop()
                 .into(holder.profileUrl);
         holder.friendName.setText(friend.getFriendName());
-//        holder.postCount.setText(friend.getPostCount());
+        holder.postCount.setText(Integer.toString(friend.getPostCount()));
+
 
         // 아이템 클릭 이벤트 처리
         holder.itemView.setOnClickListener(new View.OnClickListener() {
