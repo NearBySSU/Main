@@ -162,7 +162,6 @@ public class FriendProfileActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
                                 Toast.makeText(FriendProfileActivity.this, "팔로우 취소", Toast.LENGTH_SHORT).show();
                                 checkFollowing();
                             }

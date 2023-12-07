@@ -4,13 +4,13 @@ public class Friend {
     // 친구 리스트 객체
     private String profileUrl;
     private String friendName;
-    //    private String postCount;
+    private int postCount;
     private String friendId; // 친구의 Firestore에서의 ID
 
-    public Friend(String profileUrl, String friendName, String userID) {
+    public Friend(String profileUrl, String friendName, String userID, int postCount) {
         this.profileUrl = profileUrl;
         this.friendName = friendName;
-//        this.postCount = postCount;
+        this.postCount = postCount;
         this.friendId = userID;
 
     }
@@ -23,9 +23,9 @@ public class Friend {
         return this.friendName;
     }
 
-//    public String getPostCount() {
-//        return this.postCount;
-//    }
+    public int getPostCount() {
+        return this.postCount;
+    }
 
     public String getFriendId() {
         return this.friendId;
