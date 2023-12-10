@@ -127,65 +127,8 @@ public class SinglePostPageActivity extends AppCompatActivity {
         binding.icEmptyHeart.setOnClickListener(v -> {
             checkLikeStatus(postId, uid, binding.icEmptyHeart);
         });
-
-//        binding.btnMap.setOnClickListener(v -> {
-//            // MapsFragment의 인스턴스를 가져옵니다.
-//            MapsFragment mapsFragment = MapsFragment.getInstance();
-//
-//            // 포스트 아이디를 설정합니다.
-//            mapsFragment.setPostId(postId);
-//
-//            // 화면을 MapsFragment로 전환합니다.
-//            ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.containers, mapsFragment)
-//                    .addToBackStack(null)
-//                    .commit();
-//
-//            ((MainPageActivity) v.getContext()).nullPostId = false;
-//
-//            BottomNavigationView bottomNavigationView = ((MainPageActivity) v.getContext()).findViewById(R.id.bottom_navigationView);
-//            bottomNavigationView.setSelectedItemId(R.id.MapNav);
-//
-//            ((MainPageActivity) v.getContext()).nullPostId = true;
-//
-//        });
     }
-
-//    private void getPostData(String postId) {
-//        db.collection("posts").document(postId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//
-//                        // 인스턴스 초기화
-//                        postUid = document.getString("uid"); // nickname, profileimage 설정예정
-//
-//                        date = document.getString("date");
-//                        bigLocation = document.getString("bigLocationName");
-//                        smallLocation = document.getString("smallLocationName");
-//                        text = document.getString("text");
-//
-//                        // recyclerView list 초기화
-//                        imageUrls = (List<String>) document.get("imageUrls");
-//                        likeList = (List<String>) document.get("likes");
-//                        tags = (List<String>) document.get("tags");
-//
-////                        Log.d("SinglePost", "DocumentSnapshot data: " + document.getData());
-//                        Log.d("SinglePage", postUid != null ? postUid : "postUid is null");
-//                        Log.d("SinglePage", date != null ? date : "date is null");
-//                        Log.d("SinglePage", text != null ? text : "text is null");
-//                    } else {
-//                        Log.d("SinglePost", "No such document");
-//                    }
-//                } else {
-//                    Log.d("SinglePost", "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//    }
-
+    
     // 수정본
     private void getPostData(String postId) {
         db.collection("posts").document(postId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -429,8 +372,4 @@ public class SinglePostPageActivity extends AppCompatActivity {
                     }
                 });
     }
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu);
-//        inflater.inflate(R.menu.menu_single_post_app_bar, menu);
-//    }
 }

@@ -65,14 +65,13 @@
         app:layout_constraintStart_toEndOf="@id/tv_friend_new_post_add"
         app:layout_constraintTop_toTopOf="@id/tv_friend_new_post_add" />
 
-
     <Button
         android:id="@+id/unFollowBtn"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_margin="35dp"
         android:background="@drawable/round_btn"
-        android:backgroundTint="@color/secondColor"
+        android:backgroundTint="@color/firstColor"
         android:fontFamily="@font/poppins_bold"
         android:text="삭제"
         android:textColor="@color/white"

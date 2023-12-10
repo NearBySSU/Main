@@ -106,6 +106,17 @@ public class ProfileFragment extends Fragment {
         nickNameField = rootView.findViewById(R.id.tv_profile_name);
 
 
+        // 스와이프 이벤트
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public void onRefresh() {
+                profileItemList.clear();
+                profileAdapter.setProfileItemList(profileItemList);
+                addProfileList();
+//                Log.d("ODG", imageUrlList.get(1));
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         // 상단 바 눌렀을 때의 버튼 처리
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -134,23 +145,10 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-
         // recyclerView 등록
         profileAdapter = new ProfileAdapter(getContext(), profileItemList);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(profileAdapter);
-
-        // 스와이프 이벤트
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            public void onRefresh() {
-                profileItemList.clear();
-                profileAdapter.setProfileItemList(profileItemList);
-                addProfileList();
-//                Log.d("ODG", imageUrlList.get(1));
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
 
         // profile img list 로드 하기
@@ -162,44 +160,6 @@ public class ProfileFragment extends Fragment {
 
         return rootView;
     }
-
-//    private void addProfileList() {
-//        db = FirebaseFirestore.getInstance();
-//        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        List<String> postIds = (List<String>) document.get("postIds");
-//                        for (String postId : postIds) {
-//                            db.collection("posts").document(postId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                                @Override
-//                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                                    ArrayList<String> imageUrls = (ArrayList<String>) documentSnapshot.get("imageUrls");
-//                                    if (imageUrls == null) {
-//                                        // If "imageUrls" field doesn't exist, create it as an empty list
-//                                        imageUrls = new ArrayList<>();
-//                                        documentSnapshot.getReference().update("imageUrls", imageUrls);
-//                                    }
-//                                    if (imageUrls.size() > 0) {
-//                                        imageUrlList.add(imageUrls.get(0));
-//                                        Log.d("ODG", imageUrlList.get(0));
-//                                        profileAdapter.notifyDataSetChanged();  // 데이터가 추가될 때마다 UI 갱신
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//    }
 
     //수정본
     private void addProfileList() {
@@ -286,68 +246,5 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_profile_app_bar, menu);
-    }
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
-//        storage = FirebaseStorage.getInstance();
-//        db = FirebaseFirestore.getInstance();
-//        // ProgressDialog 초기화
-//        progressDialog = new ProgressDialog(getActivity());
-//        progressDialog.setMessage("프로필 이미지 변경 중...");
-//    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedImageUri = data.getData();
-                StorageReference storageRef = storage.getReference();
-                StorageReference imageRef = storageRef.child("users/" + UUID.randomUUID().toString());
-
-                // ProgressDialog 표시
-                progressDialog.show();
-
-                imageRef.putFile(selectedImageUri)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        DocumentReference userRef = db.collection("users").document(mAuth.getUid());
-                                        userRef.set(Collections.singletonMap("profilePicUrl", uri.toString()), SetOptions.merge())
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                        Toast.makeText(getContext(), "프로필 이미지 변경 성공!", Toast.LENGTH_SHORT).show();
-
-                                                        // ProgressDialog 닫기
-                                                        progressDialog.dismiss();
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error updating document", e);
-                                                        Toast.makeText(getContext(), "프로필 이미지 변경 실패", Toast.LENGTH_SHORT).show();
-
-                                                        // ProgressDialog 닫기
-                                                        progressDialog.dismiss();
-
-                                                    }
-                                                });
-                                    }
-                                });
-                            }
-                        });
-
-            }
-        }
     }
 }
