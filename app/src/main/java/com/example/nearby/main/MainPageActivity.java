@@ -155,7 +155,6 @@ public class MainPageActivity extends AppCompatActivity implements PostLoader {
         db.collection("users").document(myUid).get().addOnSuccessListener(documentSnapshot -> {
             if(documentSnapshot.exists()) {
                 following = (List<String>) documentSnapshot.get("followings");
-                Log.e("hi", "following: " + following);
 
                 db.collection("posts").get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
