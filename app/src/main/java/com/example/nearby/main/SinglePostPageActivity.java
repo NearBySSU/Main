@@ -86,9 +86,9 @@ public class SinglePostPageActivity extends AppCompatActivity {
         postId = intent.getStringExtra("postId");
 
 
-        SnapHelper snapHelper = new PagerSnapHelper(); // 한 번에 한 페이지씩 넘어가게 하는 SnapHelper
+        SnapHelper snapHelper = new PagerSnapHelper();
 
-        snapHelper.attachToRecyclerView(binding.imgPostRecyclerView); // SnapHelper를 RecyclerView에 연결
+        snapHelper.attachToRecyclerView(binding.imgPostRecyclerView);
 
         Log.d("singlepage", postId);
 

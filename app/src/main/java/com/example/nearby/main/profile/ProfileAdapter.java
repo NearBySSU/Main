@@ -32,7 +32,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
     public ProfileAdapter(Context context, List<ProfileItem> profileItemList) {
         this.context = context;
-//        this.imageUrlList = imageUrlList != null ? imageUrlList : new ArrayList<>();
         this.profileItemList = new ArrayList<>();
     }
 
@@ -50,27 +49,19 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         holder.date = profileItem.getDate();
         holder.postId = profileItem.getPostId();
 
-//        String imageUrl = imageUrlList.get(position);
-
-//        Glide.with(context)
-//                .load(imageUrl)
-//                .override(500, 500)  // 이미지 크기 조정. 필요에 따라 숫자를 변경하세요.
-//                .centerCrop()  // 이미지를 가운데에서 정사각형으로 잘라냄
-//                .into(holder.imageView);
         Glide.with(holder.imageView.getContext())
                 .load(profileItem.getImgUrl())
-                .override(500, 500)  // 이미지 크기 조정. 필요에 따라 숫자를 변경하세요.
-                .centerCrop()  // 이미지를 가운데에서 정사각형으로 잘라냄
+                .override(500, 500)
+                .centerCrop()
                 .into(holder.imageView);
 
-        // ViewTreeObserver를 사용하여 뷰의 가로 길이를 측정하고, 이 길이를 뷰의 높이로 설정
         holder.imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 holder.imageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                int height = holder.imageView.getMeasuredWidth();  // 가로 길이 측정
-                holder.imageView.getLayoutParams().height = height;  // 측정한 길이를 높이로 설정
-                holder.imageView.requestLayout();  // 레이아웃 업데이트 요청
+                int height = holder.imageView.getMeasuredWidth();
+                holder.imageView.getLayoutParams().height = height;
+                holder.imageView.requestLayout();
                 return true;
             }
         });
@@ -90,16 +81,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
     public int getItemCount() {
         return profileItemList.size();
     }
-
-//    public void addItem(ProfileItem profileItem) {
-//        profileItemList.add(profileItem);
-//        notifyDataSetChanged();
-//    }
-
-//    public void clearItems() {
-//        profileItemList.clear();
-//        notifyDataSetChanged();
-//    }
 
     public void setProfileItemList(ArrayList<ProfileItem> profileItemList) {
         this.profileItemList = profileItemList;
