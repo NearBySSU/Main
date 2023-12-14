@@ -70,7 +70,7 @@ public class FriendProfileActivity extends AppCompatActivity {
         nickNameField = findViewById(R.id.tv_profile_name);
 
         checkFollowing();
-        clickFollowBtn();
+        clickFollowBtn(inputUid);
         clickUnFollowBtn();
         swipeRefresh();
         initAdapter();
@@ -127,18 +127,18 @@ public class FriendProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void clickFollowBtn() {
+    private void clickFollowBtn(String clickedUserUid) {
         binding.tvHaveToFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 'followings' 필드에 친구를 추가합니다.
-                db.collection("users").document(currentUserId)
-                        .update("followings", FieldValue.arrayUnion(inputUid))
+                db.collection("users").document(clickedUserUid)
+                        .update("FollowRequester", FieldValue.arrayUnion(uid))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                Toast.makeText(FriendProfileActivity.this, "팔로우 성공", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FriendProfileActivity.this, "팔로우 요청을 보냈어요", Toast.LENGTH_SHORT).show();
                                 checkFollowing();
                             }
                         })
@@ -162,7 +162,7 @@ public class FriendProfileActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(FriendProfileActivity.this, "팔로우 취소", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FriendProfileActivity.this, "팔로우를 취소했어요", Toast.LENGTH_SHORT).show();
                                 checkFollowing();
                             }
                         })
