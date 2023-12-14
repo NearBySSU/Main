@@ -1,17 +1,20 @@
 package com.example.nearby;
 
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 
 import com.example.nearby.main.MainPageActivity;
+import com.example.nearby.main.SinglePostPageActivity;
 import com.example.nearby.main.mainpage.Post;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
@@ -53,50 +56,58 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
         }
 
         inputChip.setOnClickListener(v -> {
-            // 사용자에게 입력을 받기 위한 다이얼로그를 생성합니다.
+            LayoutInflater inflater2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View dialogView = inflater2.inflate(R.layout.tag_self, null);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("직접입력");
+            builder.setView(dialogView);
 
-            // 사용자가 입력할 수 있는 EditText를 설정합니다.
-            final EditText input = new EditText(getContext());
-            builder.setView(input);
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
-            // 확인 버튼을 눌렀을 때의 동작을 설정합니다.
-            builder.setPositiveButton("확인", (dialog, which) -> {
-                String text = input.getText().toString();
+            EditText input = dialogView.findViewById(R.id.edit_text);
+            Button btnCancel = dialogView.findViewById(R.id.btn_dialog_cancel);
+            Button btnConfirm = dialogView.findViewById(R.id.btn_dialog_confirm);
 
-                // 중복을 체크하여 새로운 태그인 경우에만 추가합니다.
-                if (!manuallyAddedTags.contains(text)) {
-                    // 새 칩을 생성합니다.
-                    Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
-                    newChip.setText(text);
-                    newChip.setTextSize(16);
-                    newChip.setChipEndPadding(20);
-                    newChip.setChipStartPadding(20);
-                    newChip.setCheckable(true);
-
-                    // 추가한 태그를 리스트에 저장
-                    manuallyAddedTags.add(text);
-
-                    // ChipGroup에 새 칩을 추가합니다.
-                    chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
-                } else {
-                    // 이미 추가된 태그인 경우 사용자에게 알림을 표시합니다.
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                    alertDialog.setTitle("중복된 태그");
-                    alertDialog.setMessage("이미 추가된 태그입니다.");
-                    alertDialog.setPositiveButton("확인", (dialog1, which1) -> dialog1.dismiss());
-                    alertDialog.show();
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
             });
 
-            // 취소 버튼을 눌렀을 때의 동작을 설정합니다.
-            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String text = input.getText().toString();
 
-            builder.show();
+                    // 중복을 체크하여 새로운 태그인 경우에만 추가합니다.
+                    if (!manuallyAddedTags.contains(text)) {
+                        // 새 칩을 생성합니다.
+                        Chip newChip = new Chip(new ContextThemeWrapper(getContext(), R.style.AppTheme));
+                        newChip.setText(text);
+                        newChip.setTextSize(16);
+                        newChip.setChipEndPadding(20);
+                        newChip.setChipStartPadding(20);
+                        newChip.setCheckable(true);
+
+                        // 추가한 태그를 리스트에 저장
+                        manuallyAddedTags.add(text);
+
+                        // ChipGroup에 새 칩을 추가합니다.
+                        chipGroupTag.addView(newChip, chipGroupTag.getChildCount() - 1); // 마지막에서 두 번째 위치에 추가
+                    } else {
+                        // 이미 추가된 태그인 경우 사용자에게 알림을 표시합니다.
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                        alertDialog.setTitle("중복된 태그");
+                        alertDialog.setMessage("이미 추가된 태그입니다.");
+                        alertDialog.setPositiveButton("확인", (dialog1, which1) -> dialog1.dismiss());
+                        alertDialog.show();
+                    }
+                    dialog.dismiss();
+                }
+            });
         });
-
-
 
 
         // 복원할 태그가 있는 경우 Chip 상태 업데이트
