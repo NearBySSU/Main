@@ -122,3 +122,40 @@ exports.sendFollowNotification = functions.region("asia-northeast3").firestore.d
   }
 });
 
+exports.sendFollowRequestNotification = functions.region("asia-northeast3").firestore.document("/users/{userid}").onWrite(async (change, context) => {
+  const beforeFollowRequesters = change.before.data().FollowRequester;
+  const afterFollowRequesters = change.after.data().FollowRequester;
+
+  if (JSON.stringify(beforeFollowRequesters) !== JSON.stringify(afterFollowRequesters)) {
+    if (afterFollowRequesters.length > beforeFollowRequesters.length) {
+      const userId = context.params.userid;
+      const newRequesterId = afterFollowRequesters.find((id) => !beforeFollowRequesters.includes(id));
+
+      // 팔로우 요청을 한 사용자의 닉네임을 가져옵니다.
+      const newRequesterSnapshot = await db.collection("users").doc(newRequesterId).get();
+      const newRequesterNickName = newRequesterSnapshot.data().nickname;
+
+      // 팔로우 요청을 받은 사용자의 FCM 토큰을 가져옵니다.
+      const userSnapshot = await db.collection("users").doc(userId).get();
+      const fcmToken = userSnapshot.data().fcmToken;
+
+      const message = {
+        notification: {
+          title: "새로운 팔로우 요청!",
+          body: `${newRequesterNickName}님이 회원님을 팔로우하고 싶어합니다.`,
+        },
+        token: fcmToken, // 실제 FCM 토큰으로 변경됩니다.
+      };
+
+      messaging.send(message)
+          .then((response) => {
+            console.log("Successfully sent message:", response);
+          })
+          .catch((error) => {
+            console.log("Error sending message:", error);
+          });
+    }
+  }
+});
+
+

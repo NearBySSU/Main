@@ -241,7 +241,15 @@ public class FriendsListFragment extends Fragment {
                                                         String profileUrl = document.getString("profilePicUrl");
                                                         String friendName = document.getString("nickname");
                                                         ArrayList<String> postIds = (ArrayList<String>) document.get("postIds");
-                                                        int postCount = postIds.size();
+                                                        int postCount;
+
+                                                        if(postIds != null){
+                                                             postCount = postIds.size();
+                                                        }
+                                                        else{
+                                                            postCount = 0;
+                                                        }
+                                                        
                                                         Friend friend = new Friend(profileUrl, friendName, userID, postCount);
                                                         friendsList.add(friend);
                                                         friendsListAdapter.notifyDataSetChanged();
