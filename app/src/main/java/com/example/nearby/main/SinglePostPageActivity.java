@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -309,29 +311,35 @@ public class SinglePostPageActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.post_delete_btn) {
-                    Log.d("postDelete", "메롱");
+
+                    LayoutInflater inflater = (LayoutInflater) SinglePostPageActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View dialogView = inflater.inflate(R.layout.post_delete, null);
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(SinglePostPageActivity.this);
 
-                    builder.setTitle("게시물 삭제").setMessage("정말 삭제 하시겠어요?");
+                    builder.setView(dialogView);
 
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    Button btnCancel = dialogView.findViewById(R.id.btn_dialog_cancel);
+                    Button btnConfirm = dialogView.findViewById(R.id.btn_dialog_confirm);
+
+                    // '아니오' 버튼 클릭 시 다이얼로그 닫기
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id) {
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             deletePost(postId);
                             finish();
-                            Toast.makeText(getApplicationContext(), "삭제 되었어요.", Toast.LENGTH_SHORT).show();
-                        }
+                            dialog.dismiss();
+                            }
                     });
-
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
 
                     return true;
                 } else {
